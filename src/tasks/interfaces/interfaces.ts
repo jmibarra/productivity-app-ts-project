@@ -1,7 +1,6 @@
-import internal from "stream";
-
-export interface Todo {
+export interface Task {
     id: string;
+    title: string;
     desc: string;
     completed: boolean;
     color: string;
@@ -12,9 +11,11 @@ export interface Todo {
     dueDate: string;
 }
 
-export interface TodoState {
+export interface TasksState {
     todoCount: number;
-    todos: Todo[],
+    tasks: Task[];
+    selectedTask: Task;
     completed: number;
     pending: number;
+    loading: boolean;
 }
