@@ -1,4 +1,4 @@
-import { Task } from "../interfaces/interfaces"
+import { Task } from "../../interfaces/tasks/interfaces"
 import List from '@mui/material/List';
 import TaskComponent from "./Task";
 

@@ -4,10 +4,15 @@ import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer,initialState } from "../../reducers/tasks";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
-import { Task } from "../interfaces/interfaces";
+import { Task } from "../../interfaces/tasks/interfaces";
 import { styled } from '@mui/material/styles';
 
-const Tasks = () => {
+interface Props { //TODO: Ver bien como hacer eso
+    toogleModal: any
+    taskModalOpen:boolean
+}
+
+const Tasks = ({toogleModal,taskModalOpen} : Props) => {
     
     const [state, dispatch] = useReducer(tasksReducer,initialState)
 
@@ -51,16 +56,16 @@ const Tasks = () => {
     }));
 
     return (
-        <Container fixed>
+        <>
             <Grid container spacing={2}>
                 <Grid item xs={8}>
                     <Item><TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask}/></Item>
                 </Grid>
                 <Grid item xs={4}>
-                    <Item><TaskForm addTask={addTask}/></Item>
+                    <Item><TaskForm addTask={addTask} toogleModal={toogleModal} taskModalOpen={taskModalOpen}/></Item>
                 </Grid>
             </Grid>
-        </Container>
+        </>
     )
 }
 
