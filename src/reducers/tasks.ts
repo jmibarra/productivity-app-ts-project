@@ -7,10 +7,9 @@ export type ReducerAction = {
     payload?: any;
 };
 
-
 export const useTodoReducer: Reducer<TasksState, ReducerAction> = (state, action) => {
     switch(action.type) {
-        case ReducerActionType.CREATE_TASK:
+        case ReducerActionType.SET_TASK:
             //Aca voy a llamar a al API
             return {
                ...state, 
@@ -18,15 +17,14 @@ export const useTodoReducer: Reducer<TasksState, ReducerAction> = (state, action
             };
         case ReducerActionType.GET_TASK: {
             const selectedTask = state.tasks.find(
-                (task) => task.id === action.payload.id
+                (task:Task) => task.id === action.payload.id
             );
             return {
                 ...state,
-                selectedTask,
+                selectedTask:selectedTask as Task,
             };
         }
         case ReducerActionType.DELETE_TASK: {
-            const deletedTodo = action.payload as Task;
             const newTasks = state.tasks.filter(
                 (task:Task) => task.id !== action.payload.id 
             ) as Task[];
