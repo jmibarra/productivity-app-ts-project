@@ -1,7 +1,9 @@
+import TaskForm from "./tasks/components/TaskForm";
+
 function App() {
     return (
         <div className="App">
-            Nuevo proyecto vacio
+            <TaskForm/>
         </div>
     );
 }
