@@ -7,17 +7,15 @@ type Inputs = {
     description: string,
 };
 
-interface Props { //Ver bien como hacer eso
+interface Props { //TODO: Ver bien como hacer eso
     addTask: any
   }
-
 
 const TaskForm = ({addTask}:Props) => {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
     const createTask = (object:any) => {
         addTask({...object,id: shortid.generate()})
-
     }
     
     return (
@@ -25,12 +23,13 @@ const TaskForm = ({addTask}:Props) => {
             <h3>Nueva tarea</h3>
             <form onSubmit={handleSubmit(createTask)}>
                 <div> 
-                    <TextField variant="outlined"  placeholder="Título" {...register("title", {required: true})} />
+                    <TextField fullWidth variant="outlined"  placeholder="Título" {...register("title", {required: true})} />
                     {errors?.title && <span>This field is required</span>}
                 </div>
                 <br/>
                 <div>
                     <TextField
+                        fullWidth
                         placeholder="Descripción"
                         multiline
                         rows={4}
