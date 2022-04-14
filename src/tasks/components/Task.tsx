@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Task } from "../interfaces/interfaces"
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -7,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Divider } from "@mui/material";
 
 
 interface Props {
@@ -23,9 +23,10 @@ const TaskComponent = ({task,index,deleteTask,toogleTask}:Props) => {
     
     const handleToggle = (id: string) => () => {
         toogleTask(id)
-    };
+    }
 
     return (
+        <>
         <ListItem
             key={task.id}
             secondaryAction={
@@ -34,8 +35,9 @@ const TaskComponent = ({task,index,deleteTask,toogleTask}:Props) => {
                 </IconButton>
             }
             disablePadding
+            alignItems="flex-start"
         >
-            <ListItemButton role={undefined} onClick={handleToggle(task.id)} dense>
+            <ListItemButton role={undefined} dense>
                 <ListItemIcon>
                     <Checkbox
                         edge="start"
@@ -43,11 +45,30 @@ const TaskComponent = ({task,index,deleteTask,toogleTask}:Props) => {
                         tabIndex={-1}
                         disableRipple
                         inputProps={{ 'aria-labelledby': labelId }}
+                        onClick={handleToggle(task.id)}
                     />
                 </ListItemIcon>
-                <ListItemText id={labelId} primary={task.title} />
+
+                <ListItemText id={labelId} 
+                    primary={task.title} 
+                    secondary={task.desc}
+                />
+                {/* {task.labels?.map((label) => {
+                    return (
+                        <ListItem key={index}>
+                        <Chip
+                            label={label}
+                            onClick={() => handleLabelClick("Test")}
+                            onDelete={() =>handleLabelDelete("Test")}
+                        />
+                        </ListItem>
+                    )
+                })}; */}
             </ListItemButton>
         </ListItem>
+        <Divider variant="inset" component="li" />
+        
+        </>
     );
 }
 

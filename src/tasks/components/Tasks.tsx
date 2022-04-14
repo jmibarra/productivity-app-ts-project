@@ -16,15 +16,18 @@ const Tasks = () => {
     },[]);
 
     async function fetchAllTasks(){
-        fetch('https://6253073dc534af46cb92c87a.mockapi.io/productivityapp/todos')
-        .then(response => response.json())
-        .then(
-            
-            tasks => {
-                console.log(tasks)
-                dispatch({type: ReducerActionType.GET_ALL_TASKS,payload:tasks})
-            }
-        );
+        try{
+            fetch('https://6253073dc534af46cb92c87a.mockapi.io/productivityapp/todos')
+            .then(response => response.json())
+            .then(
+                tasks => {
+                    dispatch({type: ReducerActionType.GET_ALL_TASKS,payload:tasks})
+                }
+            );
+        }catch(response){
+            console.log("Error", response);
+        }
+        
     }
 
     const addTask = (task:Task):void => {
@@ -46,8 +49,6 @@ const Tasks = () => {
         textAlign: 'center',
         color: theme.palette.text.secondary,
     }));
-
-
 
     return (
         <Container fixed>

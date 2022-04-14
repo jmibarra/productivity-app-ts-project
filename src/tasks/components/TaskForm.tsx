@@ -4,7 +4,7 @@ import shortid from "shortid";
 
 type Inputs = {
     title: string,
-    description: string,
+    desc: string,
 };
 
 interface Props { //TODO: Ver bien como hacer eso
@@ -33,9 +33,9 @@ const TaskForm = ({addTask}:Props) => {
                         placeholder="Descripción"
                         multiline
                         rows={4}
-                        {...register("description", {required: true, maxLength: 100})}
+                        {...register("desc", {required: true, maxLength: 100})}
                     />
-                    {errors?.description && <span>This field is required</span>}
+                    {errors?.desc && <span>This field is required</span>}
                 </div>
                 <br/>
                 <Button type="submit" variant="contained">Agregar tarea</Button>

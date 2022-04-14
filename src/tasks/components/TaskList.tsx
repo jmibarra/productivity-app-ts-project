@@ -13,7 +13,7 @@ const TaskList = ({tasks,deleteTask,toogleTask}:Props) => {
     return (
     <>
          <h2>Tareas</h2>
-         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
             {tasks.map((task:Task,index) => {
                 return (
                     <TaskComponent task={task} index={index} deleteTask={deleteTask} toogleTask={toogleTask}/>
