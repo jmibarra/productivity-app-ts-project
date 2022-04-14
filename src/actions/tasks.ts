@@ -1,4 +1,5 @@
 export enum ReducerActionType {
+    GET_ALL_TASKS,
     SET_TASK,
     DELETE_TASK,
     UPDATE_TASK,

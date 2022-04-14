@@ -11,7 +11,7 @@ export type ReducerAction = {
 export const initialState:TasksState = {
     tasks: [],
     loading: false
-} 
+}
 
 export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initialState, action) => {
     switch(action.type) {
@@ -20,6 +20,11 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
             return {
                ...state, 
                tasks: [...state.tasks,action.payload]
+            };
+        case ReducerActionType.GET_ALL_TASKS:
+            return {
+                ...state, 
+                tasks: action.payload
             };
         case ReducerActionType.GET_TASK: {
             const selectedTask = state.tasks.find(
