@@ -2,7 +2,7 @@ export interface Task {
     id: string;
     title: string;
     desc: string;
-    completed?: boolean;
+    completed: boolean;
     color?: string;
     list?: string;
     priority?: number; //Por ahora, deberíamos luego manejarlo como un tipo especial de objeto o a lo mejor solo el número mapeando a un símbolo

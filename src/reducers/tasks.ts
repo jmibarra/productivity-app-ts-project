@@ -1,5 +1,6 @@
 import { Reducer } from "react";
 import { ReducerActionType } from "../actions/tasks";
+import Tasks from "../tasks/components/Tasks";
 import { TasksState,Task } from "../tasks/interfaces/interfaces";
 
 export type ReducerAction = {
@@ -18,7 +19,7 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
             //Aca voy a llamar a al API
             return {
                ...state, 
-               tasks: [action.payload,...state.tasks]
+               tasks: [...state.tasks,action.payload]
             };
         case ReducerActionType.GET_TASK: {
             const selectedTask = state.tasks.find(
@@ -31,12 +32,30 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
         }
         case ReducerActionType.DELETE_TASK: {
             const newTasks = state.tasks.filter(
-                (task:Task) => task.id !== action.payload.id 
+                (task:Task) => task.id !== action.payload
             ) as Task[];
             return{
                 ...state,
                 tasks: newTasks,
             };
+        }
+        case ReducerActionType.COMPLETE_TASK: {
+
+            const clonedTasks = [...state.tasks]
+            const selectedTask = state.tasks.find(
+                (task:Task) => task.id === action.payload
+            );
+            
+            const newTask = {...selectedTask}
+
+            newTask.completed = !selectedTask?.completed
+
+            const updatedTasks = clonedTasks.map(task => task.id === newTask.id ? newTask : task);
+
+            return {
+                ...state, 
+                tasks: updatedTasks
+             };
         }
         default:
             return state

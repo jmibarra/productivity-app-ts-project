@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Task } from "../interfaces/interfaces"
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -6,51 +7,45 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { useState } from "react";
+
 
 interface Props {
     task: Task;
     index: number;
+    deleteTask: any; //Ver el tipo para las funciones
+    toogleTask: any;
 }
 
-const TaskComponent = ({task,index}:Props) => {
-    const [checked, setChecked] = useState([0]);
+const TaskComponent = ({task,index,deleteTask,toogleTask}:Props) => {
+    
+    
     const labelId = `checkbox-list-label-${task.id}`;
     
-    const handleToggle = (value: number) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
-
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
-
-        setChecked(newChecked);
+    const handleToggle = (id: string) => () => {
+        toogleTask(id)
     };
 
     return (
         <ListItem
             key={task.id}
             secondaryAction={
-                <IconButton edge="end" aria-label="delete-action">
+                <IconButton edge="end" aria-label="delete-action" onClick={() => deleteTask(task.id)}>
                     <DeleteIcon />
                 </IconButton>
             }
             disablePadding
         >
-            <ListItemButton role={undefined} onClick={handleToggle(index)} dense>
-            <ListItemIcon>
-                <Checkbox
-                    edge="start"
-                    checked={checked.indexOf(index) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    inputProps={{ 'aria-labelledby': labelId }}
-                />
-            </ListItemIcon>
-            <ListItemText id={labelId} primary={task.title} />
+            <ListItemButton role={undefined} onClick={handleToggle(task.id)} dense>
+                <ListItemIcon>
+                    <Checkbox
+                        edge="start"
+                        checked={task.completed}
+                        tabIndex={-1}
+                        disableRipple
+                        inputProps={{ 'aria-labelledby': labelId }}
+                    />
+                </ListItemIcon>
+                <ListItemText id={labelId} primary={task.title} />
             </ListItemButton>
         </ListItem>
     );

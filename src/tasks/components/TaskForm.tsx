@@ -15,7 +15,7 @@ const TaskForm = ({addTask}:Props) => {
 
     const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
     const createTask = (object:any) => {
-        addTask({...object,id: shortid.generate()})
+        addTask({...object,id: shortid.generate(),completed:false})
     }
     
     return (
