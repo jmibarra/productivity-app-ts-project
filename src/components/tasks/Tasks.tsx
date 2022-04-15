@@ -57,14 +57,9 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
 
     return (
         <>
-            <Grid container spacing={2}>
-                <Grid item xs={8}>
-                    <Item><TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask}/></Item>
-                </Grid>
-                <Grid item xs={4}>
-                    <Item><TaskForm addTask={addTask} toogleModal={toogleModal} taskModalOpen={taskModalOpen}/></Item>
-                </Grid>
-            </Grid>
+                
+            <Item><TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask}/></Item>
+            <Item><TaskForm addTask={addTask} toogleModal={toogleModal} taskModalOpen={taskModalOpen}/></Item>
         </>
     )
 }
