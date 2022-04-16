@@ -16,8 +16,7 @@ interface Props {
     toogleTask: any;
 }
 
-const TaskComponent = ({task,index,deleteTask,toogleTask}:Props) => {
-    
+const TaskComponent = ({task,deleteTask,toogleTask}:Props) => {
     
     const labelId = `checkbox-list-label-${task.id}`;
     

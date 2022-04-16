@@ -21,7 +21,7 @@ const StyledFab = styled(Fab)({
 });
 
 interface Props { //TODO: Ver bien como hacer eso
-    toogleModal: any
+    toogleModal: () => void
 }
 
 export default function NavBar({toogleModal}:Props) {

@@ -1,4 +1,4 @@
-import { Container, Grid, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import { useEffect, useReducer } from "react";
 import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer,initialState } from "../../reducers/tasks";
@@ -8,7 +8,7 @@ import { Task } from "../../interfaces/tasks/interfaces";
 import { styled } from '@mui/material/styles';
 
 interface Props { //TODO: Ver bien como hacer eso
-    toogleModal: any
+    toogleModal: () => void
     taskModalOpen:boolean
 }
 

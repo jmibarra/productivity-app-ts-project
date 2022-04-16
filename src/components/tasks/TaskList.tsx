@@ -4,8 +4,8 @@ import TaskComponent from "./Task";
 
 interface Props {
     tasks: Task[],
-    deleteTask: any
-    toogleTask: any //Ver como definir que espero una funcion
+    deleteTask: (id: string) => void,
+    toogleTask: (id: string) => void
 }
 
 const TaskList = ({tasks,deleteTask,toogleTask}:Props) => {

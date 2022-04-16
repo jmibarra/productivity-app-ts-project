@@ -1,4 +1,4 @@
-import { Box, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { useState } from "react";
 import NavBar from "./components/common/NavBar";
 import Tasks from "./components/tasks/Tasks";

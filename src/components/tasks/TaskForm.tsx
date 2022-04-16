@@ -1,6 +1,7 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import shortid from "shortid";
+import { Task } from "../../interfaces/tasks/interfaces";
 
 type Inputs = {
     title: string,
@@ -8,15 +9,15 @@ type Inputs = {
 };
 
 interface Props { //TODO: Ver bien como hacer eso
-    addTask: any
-    toogleModal: any
+    addTask: (task: Task) => void,
+    toogleModal: () => void,
     taskModalOpen:boolean
     
 }
 
 const TaskForm = ({addTask,toogleModal,taskModalOpen}:Props) => {
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const createTask = (object:any) => {
         addTask({...object,id: shortid.generate(),completed:false})
         toogleModal()
@@ -32,7 +33,6 @@ const TaskForm = ({addTask,toogleModal,taskModalOpen}:Props) => {
             <DialogTitle>Nueva tarea</DialogTitle>
             <form onSubmit={handleSubmit(createTask)}>
                 <DialogContent>
-                    
                         <div> 
                             <TextField fullWidth variant="outlined"  placeholder="Título" {...register("title", {required: true})} />
                             {errors?.title && <span>This field is required</span>}
