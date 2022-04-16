@@ -8,7 +8,7 @@ type Inputs = {
     desc: string,
 };
 
-interface Props { //TODO: Ver bien como hacer eso
+interface Props {
     addTask: (task: Task) => void,
     toogleModal: () => void,
     taskModalOpen:boolean

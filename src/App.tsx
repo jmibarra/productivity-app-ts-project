@@ -1,6 +1,7 @@
 import { Container } from "@mui/material";
 import { useState } from "react";
 import NavBar from "./components/common/NavBar";
+import SpeedDialComponent from "./components/common/SpeedDialComponent";
 import Tasks from "./components/tasks/Tasks";
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
         <div className="App">
             <Container fixed>
                 <Tasks toogleModal={() => setTaskModalOpen(!taskModalOpen)} taskModalOpen={taskModalOpen}/>
-                <NavBar toogleModal={() => setTaskModalOpen(!taskModalOpen)} />
+                {/* <NavBar toogleModal={() => setTaskModalOpen(!taskModalOpen)} /> */}
+                <SpeedDialComponent />
             </Container>
         </div>
     );

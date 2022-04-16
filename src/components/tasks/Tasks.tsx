@@ -7,7 +7,7 @@ import TaskList from "./TaskList";
 import { Task } from "../../interfaces/tasks/interfaces";
 import { styled } from '@mui/material/styles';
 
-interface Props { //TODO: Ver bien como hacer eso
+interface Props {
     toogleModal: () => void
     taskModalOpen:boolean
 }
