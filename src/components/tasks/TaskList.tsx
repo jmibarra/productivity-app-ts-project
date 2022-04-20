@@ -16,7 +16,7 @@ const TaskList = ({tasks,deleteTask,toogleTask}:Props) => {
          <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
             {tasks.map((task:Task,index) => {
                 return (
-                    <TaskComponent task={task} index={index} deleteTask={deleteTask} toogleTask={toogleTask}/>
+                    <TaskComponent task={task} index={index} deleteTask={deleteTask} toogleTask={toogleTask} key={task.id}/>
                 );
             })}
         </List>

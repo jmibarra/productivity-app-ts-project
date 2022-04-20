@@ -27,7 +27,6 @@ const TaskComponent = ({task,deleteTask,toogleTask}:Props) => {
     return (
         <>
         <ListItem
-            key={task.id}
             secondaryAction={
                 <IconButton edge="end" aria-label="delete-action" onClick={() => deleteTask(task.id)}>
                     <DeleteIcon />
@@ -66,7 +65,6 @@ const TaskComponent = ({task,deleteTask,toogleTask}:Props) => {
             </ListItemButton>
         </ListItem>
         <Divider variant="inset" component="li" />
-        
         </>
     );
 }
