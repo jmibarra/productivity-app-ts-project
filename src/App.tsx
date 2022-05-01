@@ -1,5 +1,6 @@
 import { Container } from "@mui/material";
 import { useState } from "react";
+import DrawerComponent from "./components/common/DrawerComponent"
 import NavBar from "./components/common/NavBar";
 import SpeedDialComponent from "./components/common/SpeedDialComponent";
 import Tasks from "./components/tasks/Tasks";
@@ -10,10 +11,13 @@ function App() {
 
     return (
         <div className="App">
+            
             <Container fixed>
-                <Tasks toogleModal={() => setTaskModalOpen(!taskModalOpen)} taskModalOpen={taskModalOpen}/>
-                {/* <NavBar toogleModal={() => setTaskModalOpen(!taskModalOpen)} /> */}
-                <SpeedDialComponent />
+                <DrawerComponent>
+                    <Tasks toogleModal={() => setTaskModalOpen(!taskModalOpen)} taskModalOpen={taskModalOpen}/>
+                    {/* <NavBar toogleModal={() => setTaskModalOpen(!taskModalOpen)} /> */}
+                    <SpeedDialComponent />
+                </DrawerComponent>
             </Container>
         </div>
     );
