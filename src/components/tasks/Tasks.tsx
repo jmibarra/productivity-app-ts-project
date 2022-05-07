@@ -6,6 +6,7 @@ import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import { Task } from "../../interfaces/tasks/interfaces";
 import { styled } from '@mui/material/styles';
+import { properties } from '../../properties';
 
 interface Props {
     toogleModal: () => void
@@ -22,7 +23,7 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
 
     async function fetchAllTasks(){
         try{
-            fetch('https://6253073dc534af46cb92c87a.mockapi.io/productivityapp/todos')
+            fetch(properties.api_url+'/todos')
             .then(response => response.json())
             .then(
                 tasks => {
@@ -43,8 +44,28 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
         dispatch({type: ReducerActionType.DELETE_TASK,payload:id})
     }
 
-    const toogleTask = (id:string):void => {
+    const toogleTask = (id:string,completed:boolean):void => {
         dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
+        try{
+            const data = { completed: !completed };
+
+            //POST request with body equal on data in JSON format
+            fetch(properties.api_url+"/todos/"+id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then((response) => {
+                if(!response.ok){
+                    dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
+                }   
+            })
+
+        }catch(response){
+            console.log("Error", response);
+        }
     }
 
     const Item = styled(Paper)(({ theme }) => ({

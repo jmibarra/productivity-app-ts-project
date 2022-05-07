@@ -13,15 +13,15 @@ interface Props {
     task: Task;
     index: number;
     deleteTask: any; //Ver el tipo para las funciones
-    toogleTask: any;
+    toogleTask: (id: string, completed: boolean) => void;
 }
 
 const TaskComponent = ({task,deleteTask,toogleTask}:Props) => {
     
     const labelId = `checkbox-list-label-${task.id}`;
     
-    const handleToggle = (id: string) => () => {
-        toogleTask(id)
+    const handleToggle = (id: string, completed: boolean) => () => {
+        toogleTask(id,completed)
     }
 
     return (
@@ -43,7 +43,7 @@ const TaskComponent = ({task,deleteTask,toogleTask}:Props) => {
                         tabIndex={-1}
                         disableRipple
                         inputProps={{ 'aria-labelledby': labelId }}
-                        onClick={handleToggle(task.id)}
+                        onClick={handleToggle(task.id,task.completed)}
                     />
                 </ListItemIcon>
 

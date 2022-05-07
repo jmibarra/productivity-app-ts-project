@@ -1,6 +1,5 @@
 import { Reducer } from "react";
-import { ReducerActionType } from "../actions/tasks";
-import Tasks from "../components/tasks/Tasks";
+import { ReducerActionType } from "../actions/tasks"
 import { TasksState,Task } from "../interfaces/tasks/interfaces";
 
 export type ReducerAction = {
@@ -16,7 +15,6 @@ export const initialState:TasksState = {
 export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initialState, action) => {
     switch(action.type) {
         case ReducerActionType.SET_TASK:
-            //Aca voy a llamar a al API
             return {
                ...state, 
                tasks: [...state.tasks,action.payload]
