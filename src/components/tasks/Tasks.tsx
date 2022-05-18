@@ -10,7 +10,7 @@ import { properties } from '../../properties';
 
 interface Props {
     toogleModal: () => void
-    taskModalOpen:boolean
+    taskModalOpen:boolean //Ver de cargar el componente de modal a demanda.
 }
 
 const Tasks = ({toogleModal,taskModalOpen} : Props) => {
@@ -41,15 +41,28 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
     }
 
     const deleteTask = (id:string):void => {
-        dispatch({type: ReducerActionType.DELETE_TASK,payload:id})
+        try{
+            fetch(properties.api_url+"/todos/"+id, {
+                method: 'DELETE',
+            })
+            .then((response) => {
+                if(!response.ok){
+                    dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
+                    console.log("Error", response);
+                }else{
+                    dispatch({type: ReducerActionType.DELETE_TASK,payload:id})
+                }
+            })
+
+        }catch(response){
+            console.log("Error", response);
+        }
     }
 
     const toogleTask = (id:string,completed:boolean):void => {
         dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
         try{
             const data = { completed: !completed };
-
-            //POST request with body equal on data in JSON format
             fetch(properties.api_url+"/todos/"+id, {
                 method: 'PUT',
                 headers: {
@@ -60,6 +73,7 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
             .then((response) => {
                 if(!response.ok){
                     dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
+                    console.log("Error", response);
                 }   
             })
 
@@ -77,8 +91,7 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
     }));
 
     return (
-        <>
-                
+        <>    
             <Item><TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask}/></Item>
             <Item><TaskForm addTask={addTask} toogleModal={toogleModal} taskModalOpen={taskModalOpen}/></Item>
         </>
