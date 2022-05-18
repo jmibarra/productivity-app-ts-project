@@ -17,7 +17,7 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
         case ReducerActionType.SET_TASK:
             return {
                ...state, 
-               tasks: [...state.tasks,action.payload]
+               tasks: [action.payload,...state.tasks,]
             };
         case ReducerActionType.GET_ALL_TASKS:
             return {

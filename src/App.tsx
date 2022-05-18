@@ -11,12 +11,9 @@ function App() {
 
     return (
         <div className="App">
-            
             <Container fixed>
                 <DrawerComponent>
                     <Tasks toogleModal={() => setTaskModalOpen(!taskModalOpen)} taskModalOpen={taskModalOpen}/>
-                    {/* <NavBar toogleModal={() => setTaskModalOpen(!taskModalOpen)} /> */}
-                    <SpeedDialComponent />
                 </DrawerComponent>
             </Container>
         </div>

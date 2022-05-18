@@ -37,7 +37,25 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
     }
 
     const addTask = (task:Task):void => {
-        dispatch({type: ReducerActionType.SET_TASK,payload:task})
+        
+        try{
+            fetch(properties.api_url+"/todos/", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(task),
+            })
+            .then((response) => {
+                if(!response.ok){
+                    console.log("Error", response);
+                }else  
+                    dispatch({type: ReducerActionType.SET_TASK,payload:task})
+            })
+
+        }catch(response){
+            console.log("Error", response);
+        }
     }
 
     const deleteTask = (id:string):void => {
@@ -47,7 +65,6 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
             })
             .then((response) => {
                 if(!response.ok){
-                    dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
                     console.log("Error", response);
                 }else{
                     dispatch({type: ReducerActionType.DELETE_TASK,payload:id})
@@ -88,11 +105,17 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
         padding: theme.spacing(1),
         textAlign: 'center',
         color: theme.palette.text.secondary,
+        marginTop: '20px'
     }));
 
     return (
         <>    
-            <Item><TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask}/></Item>
+            <Item><TaskList 
+                tasks={state.tasks} 
+                addTask={addTask}
+                deleteTask={deleteTask} 
+                toogleTask={toogleTask}/>
+            </Item>
             <Item><TaskForm addTask={addTask} toogleModal={toogleModal} taskModalOpen={taskModalOpen}/></Item>
         </>
     )
