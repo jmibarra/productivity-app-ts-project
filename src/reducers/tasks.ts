@@ -9,7 +9,7 @@ export type ReducerAction = {
 
 export const initialState:TasksState = {
     tasks: [],
-    loading: false
+    loading: false,
 }
 
 export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initialState, action) => {
@@ -28,6 +28,7 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
             const selectedTask = state.tasks.find(
                 (task:Task) => task.id === action.payload.id
             );
+
             return {
                 ...state,
                 selectedTask:selectedTask as Task,

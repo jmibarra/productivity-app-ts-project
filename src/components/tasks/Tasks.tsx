@@ -2,18 +2,12 @@ import { Paper } from "@mui/material";
 import { useEffect, useReducer } from "react";
 import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer,initialState } from "../../reducers/tasks";
-import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import { Task } from "../../interfaces/tasks/interfaces";
 import { styled } from '@mui/material/styles';
 import { properties } from '../../properties';
 
-interface Props {
-    toogleModal: () => void
-    taskModalOpen:boolean //Ver de cargar el componente de modal a demanda.
-}
-
-const Tasks = ({toogleModal,taskModalOpen} : Props) => {
+const Tasks = () => {
     
     const [state, dispatch] = useReducer(tasksReducer,initialState)
 
@@ -99,6 +93,10 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
         }
     }
 
+    const getSelectedTask = (taskId:string):void => {
+        dispatch({type: ReducerActionType.GET_TASK,payload:{id:taskId}})
+    }
+
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
@@ -109,14 +107,17 @@ const Tasks = ({toogleModal,taskModalOpen} : Props) => {
     }));
 
     return (
-        <>    
-            <Item><TaskList 
-                tasks={state.tasks} 
-                addTask={addTask}
-                deleteTask={deleteTask} 
-                toogleTask={toogleTask}/>
+        <>   
+            <Item>
+                <TaskList 
+                    tasks={state.tasks} 
+                    addTask={addTask}
+                    deleteTask={deleteTask} 
+                    toogleTask={toogleTask}
+                    getSelectedTask={getSelectedTask}
+                    selectedTask={state.selectedTask}
+                />  
             </Item>
-            <Item><TaskForm addTask={addTask} toogleModal={toogleModal} taskModalOpen={taskModalOpen}/></Item>
         </>
     )
 }

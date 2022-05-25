@@ -12,16 +12,21 @@ import { Divider } from "@mui/material";
 interface Props {
     task: Task;
     index: number;
-    deleteTask: any; //Ver el tipo para las funciones
+    deleteTask: (id: string) => void;
     toogleTask: (id: string, completed: boolean) => void;
+    handleSelectTask: (id:string) => void;
 }
 
-const TaskComponent = ({task,deleteTask,toogleTask}:Props) => {
+const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
     
     const labelId = `checkbox-list-label-${task.id}`;
     
     const handleToggle = (id: string, completed: boolean) => () => {
         toogleTask(id,completed)
+    }
+
+    const handleTaskClick = (id: string) => () => {
+        handleSelectTask(id)
     }
 
     return (
@@ -50,18 +55,8 @@ const TaskComponent = ({task,deleteTask,toogleTask}:Props) => {
                 <ListItemText id={labelId} 
                     primary={task.title} 
                     secondary={task.desc}
+                    onClick = {handleTaskClick(task.id)}
                 />
-                {/* {task.labels?.map((label) => {
-                    return (
-                        <ListItem key={index}>
-                        <Chip
-                            label={label}
-                            onClick={() => handleLabelClick("Test")}
-                            onDelete={() =>handleLabelDelete("Test")}
-                        />
-                        </ListItem>
-                    )
-                })}; */}
             </ListItemButton>
         </ListItem>
         <Divider variant="inset" component="li" />
