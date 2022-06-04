@@ -1,9 +1,12 @@
+import { useState } from "react";
+
 import { Task } from "../../interfaces/tasks/interfaces"
+
 import List from '@mui/material/List';
 import Pagination from '@mui/material/Pagination';
+
 import TaskComponent from "./Task";
 import TaskQuickInputComponent from "./TaskQuickInput";
-import { useState } from "react";
 import TaskModal from "./modal/TaskModal";
 
 interface Props {
@@ -18,20 +21,20 @@ interface Props {
 const TaskList = ({tasks,addTask,deleteTask,toogleTask,getSelectedTask,selectedTask}:Props) => {
 
     const [page, setPage] = useState(1);
-    const [taskModalOpen, setTaskModalOpen] = useState(false)
+    const [taskModalOpen, setTaskModalOpen] = useState(false);
+    const [selectedTaskId, setSelectedTaskId] = useState("")
 
     const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        alert(value)
         setPage(value);
     };
 
-    const toogleTaskModal = () => {
-        setTaskModalOpen(!taskModalOpen)
+    const handleCloseModal = () => {
+        setTaskModalOpen(false)
     }
 
     const handleSelectTask = (id:string) => {
-        toogleTaskModal()
-        getSelectedTask(id)
+        setSelectedTaskId(id)
+        setTaskModalOpen(true)
     }
 
     return (
@@ -46,7 +49,7 @@ const TaskList = ({tasks,addTask,deleteTask,toogleTask,getSelectedTask,selectedT
             })}
         </List>
         <Pagination count={10} page={page} onChange={handleChange} variant="outlined" color="primary" />
-        <TaskModal toogleModal={toogleTaskModal} taskModalOpen={taskModalOpen} selectedTask={selectedTask} />
+        <TaskModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskId={selectedTaskId} />
     </>
   )
 }

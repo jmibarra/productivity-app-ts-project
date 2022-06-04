@@ -6,19 +6,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Task } from '../../../interfaces/tasks/interfaces';
 
 interface Props {
-    toogleModal: () => void,
+    handleClose: () => void,
     taskModalOpen:boolean,
-    selectedTask?: Task
+    selectedTaskId: String
 }
 
-export default function TaskModal({toogleModal,taskModalOpen,selectedTask}:Props) {
-
-    const handleClose = () => {
-        toogleModal();
-    };
+export default function TaskModal({handleClose,taskModalOpen,selectedTaskId}:Props) {
 
   const descriptionElementRef = React.useRef<HTMLElement>(null);
   React.useEffect(() => {
@@ -45,7 +40,7 @@ export default function TaskModal({toogleModal,taskModalOpen,selectedTask}:Props
             ref={descriptionElementRef}
             tabIndex={-1}
           >
-            Tarea seleccionada
+            Tarea seleccionada {selectedTaskId}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

@@ -25,10 +25,6 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
         toogleTask(id,completed)
     }
 
-    const handleTaskClick = (id: string) => () => {
-        handleSelectTask(id)
-    }
-
     return (
         <>
         <ListItem
@@ -55,7 +51,7 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
                 <ListItemText id={labelId} 
                     primary={task.title} 
                     secondary={task.desc}
-                    onClick = {handleTaskClick(task.id)}
+                    onClick = { () => handleSelectTask(task.id)}
                 />
             </ListItemButton>
         </ListItem>
