@@ -1,19 +1,29 @@
 import { Paper } from "@mui/material";
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer,initialState } from "../../reducers/tasks";
 import TaskList from "./TaskList";
 import { Task } from "../../interfaces/tasks/interfaces";
 import { styled } from '@mui/material/styles';
 import { properties } from '../../properties';
+import TaskForm from "./TaskForm";
+
+import Box from '@mui/material/Box';
+import Fab from '@mui/material/Fab';
+import AddIcon from '@mui/icons-material/Add';
 
 const Tasks = () => {
     
     const [state, dispatch] = useReducer(tasksReducer,initialState)
+    const [taskFormModalOpen, settaskFormModalOpen] = useState(false)
 
     useEffect(()=> {
         fetchAllTasks()
     },[]);
+
+    const handleCloseModal = () => {
+        settaskFormModalOpen(false)
+    }
 
     async function fetchAllTasks(){
         try{
@@ -31,7 +41,6 @@ const Tasks = () => {
     }
 
     const addTask = (task:Task):void => {
-        
         try{
             fetch(properties.api_url+"/todos/", {
                 method: 'POST',
@@ -43,7 +52,7 @@ const Tasks = () => {
             .then((response) => {
                 if(!response.ok){
                     console.log("Error", response);
-                }else  
+                }else
                     dispatch({type: ReducerActionType.SET_TASK,payload:task})
             })
 
@@ -105,13 +114,20 @@ const Tasks = () => {
     return (
         <>   
             <Item>
+
                 <TaskList 
                     tasks={state.tasks} 
                     addTask={addTask}
                     deleteTask={deleteTask} 
                     toogleTask={toogleTask}
                     selectedTask={state.selectedTask}
-                />  
+                />
+                <Box sx={{ '& > :not(style)': { m: 1 } }}>
+                    <Fab color="primary" aria-label="add">
+                        <AddIcon onClick={ () => settaskFormModalOpen(true)}/>
+                    </Fab>
+                </Box>
+                <TaskForm addTask={addTask} handleCloseModal={handleCloseModal} taskModalOpen={taskFormModalOpen}/>
             </Item>
         </>
     )

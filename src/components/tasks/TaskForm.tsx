@@ -10,23 +10,25 @@ type Inputs = {
 
 interface Props {
     addTask: (task: Task) => void,
-    toogleModal: () => void,
+    handleCloseModal: () => void,
     taskModalOpen:boolean
     
 }
 
-const TaskForm = ({addTask,toogleModal,taskModalOpen}:Props) => {
+const TaskForm = ({addTask,taskModalOpen,handleCloseModal}:Props) => {
 
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
-    const createTask = (object:any) => {
-        addTask({...object,id: shortid.generate(),completed:false})
-        toogleModal()
+    const createTask = (object:any) => { //Aca deberia ver que objeto me devuelve el form
+        let task:Task = {...object,id: shortid.generate(),completed:false}
+        console.log(task)
+        addTask(task)
+        handleCloseModal()
     }
     
     return (
         <Dialog
             open={taskModalOpen}
-            onClose={toogleModal}
+            onClose={handleCloseModal}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
@@ -51,6 +53,9 @@ const TaskForm = ({addTask,toogleModal,taskModalOpen}:Props) => {
                     
                 </DialogContent>
                 <DialogActions>
+                    <Button autoFocus onClick={handleCloseModal}>
+                        Cancelar
+                    </Button>
                     <Button type="submit" variant="contained">Agregar tarea</Button>
                 </DialogActions>
             </form>
