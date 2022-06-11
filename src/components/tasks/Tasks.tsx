@@ -1,13 +1,16 @@
-import { Paper } from "@mui/material";
 import { useEffect, useReducer, useState } from "react";
 import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer,initialState } from "../../reducers/tasks";
-import TaskList from "./TaskList";
 import { Task } from "../../interfaces/tasks/interfaces";
-import { styled } from '@mui/material/styles';
 import { properties } from '../../properties';
 import TaskForm from "./TaskForm";
+import TaskList from "./TaskList";
+import Pagination from '@mui/material/Pagination';
 
+import Stack from '@mui/material/Stack';
+
+import { styled } from '@mui/material/styles';
+import { Paper } from "@mui/material";
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
@@ -16,22 +19,34 @@ const Tasks = () => {
     
     const [state, dispatch] = useReducer(tasksReducer,initialState)
     const [taskFormModalOpen, settaskFormModalOpen] = useState(false)
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0)
 
     useEffect(()=> {
-        fetchAllTasks()
-    },[]);
+        fetchAllTasks(page,10)
+    },[page]);
 
     const handleCloseModal = () => {
         settaskFormModalOpen(false)
     }
 
-    async function fetchAllTasks(){
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
+
+    async function fetchAllTasks(page:number,limit:number){
         try{
-            fetch(properties.api_url+'/todos')
-            .then(response => response.json())
+            fetch(properties.api_url+'/todos?page='+page+'&limit='+limit)
             .then(
-                tasks => {
-                    dispatch({type: ReducerActionType.GET_ALL_TASKS,payload:tasks})
+                response => response.json()
+            )
+            .then(
+                responseJson => {
+                    dispatch({type: ReducerActionType.GET_ALL_TASKS,payload:responseJson.items})
+                    if(responseJson.count > 0){
+                        setTotalPages(Math.trunc(responseJson.count/10)+1)
+                    }
+                    
                 }
             );
         }catch(response){
@@ -114,7 +129,6 @@ const Tasks = () => {
     return (
         <>   
             <Item>
-
                 <TaskList 
                     tasks={state.tasks} 
                     addTask={addTask}
@@ -122,7 +136,11 @@ const Tasks = () => {
                     toogleTask={toogleTask}
                     selectedTask={state.selectedTask}
                 />
-                <Box sx={{ '& > :not(style)': { m: 1 } }}>
+                
+                <Box sx={{ '& > :not(style)': { m: 1 } }} display="flex" justifyContent="center" alignItems="center">
+                    <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
+                </Box>
+                <Box sx={{ '& > :not(style)': { m: 1 } }} display="flex" justifyContent="center" alignItems="center">
                     <Fab color="primary" aria-label="add">
                         <AddIcon onClick={ () => settaskFormModalOpen(true)}/>
                     </Fab>

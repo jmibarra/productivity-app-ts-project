@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Task } from "../../interfaces/tasks/interfaces"
 
 import List from '@mui/material/List';
-import Pagination from '@mui/material/Pagination';
+
 
 import TaskComponent from "./Task";
 import TaskQuickInputComponent from "./TaskQuickInput";
@@ -19,13 +19,9 @@ interface Props {
 
 const TaskList = ({tasks,addTask,deleteTask,toogleTask,selectedTask}:Props) => {
 
-    const [page, setPage] = useState(1);
+
     const [taskModalOpen, setTaskModalOpen] = useState(false);
     const [selectedTaskId, setSelectedTaskId] = useState("")
-
-    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-        setPage(value);
-    };
 
     const handleCloseModal = () => {
         setTaskModalOpen(false)
@@ -47,7 +43,6 @@ const TaskList = ({tasks,addTask,deleteTask,toogleTask,selectedTask}:Props) => {
                 );
             })}
         </List>
-        <Pagination count={10} page={page} onChange={handleChange} variant="outlined" color="primary" />
         <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskId={selectedTaskId} />
     </>
   )
