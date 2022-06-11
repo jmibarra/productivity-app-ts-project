@@ -34,7 +34,7 @@ interface Props {
     selectedTaskId: String
 }
 
-export default function TaskModal({handleClose,taskModalOpen,selectedTaskId}:Props) {
+export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedTaskId}:Props) {
 
     const [selectedTask, setSelectedTask] = useState<Task>();
     const [loading, setLoading] = useState(true);
@@ -58,6 +58,7 @@ export default function TaskModal({handleClose,taskModalOpen,selectedTaskId}:Pro
         try{
             if(id !== ""){
                 setLoading(true)
+                setSelectedTask(undefined);
                 fetch(properties.api_url+'/todos/'+id)
                 .then(response => response.json())
                 .then(

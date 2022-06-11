@@ -7,18 +7,17 @@ import Pagination from '@mui/material/Pagination';
 
 import TaskComponent from "./Task";
 import TaskQuickInputComponent from "./TaskQuickInput";
-import TaskModal from "./modal/TaskModal";
+import TaskDetailViewModal from "./modal/TaskDetailViewModal";
 
 interface Props {
     tasks: Task[],
     addTask: (task:Task) => void,
     deleteTask: (id: string) => void,
     toogleTask: (id: string, completed: boolean) => void
-    getSelectedTask: (taskId:string) => void
     selectedTask?: Task
 }
 
-const TaskList = ({tasks,addTask,deleteTask,toogleTask,getSelectedTask,selectedTask}:Props) => {
+const TaskList = ({tasks,addTask,deleteTask,toogleTask,selectedTask}:Props) => {
 
     const [page, setPage] = useState(1);
     const [taskModalOpen, setTaskModalOpen] = useState(false);
@@ -49,7 +48,7 @@ const TaskList = ({tasks,addTask,deleteTask,toogleTask,getSelectedTask,selectedT
             })}
         </List>
         <Pagination count={10} page={page} onChange={handleChange} variant="outlined" color="primary" />
-        <TaskModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskId={selectedTaskId} />
+        <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskId={selectedTaskId} />
     </>
   )
 }

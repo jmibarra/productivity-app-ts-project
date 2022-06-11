@@ -93,10 +93,6 @@ const Tasks = () => {
         }
     }
 
-    const getSelectedTask = (taskId:string):void => {
-        dispatch({type: ReducerActionType.GET_TASK,payload:{id:taskId}})
-    }
-
     const Item = styled(Paper)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
         ...theme.typography.body2,
@@ -114,7 +110,6 @@ const Tasks = () => {
                     addTask={addTask}
                     deleteTask={deleteTask} 
                     toogleTask={toogleTask}
-                    getSelectedTask={getSelectedTask}
                     selectedTask={state.selectedTask}
                 />  
             </Item>
