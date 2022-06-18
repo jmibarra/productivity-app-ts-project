@@ -22,6 +22,8 @@ import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyboardCommandKeyIcon from '@mui/icons-material/KeyboardCommandKey';
 
+import { useNavigate } from "react-router-dom";
+
 const drawerWidth = 240;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
@@ -74,15 +76,15 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 const mainActions = [
-    { icon: <TaskAltIcon />, name: 'Tareas' },
-    { icon: <NotesIcon />, name: 'Notas' },
-    { icon: <DirectionsRunIcon />, name: 'Hábitos' },
-    { icon: <BarChartIcon />, name: 'Métricas' }
+    { icon: <TaskAltIcon />, name: 'Tareas', route: '/todos' },
+    { icon: <NotesIcon />, name: 'Notas', route: '/notes' },
+    { icon: <DirectionsRunIcon />, name: 'Hábitos', route: '/habits' },
+    { icon: <BarChartIcon />, name: 'Métricas', route: '/metrics' }
   ];
 
 const appActions = [
-    { icon: <KeyboardCommandKeyIcon />, name: 'Configuración' },
-    { icon: <LogoutIcon />, name: 'Logout' },
+    { icon: <KeyboardCommandKeyIcon />, name: 'Configuración', route: '/config' },
+    { icon: <LogoutIcon />, name: 'Logout', route: '/logout' },
   ];
 
 interface Props {
@@ -93,6 +95,8 @@ export default function PersistentDrawerLeft({children}:Props) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const navigate = useNavigate();
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -100,6 +104,10 @@ export default function PersistentDrawerLeft({children}:Props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const handleRouteClick = (route:string) => {
+    navigate(route)
+  }
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -141,22 +149,24 @@ export default function PersistentDrawerLeft({children}:Props) {
         <Divider />
         <List>
           {mainActions.map((action, index) => (
-            <ListItem button key={action.name}>
-              <ListItemIcon>
-                {action.icon}
-              </ListItemIcon>
-              <ListItemText primary={action.name} />
-            </ListItem>
+            
+                <ListItem button key={action.name} onClick={ () => handleRouteClick(action.route)}>
+                <ListItemIcon>
+                    {action.icon}
+                </ListItemIcon>
+                <ListItemText primary={action.name} />
+                </ListItem>
+           
           ))}
         </List>
         <Divider />
         <List>
           {appActions.map((action, index) => (
-            <ListItem button key={action.name}>
+            <ListItem button key={action.name} >
               <ListItemIcon>
                 {action.icon}
               </ListItemIcon>
-              <ListItemText primary={action.name} />
+              <ListItemText primary={action.name} onClick={ () => handleRouteClick(action.route)}/>
             </ListItem>
           ))}
         </List>
