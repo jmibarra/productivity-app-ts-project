@@ -7,11 +7,7 @@ import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import Pagination from '@mui/material/Pagination';
 
-import Stack from '@mui/material/Stack';
-
-import { styled } from '@mui/material/styles';
-import { Paper } from "@mui/material";
-import Box from '@mui/material/Box';
+import {Item, ItemHeader,ListFooterBox} from "./styles/TasksStyles"
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import TaskQuickInputComponent from "./TaskQuickInput";
@@ -89,7 +85,6 @@ const Tasks = () => {
                     dispatch({type: ReducerActionType.DELETE_TASK,payload:id})
                 }
             })
-
         }catch(response){
             console.log("Error", response);
         }
@@ -118,42 +113,20 @@ const Tasks = () => {
         }
     }
 
-    const Item = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-        marginTop: '20px'
-    }));
-
-    const ItemHeader = styled(Paper)(({ theme }) => ({
-        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
-        marginTop: '50px'
-    }));
-
     return (
         <>   
             <ItemHeader><h1>Tareas</h1></ItemHeader>
             <Item>
                 <TaskQuickInputComponent addTask={addTask}/>
-                <TaskList 
-                    tasks={state.tasks} 
-                    deleteTask={deleteTask} 
-                    toogleTask={toogleTask}
-                />
-                <Box sx={{ '& > :not(style)': { m: 1 } }} display="flex" justifyContent="center" alignItems="center">
+                <TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask}/>
+                <ListFooterBox>
                     <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
-                </Box>
-                <Box sx={{ '& > :not(style)': { m: 1 } }} display="flex" justifyContent="center" alignItems="center">
+                </ListFooterBox>
+                <ListFooterBox>
                     <Fab color="primary" aria-label="add">
                         <AddIcon onClick={ () => settaskFormModalOpen(true)}/>
                     </Fab>
-                </Box>
+                </ListFooterBox>
             </Item>
             <TaskForm addTask={addTask} handleCloseModal={handleCloseModal} taskModalOpen={taskFormModalOpen}/>
         </>
