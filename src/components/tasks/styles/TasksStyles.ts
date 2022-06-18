@@ -8,7 +8,7 @@ export const Item = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(1),
     textAlign: 'center',
     color: theme.palette.text.secondary,
-    marginTop: '20px'
+    marginTop: '10px'
 }));
 
 export const ItemHeader = styled(Paper)(({ theme }) => ({
