@@ -14,6 +14,7 @@ import { Paper } from "@mui/material";
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import TaskQuickInputComponent from "./TaskQuickInput";
 
 const Tasks = () => {
     
@@ -126,17 +127,25 @@ const Tasks = () => {
         marginTop: '20px'
     }));
 
+    const ItemHeader = styled(Paper)(({ theme }) => ({
+        backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+        ...theme.typography.body2,
+        padding: theme.spacing(1),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
+        marginTop: '50px'
+    }));
+
     return (
         <>   
+            <ItemHeader><h1>Tareas</h1></ItemHeader>
             <Item>
+                <TaskQuickInputComponent addTask={addTask}/>
                 <TaskList 
                     tasks={state.tasks} 
-                    addTask={addTask}
                     deleteTask={deleteTask} 
                     toogleTask={toogleTask}
-                    selectedTask={state.selectedTask}
                 />
-                
                 <Box sx={{ '& > :not(style)': { m: 1 } }} display="flex" justifyContent="center" alignItems="center">
                     <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
                 </Box>
@@ -145,8 +154,8 @@ const Tasks = () => {
                         <AddIcon onClick={ () => settaskFormModalOpen(true)}/>
                     </Fab>
                 </Box>
-                <TaskForm addTask={addTask} handleCloseModal={handleCloseModal} taskModalOpen={taskFormModalOpen}/>
             </Item>
+            <TaskForm addTask={addTask} handleCloseModal={handleCloseModal} taskModalOpen={taskFormModalOpen}/>
         </>
     )
 }

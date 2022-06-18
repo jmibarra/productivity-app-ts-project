@@ -2,22 +2,18 @@ import { useState } from "react";
 
 import { Task } from "../../interfaces/tasks/interfaces"
 
-import List from '@mui/material/List';
-
-
 import TaskComponent from "./Task";
-import TaskQuickInputComponent from "./TaskQuickInput";
 import TaskDetailViewModal from "./modal/TaskDetailViewModal";
+
+import List from '@mui/material/List';
 
 interface Props {
     tasks: Task[],
-    addTask: (task:Task) => void,
     deleteTask: (id: string) => void,
     toogleTask: (id: string, completed: boolean) => void
-    selectedTask?: Task
 }
 
-const TaskList = ({tasks,addTask,deleteTask,toogleTask,selectedTask}:Props) => {
+const TaskList = ({tasks,deleteTask,toogleTask}:Props) => {
 
 
     const [taskModalOpen, setTaskModalOpen] = useState(false);
@@ -34,9 +30,7 @@ const TaskList = ({tasks,addTask,deleteTask,toogleTask,selectedTask}:Props) => {
 
     return (
     <>
-        <h2>Tareas</h2>
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            <TaskQuickInputComponent addTask={addTask}/>
             {tasks.map((task:Task,index) => {
                 return (
                     <TaskComponent task={task} index={index} deleteTask={deleteTask} toogleTask={toogleTask} handleSelectTask={handleSelectTask} key={task.id}/>
