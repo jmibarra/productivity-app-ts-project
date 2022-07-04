@@ -3,7 +3,7 @@ import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer,initialState } from "../../reducers/tasks";
 import { Task } from "../../interfaces/tasks/interfaces";
 import { properties } from '../../properties';
-import TaskForm from "./TaskForm";
+import TaskForm from "./taskForm/TaskForm";
 import TaskList from "./TaskList";
 import Pagination from '@mui/material/Pagination';
 
