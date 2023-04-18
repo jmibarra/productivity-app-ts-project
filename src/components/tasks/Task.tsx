@@ -6,8 +6,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Divider } from "@mui/material";
-
+import { Divider, Typography } from "@mui/material";
+import {CompletedText} from "./styles/TasksStyles"
 
 interface Props {
     task: Task;
@@ -47,11 +47,12 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
                         onClick={handleToggle(task.id,task.completed)}
                     />
                 </ListItemIcon>
-
-                <ListItemText id={labelId} 
+                <ListItemText
+                    id={labelId} 
                     primary={task.title} 
                     secondary={task.desc}
-                    onClick = { () => handleSelectTask(task.id)}
+                    onClick={() => handleSelectTask(task.id)}
+                    primaryTypographyProps={task.completed ? { component: CompletedText } : {}}
                 />
             </ListItemButton>
         </ListItem>
@@ -60,4 +61,4 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
     );
 }
 
-export default TaskComponent
+export default TaskComponent;
