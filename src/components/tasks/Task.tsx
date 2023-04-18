@@ -53,6 +53,7 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
                     secondary={task.desc}
                     onClick={() => handleSelectTask(task.id)}
                     primaryTypographyProps={task.completed ? { component: CompletedText } : {}}
+                    secondaryTypographyProps={task.completed ? { component: CompletedText } : {}}
                 />
             </ListItemButton>
         </ListItem>
