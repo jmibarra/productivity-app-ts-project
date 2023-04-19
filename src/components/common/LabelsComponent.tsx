@@ -1,46 +1,32 @@
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
 
 interface Props {
-    labels: any;  //Por ahora ya que mi mock data trae string y enteros
+    labels: any
 }
 
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-export default function LabelsComponent({labels}:Props) {
+export default function LabelsComponent(props: Props) {
+  const [chips, setChips] = useState<string[]>(props.labels);
 
-//   const handleDelete = (chipToDelete: ChipData) => () => {
-//     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
-//   };
-
-//TODO: dejo para despues la edición de las labels
+  const handleDelete = (index: number) => {
+    setChips((prevChips) => prevChips.filter((_, i) => i !== index));
+    //TODO: esto debería ademas hacer el trabajo de eliminarlo del dato real, post a la api que maneja labels
+  };
 
   return (
-    <Paper
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        flexWrap: 'wrap',
-        listStyle: 'none',
-        p: 0.5,
-        m: 0,
-      }}
-      component="ul"
-    >
-      {labels.map((data:String, index:number) => {
-
+    <>
+      {chips.map((data: string, index: number) => {
         return (
           <ListItem key={index}>
-            <Chip
-              label={data}
-            //   onDelete={data.label === 'React' ? undefined : handleDelete(data)}
-            />
+            <Chip label={data} onDelete={() => handleDelete(index)} />
           </ListItem>
         );
       })}
-    </Paper>
+    </>
   );
 }
