@@ -14,7 +14,7 @@ interface Props {
     index: number;
     deleteTask: (id: string) => void;
     toogleTask: (id: string, completed: boolean) => void;
-    handleSelectTask: (id:string) => void;
+    handleSelectTask: (selectedTask: Task) => void;
 }
 
 const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
@@ -51,7 +51,7 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
                     id={labelId} 
                     primary={task.title} 
                     secondary={task.desc}
-                    onClick={() => handleSelectTask(task.id)}
+                    onClick={() => handleSelectTask(task)}
                     primaryTypographyProps={task.completed ? { component: CompletedText } : {}}
                     secondaryTypographyProps={task.completed ? { component: CompletedText } : {}}
                 />

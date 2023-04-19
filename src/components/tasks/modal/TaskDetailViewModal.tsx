@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { properties } from '../../../properties';
-
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -10,7 +8,6 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import CircularProgress from '@mui/material/CircularProgress';
 import Grid from '@mui/material/Grid';
-
 
 import { Item,ItemLarge } from './styles/TaskDetailViewModalStyles';
 import StatusChipComponent from '../../common/StatusChipComponent';
@@ -22,10 +19,10 @@ import { Task } from '../../../interfaces/tasks/interfaces';
 interface Props {
     handleClose: () => void,
     taskModalOpen:boolean,
-    selectedTaskId: String
+    selectedTaskProp: Task | undefined
 }
 
-export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedTaskId}:Props) {
+export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedTaskProp}:Props) {
 
     const [selectedTask, setSelectedTask] = useState<Task>();
     const [loading, setLoading] = useState(true);
@@ -33,30 +30,9 @@ export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedT
     const descriptionElementRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
-        fetchTask(selectedTaskId);
-    }, [selectedTaskId]);
-
-  
-    async function fetchTask(id: String){
-        try{
-        if(id !== ""){
-            setLoading(true)
-            setSelectedTask(undefined);
-            fetch(properties.api_url+'/todos/'+id)
-            .then(response => response.json())
-            .then(
-                taskResponse => {
-                setSelectedTask(taskResponse)
-                setLoading(false)
-                }
-            );
-        }
-
-        }catch(response){
-        console.log("Error", response);
-        }
-
-    }
+        setSelectedTask(selectedTaskProp)
+        setLoading(false)
+    }, [selectedTaskProp]);
 
     return (
         <div>

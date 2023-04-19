@@ -17,16 +17,16 @@ const TaskList = ({tasks,deleteTask,toogleTask}:Props) => {
 
 
     const [taskModalOpen, setTaskModalOpen] = useState(false);
-    const [selectedTaskId, setSelectedTaskId] = useState("")
+    const [selectedTask, setSelectedTask] = useState<Task>();
 
     const handleCloseModal = () => {
         setTaskModalOpen(false)
     }
 
-    const handleSelectTask = (id:string) => {
-        setSelectedTaskId(id)
-        setTaskModalOpen(true)
-    }
+    const handleSelectTask = (selectedTask: Task) => {
+        setSelectedTask(selectedTask);
+        setTaskModalOpen(true);
+      };
 
     return (
     <>
@@ -37,7 +37,7 @@ const TaskList = ({tasks,deleteTask,toogleTask}:Props) => {
                 );
             })}
         </List>
-        <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskId={selectedTaskId} />
+        <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskProp={selectedTask} />
     </>
   )
 }
