@@ -61,6 +61,24 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
                 tasks: updatedTasks
              };
         }
+        case ReducerActionType.MODIFI_TASK_LABELS: {
+
+            const clonedTasks = [...state.tasks]
+            const selectedTask = state.tasks.find(
+                (task:Task) => task.id === action.payload.id
+            );
+            
+            const newTask = {...selectedTask}
+
+            newTask.labels = action.payload.labels
+
+            const updatedTasks = clonedTasks.map(task => task.id === newTask.id ? newTask : task);
+
+            return {
+                ...state, 
+                tasks: updatedTasks
+             };
+        }
         default:
             return state
     }

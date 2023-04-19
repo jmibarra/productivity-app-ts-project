@@ -5,4 +5,5 @@ export enum ReducerActionType {
     UPDATE_TASK,
     COMPLETE_TASK,
     GET_TASK,
+    MODIFI_TASK_LABELS
 }
