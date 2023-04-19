@@ -1,21 +1,27 @@
-import { useState } from 'react';
+import { useState,useReducer } from 'react';
 import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
 
+import { tasksReducer,initialState } from "../../reducers/tasks";
+import { ReducerActionType } from '../../actions/tasks';
+
 interface Props {
-    labels: any
+    labels: string[]
+    taskId: string
+    updateLabels: (id:string, labels: string[]) => void
 }
 
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
 
-export default function LabelsComponent(props: Props) {
-  const [chips, setChips] = useState<string[]>(props.labels);
+export default function LabelsComponent({labels,taskId,updateLabels}: Props) {
+  const [chips, setChips] = useState<string[]>(labels);
+  const [state, dispatch] = useReducer(tasksReducer,initialState)
 
   const handleDelete = (index: number) => {
     setChips((prevChips) => prevChips.filter((_, i) => i !== index));
-    //TODO: esto debería ademas hacer el trabajo de eliminarlo del dato real, post a la api que maneja labels
+    updateLabels(taskId,chips)
   };
 
   return (

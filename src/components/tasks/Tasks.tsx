@@ -113,12 +113,16 @@ const Tasks = () => {
         }
     }
 
+    const updateLabels = (id:string, labels: string[]):void => {
+        dispatch({type: ReducerActionType.MODIFI_TASK_LABELS,payload:{labels:labels,id:id}})
+    }
+
     return (
         <>   
             <ItemHeader><h1>Tareas</h1></ItemHeader>
             <Item>
                 <TaskQuickInputComponent addTask={addTask}/>
-                <TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask}/>
+                <TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask} updateLabels={updateLabels}/>
                 <ListFooterBox>
                     <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
                 </ListFooterBox>

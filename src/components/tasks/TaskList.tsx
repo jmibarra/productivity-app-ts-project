@@ -11,9 +11,10 @@ interface Props {
     tasks: Task[],
     deleteTask: (id: string) => void,
     toogleTask: (id: string, completed: boolean) => void
+    updateLabels: (id:string, labels: string[]) => void
 }
 
-const TaskList = ({tasks,deleteTask,toogleTask}:Props) => {
+const TaskList = ({tasks,deleteTask,toogleTask,updateLabels}:Props) => {
 
 
     const [taskModalOpen, setTaskModalOpen] = useState(false);
@@ -37,7 +38,7 @@ const TaskList = ({tasks,deleteTask,toogleTask}:Props) => {
                 );
             })}
         </List>
-        <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskProp={selectedTask} />
+        <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskProp={selectedTask} updateLabels={updateLabels} />
     </>
   )
 }

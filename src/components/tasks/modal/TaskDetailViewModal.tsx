@@ -20,9 +20,10 @@ interface Props {
     handleClose: () => void,
     taskModalOpen:boolean,
     selectedTaskProp: Task | undefined
+    updateLabels: (id:string, labels: string[]) => void
 }
 
-export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedTaskProp}:Props) {
+export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedTaskProp,updateLabels}:Props) {
 
     const [selectedTask, setSelectedTask] = useState<Task>();
     const [loading, setLoading] = useState(true);
@@ -64,7 +65,7 @@ export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedT
                         </Item>
                         <Item>
                             <b>Labels</b>
-                            <LabelsComponent labels={selectedTask.labels} />
+                            <LabelsComponent labels={selectedTask.labels ?? []} taskId={selectedTask.id} updateLabels={updateLabels} />
                         </Item>
                     </Grid>
                     </Grid>
