@@ -13,6 +13,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Note } from '../../interfaces/tasks/interfaces';
+
+interface Props {
+    note: Note;
+    index: number;
+}
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -29,7 +35,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function Note() {
+export default function NoteComponent({note,index}:Props) {
   const [expanded, setExpanded] = React.useState(false);
 
   const handleExpandClick = () => {
@@ -49,14 +55,12 @@ export default function Note() {
             <MoreVertIcon />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={note.title}
+        subheader={note.createdAt}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the mussels,
-          if you like.
+          {note.content}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
