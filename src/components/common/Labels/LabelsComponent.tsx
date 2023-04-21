@@ -21,13 +21,14 @@ const LabelsComponent = ({ labels, taskId, updateLabels }: Props) => {
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      const newLabel = inputValue.trim();
-      if (newLabel !== '') {
-        setChips([...chips, newLabel]);
-        updateLabels(taskId, [...chips, newLabel]);
-        setInputValue('');
-      }
+        if (event.key === 'Enter') {
+        event.preventDefault();
+        const newLabel = inputValue.trim();
+        if (newLabel !== '') {
+            setChips([...chips, newLabel]);
+            updateLabels(taskId, [...chips, newLabel]);
+            setInputValue('');
+        }
     }
   };
 

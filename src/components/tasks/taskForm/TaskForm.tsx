@@ -4,6 +4,8 @@ import { Task } from "../../../interfaces/tasks/interfaces";
 import { useFormik } from "formik"
 import {initialValues, validationSchema} from "./schemas"
 import * as Yup from "yup";
+import LabelsComponent from "../../common/Labels/LabelsComponent";
+import { Item } from "./TaskFormStyles";
 
 interface Props {
     addTask: (task: Task) => void,
@@ -27,6 +29,8 @@ const TaskForm = ({addTask,taskModalOpen,handleCloseModal}:Props) => {
         addTask(task)
         handleCloseModal()
     }
+
+    const updateLabels = (id:string, labels: string[]):void => {}
     
     return (
         <Dialog
@@ -47,6 +51,11 @@ const TaskForm = ({addTask,taskModalOpen,handleCloseModal}:Props) => {
                                 onChange={formik.handleChange} 
                                 error={formik.touched.title && Boolean(formik.errors.title)}
                                 helperText={formik.touched.title && formik.errors.title} 
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
                         </div>
                         <br/>
@@ -58,8 +67,16 @@ const TaskForm = ({addTask,taskModalOpen,handleCloseModal}:Props) => {
                                 onChange={formik.handleChange} 
                                 multiline
                                 rows={4}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                    }
+                                }}
                             />
                         </div>
+                        <Item><LabelsComponent labels={[]} taskId="0" updateLabels={updateLabels}/></Item>
+                        
+
                     
                 </DialogContent>
                 <DialogActions>
