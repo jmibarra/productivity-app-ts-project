@@ -11,7 +11,7 @@ import Grid from '@mui/material/Grid';
 
 import { Item,ItemLarge } from './styles/TaskDetailViewModalStyles';
 import StatusChipComponent from '../../common/StatusChipComponent';
-import LabelsComponent from '../../common/LabelsComponent';
+import LabelsComponent from '../../common/Labels/LabelsComponent';
 
 import { Task } from '../../../interfaces/tasks/interfaces';
 

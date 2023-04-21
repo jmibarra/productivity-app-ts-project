@@ -114,7 +114,24 @@ const Tasks = () => {
     }
 
     const updateLabels = (id:string, labels: string[]):void => {
-        dispatch({type: ReducerActionType.MODIFI_TASK_LABELS,payload:{labels:labels,id:id}})
+        try{
+            const data = { labels: labels };
+            fetch(properties.api_url+"/todos/"+id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then((response) => {
+                if(response.ok){
+                    dispatch({type: ReducerActionType.MODIFI_TASK_LABELS,payload:{labels:labels,id:id}})
+                }   
+            })
+
+        }catch(response){
+            console.log("Error", response);
+        }
     }
 
     return (
