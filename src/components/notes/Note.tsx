@@ -1,4 +1,9 @@
 import * as React from 'react';
+
+import { format,isValid} from 'date-fns';
+
+import { Note } from '../../interfaces/tasks/interfaces';
+
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -13,7 +18,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Note } from '../../interfaces/tasks/interfaces';
 
 interface Props {
     note: Note;
@@ -47,7 +51,7 @@ export default function NoteComponent({note,index}:Props) {
         <CardHeader
             avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                W
+                JI
             </Avatar>
             }
             action={
@@ -56,7 +60,7 @@ export default function NoteComponent({note,index}:Props) {
             </IconButton>
             }
             title={note.title}
-            subheader={note.createdAt}
+            subheader={note.createdAt && isValid(new Date(note.createdAt)) ? format(new Date(note.createdAt), 'dd/MM/yyyy HH:mm') : ''}
         />
         <CardContent>
             <Typography variant="body2" color="text.secondary">
