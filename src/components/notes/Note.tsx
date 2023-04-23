@@ -81,20 +81,20 @@ export default function NoteComponent({note,index}:Props) {
         </CardContent>
         <CardActions disableSpacing>
             <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
+                <FavoriteIcon />
             </IconButton>
             <IconButton aria-label="share">
-            <ShareIcon />
+                <ShareIcon />
             </IconButton>
             {note.content && note.content.length > 400 && 
-            <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-            >
-            <ExpandMoreIcon />
-            </ExpandMore>
+                <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+                >
+                    <ExpandMoreIcon />
+                </ExpandMore>
             }
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
