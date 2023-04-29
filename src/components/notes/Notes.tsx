@@ -8,6 +8,8 @@ import { properties } from "../../properties";
 import { ListFooterBox } from "../tasks/styles/TasksStyles";
 import { Pagination } from "@mui/material";
 
+import Cookies from 'js-cookie';
+
 const Notes = () => {
 
     const [state, dispatch] = useReducer(notesReducer, initialState)
@@ -24,14 +26,21 @@ const Notes = () => {
 
     async function fetchAllNotes(page:number, limit:number){
         try{
-            const response = await fetch(properties.api_url+'/notes?page='+page+'&limit='+limit);
+            const sessionToken = Cookies.get('PROD-APP-AUTH');
+            const headers = new Headers();
+            headers.append('Cookie', `PROD-APP-AUTH=${sessionToken}`);
+            
+            const response = await fetch(properties.api_url+'/notes?page='+page+'&limit='+limit, {
+                headers,
+                credentials: 'include'
+              });
+            
             if (response.ok) {
                 const responseJson = await response.json();
-                console.log(responseJson);
-                dispatch({type: ReducerActionType.GET_ALL_NOTES, payload: responseJson});
+                console.log(responseJson.notes);
+                dispatch({type: ReducerActionType.GET_ALL_NOTES, payload: responseJson.notes});
                 if(responseJson.count > 0){
-                    // setTotalPages(Math.trunc(responseJson.size()/10)+1)
-                    setTotalPages(1) // Tengo que pagar para pasar datos y modificar el endpoint lo hago simple hasta tener mi api
+                    setTotalPages(Math.trunc(responseJson.count/10)+1)
                 }
             } else if (response.status === 403) {
                 throw new Error("Forbidden, no hay acceso al recurso solicitado"); // Manejar la excepción aquí
@@ -43,6 +52,7 @@ const Notes = () => {
             // Manejar la excepción aquí
         }
     }
+    
     
     
 
