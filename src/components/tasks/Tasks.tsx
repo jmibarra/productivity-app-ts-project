@@ -33,7 +33,7 @@ const Tasks = () => {
 
     async function fetchAllTasks(page:number,limit:number){
         try{
-            fetch(properties.api_url+'/todos?page='+page+'&limit='+limit)
+            fetch(properties.mock_api_url+'/todos?page='+page+'&limit='+limit)
             .then(
                 response => response.json()
             )
@@ -54,7 +54,7 @@ const Tasks = () => {
 
     const addTask = (task:Task):void => {
         try{
-            fetch(properties.api_url+"/todos/", {
+            fetch(properties.mock_api_url+"/todos/", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ const Tasks = () => {
 
     const deleteTask = (id:string):void => {
         try{
-            fetch(properties.api_url+"/todos/"+id, {
+            fetch(properties.mock_api_url+"/todos/"+id, {
                 method: 'DELETE',
             })
             .then((response) => {
@@ -94,7 +94,7 @@ const Tasks = () => {
         dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
         try{
             const data = { completed: !completed };
-            fetch(properties.api_url+"/todos/"+id, {
+            fetch(properties.mock_api_url+"/todos/"+id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ const Tasks = () => {
     const updateLabels = (id:string, labels: string[]):void => {
         try{
             const data = { labels: labels };
-            fetch(properties.api_url+"/todos/"+id, {
+            fetch(properties.mock_api_url+"/todos/"+id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

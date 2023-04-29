@@ -30,12 +30,12 @@ const Notes = () => {
             )
             .then(
                 responseJson => {
+                    console.log(responseJson)
                     dispatch({type: ReducerActionType.GET_ALL_NOTES,payload:responseJson})
                     if(responseJson.count > 0){
                        // setTotalPages(Math.trunc(responseJson.size()/10)+1)
                        setTotalPages(1) //Tengo que pagar para pasar datos y modificar el endpoint lo hago simple hasta tener mi api
                     }
-                    
                 }
             );
         }catch(response){
