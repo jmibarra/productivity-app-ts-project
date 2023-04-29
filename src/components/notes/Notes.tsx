@@ -22,27 +22,29 @@ const Notes = () => {
         setPage(value);
     };
 
-    async function fetchAllNotes(page:number,limit:number){
+    async function fetchAllNotes(page:number, limit:number){
         try{
-            fetch(properties.api_url+'/notes?page='+page+'&limit='+limit)
-            .then(
-                response => response.json()
-            )
-            .then(
-                responseJson => {
-                    console.log(responseJson)
-                    dispatch({type: ReducerActionType.GET_ALL_NOTES,payload:responseJson})
-                    if(responseJson.count > 0){
-                       // setTotalPages(Math.trunc(responseJson.size()/10)+1)
-                       setTotalPages(1) //Tengo que pagar para pasar datos y modificar el endpoint lo hago simple hasta tener mi api
-                    }
+            const response = await fetch(properties.api_url+'/notes?page='+page+'&limit='+limit);
+            if (response.ok) {
+                const responseJson = await response.json();
+                console.log(responseJson);
+                dispatch({type: ReducerActionType.GET_ALL_NOTES, payload: responseJson});
+                if(responseJson.count > 0){
+                    // setTotalPages(Math.trunc(responseJson.size()/10)+1)
+                    setTotalPages(1) // Tengo que pagar para pasar datos y modificar el endpoint lo hago simple hasta tener mi api
                 }
-            );
-        }catch(response){
-            console.log("Error", response);
+            } else if (response.status === 403) {
+                throw new Error("Forbidden, no hay acceso al recurso solicitado"); // Manejar la excepción aquí
+            } else {
+                throw new Error("Error en la respuesta de la API"); // Manejar otras excepciones aquí
+            }
+        } catch(error){
+            console.log("Error", error);
+            // Manejar la excepción aquí
         }
-        
     }
+    
+    
 
     return (
         <>   
