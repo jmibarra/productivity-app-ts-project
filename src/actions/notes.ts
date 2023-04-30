@@ -1,3 +1,4 @@
 export enum ReducerActionType {
-    GET_ALL_NOTES
+    GET_ALL_NOTES,
+    DELETE_NOTES
 }

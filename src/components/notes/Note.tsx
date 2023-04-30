@@ -22,6 +22,7 @@ import { Delete } from '@mui/icons-material';
 interface Props {
     note: Note;
     index: number;
+    deleteNote: (id: string) => void
 }
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -39,7 +40,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
-export default function NoteComponent({note,index}:Props) {
+export default function NoteComponent({note, deleteNote}:Props) {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -47,74 +48,72 @@ export default function NoteComponent({note,index}:Props) {
     };
 
     const handleDelete = () => {
-        console.log(note._id)
-        //Desde acá tengo que llamar al metodo para el delete de la nota junto con el reducer.
-
+        deleteNote(note._id)
     }
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-        <CardHeader
-            avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                {note.createor}
-            </Avatar>
-            }
-            action={
-            <IconButton aria-label="settings">
-                <MoreVertIcon />
-            </IconButton>
-            }
-            title={note.title}
-            subheader={note.createdAt && isValid(new Date(note.createdAt)) ? format(new Date(note.createdAt), 'dd/MM/yyyy HH:mm') : ''}
-        />
-        <CardContent>
-            <Typography variant="body2" color="text.secondary">
-                {note.content.length > 400 
-                    ? (note.content.slice(0, 400).substring(0, note.content.slice(0, 400).lastIndexOf(' ')) + "...").split('\n').map((paragraph, index) => (
-                        <Typography key={index} paragraph variant="body2" color="text.secondary">
-                            {paragraph}
-                        </Typography>
-                        ))
-                    :
-                    note.content.split('\n').map((paragraph, index) => (
-                        <Typography key={index} paragraph variant="body2" color="text.secondary">
-                            {paragraph}
-                        </Typography>
-                    ))
+            <CardHeader
+                avatar={
+                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                    {note.createor}
+                </Avatar>
                 }
-            </Typography>
-        </CardContent>
-        <CardActions disableSpacing>
-            <IconButton aria-label="add to favorites">
-                <FavoriteIcon />
-            </IconButton>
-            <IconButton aria-label="share">
-                <Delete onClick={handleDelete}/>
-            </IconButton>
-            {note.content && note.content.length > 400 && 
-                <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            }
-        </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                action={
+                <IconButton aria-label="settings">
+                    <MoreVertIcon />
+                </IconButton>
+                }
+                title={note.title}
+                subheader={note.createdAt && isValid(new Date(note.createdAt)) ? format(new Date(note.createdAt), 'dd/MM/yyyy HH:mm') : ''}
+            />
             <CardContent>
-                <Typography paragraph>Detalle:</Typography>
-                <Typography>
-                    {note.content.split('\n').map((paragraph, index) => (
-                        <Typography key={index} paragraph>
-                        {paragraph}
-                        </Typography>
-                    ))}
+                <Typography variant="body2" color="text.secondary">
+                    {note.content.length > 400 
+                        ? (note.content.slice(0, 400).substring(0, note.content.slice(0, 400).lastIndexOf(' ')) + "...").split('\n').map((paragraph, index) => (
+                            <Typography key={index} paragraph variant="body2" color="text.secondary">
+                                {paragraph}
+                            </Typography>
+                            ))
+                        :
+                        note.content.split('\n').map((paragraph, index) => (
+                            <Typography key={index} paragraph variant="body2" color="text.secondary">
+                                {paragraph}
+                            </Typography>
+                        ))
+                    }
                 </Typography>
             </CardContent>
-        </Collapse>
+            <CardActions disableSpacing>
+                <IconButton aria-label="add to favorites">
+                    <FavoriteIcon />
+                </IconButton>
+                <IconButton aria-label="share" onClick={handleDelete}>
+                    <Delete />
+                </IconButton>
+                {note.content && note.content.length > 400 && 
+                    <ExpandMore
+                    expand={expanded}
+                    onClick={handleExpandClick}
+                    aria-expanded={expanded}
+                    aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </ExpandMore>
+                }
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <CardContent>
+                    <Typography paragraph>Detalle:</Typography>
+                    <Typography>
+                        {note.content.split('\n').map((paragraph, index) => (
+                            <Typography key={index} paragraph>
+                            {paragraph}
+                            </Typography>
+                        ))}
+                    </Typography>
+                </CardContent>
+            </Collapse>
         </Card>
     );
 }

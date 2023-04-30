@@ -52,15 +52,35 @@ const Notes = () => {
             // Manejar la excepción aquí
         }
     }
-    
-    
-    
+
+    const deleteNote = (id:string):void => {
+        try{
+            const sessionToken = Cookies.get('PROD-APP-AUTH');
+            const headers = new Headers();
+            headers.append('Cookie', `PROD-APP-AUTH=${sessionToken}`);
+
+            fetch(properties.api_url+'/notes/'+id, {
+                method: 'DELETE',
+                headers,
+                credentials: 'include'
+            })
+            .then((response) => {
+                if(!response.ok){
+                    console.log("Error", response);
+                }else{
+                    dispatch({type: ReducerActionType.DELETE_NOTES,payload:id})
+                }
+            })
+        }catch(response){
+            console.log("Error", response);
+        }
+    }
 
     return (
         <>   
             <ItemHeader><h1>Notes</h1></ItemHeader>
             <Item>
-                <NoteList notes={state.notes}/>
+                <NoteList notes={state.notes} deleteNote={deleteNote}/>
                 <ListFooterBox>
                     <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
                 </ListFooterBox>

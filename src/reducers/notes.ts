@@ -1,6 +1,6 @@
 import { Reducer } from "react";
 import { ReducerActionType } from "../actions/notes"
-import { NotesState } from "../interfaces/tasks/interfaces";
+import { Note, NotesState } from "../interfaces/tasks/interfaces";
 
 export type ReducerAction = {
     type: ReducerActionType;
@@ -19,6 +19,15 @@ export const notesReducer: Reducer<NotesState, ReducerAction> = (state = initial
                 ...state, 
                 notes: action.payload
             };
+        case ReducerActionType.DELETE_NOTES: {
+            const newNotes = state.notes.filter(
+                (note:Note) => note._id !== action.payload
+            ) as Note[];
+            return{
+                ...state,
+                notes: newNotes,
+            };
+        }
         default:
             return state
     }
