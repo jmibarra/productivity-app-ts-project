@@ -12,12 +12,13 @@ export interface Task {
 }
 
 export interface Note {
-    id: string;
+    _id: string;
     title: string;
     content: string;
     favorite: boolean;
     color?: string;//idem anterior puedo manejarlo como strings simples o como objetos
-    createdAt?: Date;
+    createdAt: Date;
+    createor: string; 
 }
 
 export interface TasksState {

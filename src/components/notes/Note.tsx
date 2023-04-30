@@ -15,9 +15,9 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Delete } from '@mui/icons-material';
 
 interface Props {
     note: Note;
@@ -46,12 +46,18 @@ export default function NoteComponent({note,index}:Props) {
         setExpanded(!expanded);
     };
 
+    const handleDelete = () => {
+        console.log(note._id)
+        //Desde acá tengo que llamar al metodo para el delete de la nota junto con el reducer.
+
+    }
+
     return (
         <Card sx={{ maxWidth: 345 }}>
         <CardHeader
             avatar={
             <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                JI
+                {note.createor}
             </Avatar>
             }
             action={
@@ -84,7 +90,7 @@ export default function NoteComponent({note,index}:Props) {
                 <FavoriteIcon />
             </IconButton>
             <IconButton aria-label="share">
-                <ShareIcon />
+                <Delete onClick={handleDelete}/>
             </IconButton>
             {note.content && note.content.length > 400 && 
                 <ExpandMore
