@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { TextField, Button, Grid } from "@mui/material";
+
+import { TextField, Button, Grid, Stack } from "@mui/material";
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+
 import Cookies from "js-cookie";
 import { properties } from "../../properties";
-import { ItemHeader, Item } from "../notes/styles/NotesStyles";
+import { ItemHeader, Item, ItemMessage } from "./LoginStyles";
 
 interface LoginResponse {
     authentication: {
@@ -11,40 +15,52 @@ interface LoginResponse {
 }
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("")
+    const [success, setSuccess] = useState(false);
 
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
+    };
 
-  const handlePasswordChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setPassword(event.target.value);
-  };
+    const handlePasswordChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setPassword(event.target.value);
+    };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("Login")
-    const response = await fetch(properties.api_url+"/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-    const data: LoginResponse = await response.json();
-    console.log(data.authentication.sessionToken)
-    Cookies.set("PROD-APP-AUTH", data.authentication.sessionToken);
-  };
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        setError(false);
+        setSuccess(false);
+        event.preventDefault();
+        const response = await fetch(properties.api_url+"/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+        });
+        
+        if(response.ok){
+            const data: LoginResponse = await response.json();
+            Cookies.set("PROD-APP-AUTH", data.authentication.sessionToken);
+            setSuccess(true);
+        }else{
+            setError(true);
+            setErrorMessage(response.statusText)
+        }
+    };
 
   return (
     <>
-        <ItemHeader><h1>Login</h1></ItemHeader>
+        <ItemHeader>
+            <h1>Login</h1>
+        </ItemHeader>
         <Item>
             <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -79,6 +95,20 @@ const Login = () => {
             </Grid>
             </Grid>
     </Item>
+    { 
+        (error || success) && <ItemMessage>
+            <Stack spacing={2} >
+                {error && <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    {errorMessage}
+                </Alert> }
+                {success && <Alert severity="success">
+                    <AlertTitle>Success</AlertTitle>
+                    Se inicia la sesión correctamente
+                </Alert>}
+            </Stack>
+        </ItemMessage> 
+    }
     </>
   );
 };

@@ -1,4 +1,6 @@
-import * as React from 'react';
+import {useState, useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,36 +17,44 @@ import ListItemText from '@mui/material/ListItemText';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import NotesIcon from '@mui/icons-material/Notes';
 import BarChartIcon from '@mui/icons-material/BarChart';
+import { AccountCircle } from '@mui/icons-material';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyboardCommandKeyIcon from '@mui/icons-material/KeyboardCommandKey';
 
-import { useNavigate } from "react-router-dom";
-import { Button, ListItemButton, Menu, MenuItem } from '@mui/material';
-import { AccountCircle } from '@mui/icons-material';
+
+
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ListItemButton, Menu, MenuItem } from '@mui/material';
+
 import { AppBar, DrawerHeader, Main, StyledDrawer } from './DrawerComponentStyles';
 
 const mainActions = [
-        { icon: <TaskAltIcon />, name: 'Tareas', route: '/todos' },
-        { icon: <NotesIcon />, name: 'Notas', route: '/notes' },
-        { icon: <DirectionsRunIcon />, name: 'Hábitos', route: '/habits' },
-        { icon: <BarChartIcon />, name: 'Métricas', route: '/metrics' }
+    { icon: <TaskAltIcon />, name: 'Tareas', route: '/todos' },
+    { icon: <NotesIcon />, name: 'Notas', route: '/notes' },
+    { icon: <DirectionsRunIcon />, name: 'Hábitos', route: '/habits' },
+    { icon: <BarChartIcon />, name: 'Métricas', route: '/metrics' }
 ];
 
 const appActions = [
-        { icon: <KeyboardCommandKeyIcon />, name: 'Configuración', route: '/config' },
-        { icon: <LogoutIcon />, name: 'Logout', route: '/logout' },
-  ];
+    { icon: <KeyboardCommandKeyIcon />, name: 'Configuración', route: '/config' }
+];
 
 interface Props {
     children: any;
 }
 
 export default function PersistentDrawerLeft({children}:Props) {
+    
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [open, setOpen] = useState(false);
+    const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+    const [auth, setAuth] = useState(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    // useEffect(() => {
+      
+    // }, [auth])
+    
 
     const navigate = useNavigate();
 
@@ -67,6 +77,18 @@ export default function PersistentDrawerLeft({children}:Props) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = () => {
+        setLogoutDialogOpen(false);
+    }
+    
+    const handleOpenDialog = () => {
+        setLogoutDialogOpen(true);
+    }
+    
+    const handleCloseDialog = () => {
+        setLogoutDialogOpen(false);
+    }
 
     return (
         <Box sx={{ display: 'flex' }}>
@@ -149,6 +171,24 @@ export default function PersistentDrawerLeft({children}:Props) {
                             <ListItemText primary={action.name} onClick={ () => handleRouteClick(action.route)}/>
                         </ListItemButton>
                     ))}
+                    <ListItemButton key='Logout' onClick={handleOpenDialog}>
+                        <ListItemIcon>
+                            <LogoutIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Logout'/>
+                        <Dialog open={logoutDialogOpen}>
+                            <DialogTitle>Confirmar cierre de sesión</DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                    ¿Está seguro que desea cerrar sesión?
+                                </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => setLogoutDialogOpen(false)}>Cancelar</Button>
+                                <Button onClick={handleLogout}>Cerrar sesión</Button>
+                            </DialogActions>
+                        </Dialog>
+                    </ListItemButton>
                 </List>
             </StyledDrawer>
             <Main open={open}>
