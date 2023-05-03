@@ -9,6 +9,8 @@ import { ListFooterBox } from "../tasks/styles/TasksStyles";
 import { Pagination } from "@mui/material";
 
 import Cookies from 'js-cookie';
+import CreateNoteModalComponent from "./modal/CreateNoteModal";
+import { Note } from "../../interfaces/tasks/interfaces";
 
 const Notes = () => {
 
@@ -76,9 +78,30 @@ const Notes = () => {
         }
     }
 
+    const addNote = (note:Note):void => {
+        try{
+            fetch(properties.api_url+"/notes", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(note),
+            })
+            .then((response) => {
+                if(!response.ok){
+                    console.log("Error", response);
+                }else
+                    dispatch({type: ReducerActionType.ADD_NOTE,payload:note})
+            })
+
+        }catch(response){
+            console.log("Error", response);
+        }
+    }
+
     return (
         <>   
-            <ItemHeader><h1>Notes</h1></ItemHeader>
+            <ItemHeader><h1>Notes</h1><CreateNoteModalComponent addNote={addNote}/></ItemHeader>
             <Item>
                 <NoteList notes={state.notes} deleteNote={deleteNote}/>
                 <ListFooterBox>

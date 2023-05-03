@@ -75,9 +75,6 @@ const TaskForm = ({addTask,taskModalOpen,handleCloseModal}:Props) => {
                             />
                         </div>
                         <Item><LabelsComponent labels={[]} taskId="0" updateLabels={updateLabels}/></Item>
-                        
-
-                    
                 </DialogContent>
                 <DialogActions>
                     <Button autoFocus onClick={handleCloseModal}>

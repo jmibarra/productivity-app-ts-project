@@ -28,6 +28,12 @@ export const notesReducer: Reducer<NotesState, ReducerAction> = (state = initial
                 notes: newNotes,
             };
         }
+        case ReducerActionType.ADD_NOTE: {
+            return {
+                ...state,
+                notes: [action.payload,...state.notes]
+            }
+        }
         default:
             return state
     }
