@@ -4,6 +4,7 @@ import { Note } from '../../interfaces/tasks/interfaces';
 
 import Grid from '@mui/material/Grid';
 import NoteComponent from './Note';
+import { memo } from 'react';
 
 interface Props {
     notes: Note[],
@@ -22,4 +23,4 @@ const NoteList = ({notes, deleteNote}:Props) => {
   )
 }
 
-export default NoteList
+export default memo(NoteList)

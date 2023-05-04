@@ -18,7 +18,7 @@ export interface Note {
     favorite: boolean;
     color?: string;//idem anterior puedo manejarlo como strings simples o como objetos
     createdAt: Date;
-    createor: string; 
+    creator: string; 
 }
 
 export interface TasksState {

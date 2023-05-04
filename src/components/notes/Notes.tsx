@@ -1,106 +1,123 @@
-import { useEffect, useReducer, useState } from "react"
+import { useEffect, useReducer, useState } from "react";
 import { ReducerActionType } from "../../actions/notes";
 import { notesReducer, initialState } from "../../reducers/notes";
 
-import NoteList from './NoteList';
-import { ItemHeader,Item } from './styles/NotesStyles';
+import NoteList from "./NoteList";
+import { ItemHeader, Item } from "./styles/NotesStyles";
 import { properties } from "../../properties";
 import { ListFooterBox } from "../tasks/styles/TasksStyles";
 import { Pagination } from "@mui/material";
 
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import CreateNoteModalComponent from "./modal/CreateNoteModal";
 import { Note } from "../../interfaces/tasks/interfaces";
 
+interface HeadersInit {
+    headers: Headers;
+    credentials: RequestCredentials;
+}
+
 const Notes = () => {
-
-    const [state, dispatch] = useReducer(notesReducer, initialState)
+    const [state, dispatch] = useReducer(notesReducer, initialState);
     const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0)
+    const [totalPages, setTotalPages] = useState(0);
+    const [sessionToken, setSessionToken] = useState<string | null>(null);
 
-    useEffect(()=> {
-        fetchAllNotes(page,5)
-    },[page]);
+    useEffect(() => {
+        const token = Cookies.get('PROD-APP-AUTH');
+        if(token) // Si no hay token debería frenar todo
+            setSessionToken(token);    
+        fetchAllNotes(page, 5);
+    }, [page]);
 
-    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    const handlePageChange = (
+        event: React.ChangeEvent<unknown>,
+        value: number
+    ) => {
         setPage(value);
     };
 
-    async function fetchAllNotes(page:number, limit:number){
-        try{
-            const sessionToken = Cookies.get('PROD-APP-AUTH');
-            const headers = new Headers();
-            headers.append('Cookie', `PROD-APP-AUTH=${sessionToken}`);
-            
-            const response = await fetch(properties.api_url+'/notes?page='+page+'&limit='+limit, {
-                headers,
-                credentials: 'include'
-              });
-            
-            if (response.ok) {
-                const responseJson = await response.json();
-                console.log(responseJson.notes);
-                dispatch({type: ReducerActionType.GET_ALL_NOTES, payload: responseJson.notes});
-                if(responseJson.count > 0){
-                    setTotalPages(Math.trunc(responseJson.count/10)+1)
-                }
-            } else if (response.status === 403) {
-                throw new Error("Forbidden, no hay acceso al recurso solicitado"); // Manejar la excepción aquí
-            } else {
-                throw new Error("Error en la respuesta de la API"); // Manejar otras excepciones aquí
+    async function fetchAllNotes(page: number, limit: number) {
+        try {
+
+        const headers = new Headers() as HeadersInit["headers"];
+        headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+
+        const response = await fetch(
+            `${properties.api_url}/notes?page=${page}&limit=${limit}`,
+            {
+            headers,
+            credentials: "include",
             }
-        } catch(error){
+        );
+
+        if (response.ok) {
+            const responseJson = await response.json();
+            console.log(responseJson.notes);
+            dispatch({
+            type: ReducerActionType.GET_ALL_NOTES,
+            payload: responseJson.notes,
+            });
+            if (responseJson.count > 0) {
+            setTotalPages(Math.trunc(responseJson.count / 10) + 1);
+            }
+        } else if (response.status === 403) {
+            throw new Error(
+            "Forbidden, no hay acceso al recurso solicitado"
+            ); 
+        } else {
+            throw new Error("Error en la respuesta de la API");
+        }
+        } catch (error) {
             console.log("Error", error);
-            // Manejar la excepción aquí
         }
     }
 
-    const deleteNote = (id:string):void => {
-        try{
-            const sessionToken = Cookies.get('PROD-APP-AUTH');
-            const headers = new Headers();
-            headers.append('Cookie', `PROD-APP-AUTH=${sessionToken}`);
+    const deleteNote = async (id: string) => {
+        try {
+        const headers = new Headers() as HeadersInit["headers"];
+        headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 
-            fetch(properties.api_url+'/notes/'+id, {
-                method: 'DELETE',
-                headers,
-                credentials: 'include'
-            })
-            .then((response) => {
-                if(!response.ok){
-                    console.log("Error", response);
-                }else{
-                    dispatch({type: ReducerActionType.DELETE_NOTES,payload:id})
-                }
-            })
-        }catch(response){
+        const response = await fetch(`${properties.api_url}/notes/${id}`, {
+            method: "DELETE",
+            headers,
+            credentials: "include",
+        });
+
+        if (!response.ok) {
             console.log("Error", response);
+        } else {
+            dispatch({ type: ReducerActionType.DELETE_NOTES, payload: id });
         }
-    }
+        } catch (response) {
+        console.log("Error", response);
+        }
+    };
 
-    const addNote = (note:Note):void => {
-        try{
-            
-            const sessionToken = Cookies.get('PROD-APP-AUTH');
+    const addNote = async (note: Note): Promise<void> => {
+        try {
             const headers = new Headers();
             headers.append('Cookie', `PROD-APP-AUTH=${sessionToken}`);
             headers.append('Content-Type', 'application/json');
 
-            fetch(properties.api_url+"/notes", {
+            const response = await fetch(properties.api_url + "/notes", {
                 method: 'POST',
                 headers,
                 credentials: 'include',
                 body: JSON.stringify(note),
-            })
-            .then((response) => {
-                if(!response.ok){
-                    console.log("Error", response);
-                }else
-                    dispatch({type: ReducerActionType.ADD_NOTE,payload:note})
-            })
+            });
 
-        }catch(response){
-            console.log("Error", response);
+            if (!response.ok) {
+                console.log("Error", response);
+                return;
+            }
+
+            const responseJson = await response.json();
+            const createdNote: Note = responseJson;
+            console.log(createdNote)
+            dispatch({type: ReducerActionType.ADD_NOTE, payload: createdNote});
+        } catch (error) {
+            console.log("Error", error);
         }
     }
 

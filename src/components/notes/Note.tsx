@@ -56,7 +56,7 @@ export default function NoteComponent({note, deleteNote}:Props) {
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                    {note.createor}
+                    JI
                 </Avatar>
                 }
                 action={
