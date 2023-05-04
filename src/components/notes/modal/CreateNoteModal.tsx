@@ -49,7 +49,7 @@ export default function CreateNoteModalComponent({addNote}:Props) {
     })
 
     const createNote = (object:any) => {
-        let note:Note  = {...object}
+        let note:Note  = {...object,createdAt:new Date(),favorite:false,color:"tests"}
         addNote(note);
         handleClose();
     }

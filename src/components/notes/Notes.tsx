@@ -80,11 +80,16 @@ const Notes = () => {
 
     const addNote = (note:Note):void => {
         try{
+            
+            const sessionToken = Cookies.get('PROD-APP-AUTH');
+            const headers = new Headers();
+            headers.append('Cookie', `PROD-APP-AUTH=${sessionToken}`);
+            headers.append('Content-Type', 'application/json');
+
             fetch(properties.api_url+"/notes", {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers,
+                credentials: 'include',
                 body: JSON.stringify(note),
             })
             .then((response) => {
