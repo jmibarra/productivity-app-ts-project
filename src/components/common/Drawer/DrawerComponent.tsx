@@ -1,4 +1,4 @@
-import {useState } from 'react';
+import {Dispatch, SetStateAction, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 import { useTheme } from '@mui/material/styles';
@@ -21,8 +21,6 @@ import { AccountCircle } from '@mui/icons-material';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import KeyboardCommandKeyIcon from '@mui/icons-material/KeyboardCommandKey';
 
-
-
 import { Button, ListItemButton, Menu, MenuItem } from '@mui/material';
 
 import { AppBar, DrawerHeader, Main, StyledDrawer } from './DrawerComponentStyles';
@@ -43,17 +41,16 @@ interface Props {
     children: any;
 }
 
-export default function PersistentDrawerLeft({children}:Props) {
+interface Props {
+    isLoggedIn: Boolean;
+    setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function PersistentDrawerLeft({isLoggedIn,setIsLoggedIn,children}:Props) {
     
     const theme = useTheme();
     const [open, setOpen] = useState(false);
-    const [auth, setAuth] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-    // useEffect(() => {
-      
-    // }, [auth])
-    
 
     const navigate = useNavigate();
 
@@ -94,7 +91,7 @@ export default function PersistentDrawerLeft({children}:Props) {
                     <Typography variant="h6" noWrap component="div">
                         Productivity App
                     </Typography>
-                    {auth && (
+                    {isLoggedIn && (
                         <div>
                             <IconButton
                                 size="large"
@@ -126,7 +123,7 @@ export default function PersistentDrawerLeft({children}:Props) {
                             </Menu>
                         </div>
                     )}
-                    {!auth && <Button color="inherit" onClick={ () => handleRouteClick('/login')}>Login</Button>}
+                    {!isLoggedIn && <Button color="inherit" onClick={ () => handleRouteClick('/login')}>Login</Button>}
                 </Toolbar>
                 
             </AppBar>
@@ -137,29 +134,33 @@ export default function PersistentDrawerLeft({children}:Props) {
                     </IconButton>
                 </DrawerHeader>
                 <Divider />
-                <List>
-                    {mainActions.map((action, index) => (
-                        <ListItemButton key={action.name} onClick={ () => handleRouteClick(action.route)}>
-                            <ListItemIcon>
-                                {action.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={action.name} />
-                        </ListItemButton>
-                    
-                    ))}
-                </List>
-                <Divider />
-                <List>
-                    {appActions.map((action, index) => (
-                        <ListItemButton key={action.name} >
-                            <ListItemIcon>
-                                {action.icon}
-                            </ListItemIcon>
-                            <ListItemText primary={action.name} onClick={ () => handleRouteClick(action.route)}/>
-                        </ListItemButton>
-                    ))}
-                    <Logout/>
-                </List>
+                {isLoggedIn && (
+                    <>
+                        <List>
+                            {mainActions.map((action, index) => (
+                                <ListItemButton key={action.name} onClick={ () => handleRouteClick(action.route)}>
+                                    <ListItemIcon>
+                                        {action.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={action.name} />
+                                </ListItemButton>
+                            
+                            ))}
+                        </List>
+                        <Divider />
+                        <List>
+                            {appActions.map((action, index) => (
+                                <ListItemButton key={action.name} >
+                                    <ListItemIcon>
+                                        {action.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={action.name} onClick={ () => handleRouteClick(action.route)}/>
+                                </ListItemButton>
+                            ))}
+                            <Logout setIsLoggedIn={setIsLoggedIn} setOpen={setOpen}/>
+                        </List>
+                    </>
+                )}
             </StyledDrawer>
             <Main open={open}>
                 {children}        

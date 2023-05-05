@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 
 import { TextField, Button, Grid, Stack, Box } from "@mui/material";
 import Alert from '@mui/material/Alert';
@@ -14,7 +14,12 @@ interface LoginResponse {
     };
 }
 
-const Login = () => {
+interface Props {
+    isLoggedIn: Boolean;
+    setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+}
+
+const Login = ({isLoggedIn, setIsLoggedIn}:Props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
@@ -49,6 +54,7 @@ const Login = () => {
         if(response.ok){
             const data: LoginResponse = await response.json();
             Cookies.set("PROD-APP-AUTH", data.authentication.sessionToken);
+            setIsLoggedIn(true);
             setSuccess(true);
         }else{  
             setError(true);

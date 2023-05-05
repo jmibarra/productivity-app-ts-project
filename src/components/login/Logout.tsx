@@ -1,9 +1,14 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
-import { useState } from 'react'
+import { Dispatch, SetStateAction, useState } from 'react'
 import LogoutIcon from '@mui/icons-material/Logout';
 import Cookies from 'js-cookie';
 
-const Logout = () => {
+interface Props {
+    setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
+    setOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+const Logout = ({setIsLoggedIn,setOpen}:Props) => {
 
     const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -16,6 +21,8 @@ const Logout = () => {
     const handleLogout = () => {
         setDialogOpen(false);
         Cookies.remove("PROD-APP-AUTH");
+        setIsLoggedIn(false);
+        setOpen(false);
     }
     
     const handleOpenDialog = () => {
