@@ -25,8 +25,9 @@ const Notes = () => {
 
     useEffect(() => {
         const token = Cookies.get('PROD-APP-AUTH');
-        if(token) // Si no hay token debería frenar todo
+        if(token)
             setSessionToken(token);    
+        
         fetchAllNotes(page, 5);
     }, [page]);
 
@@ -53,18 +54,17 @@ const Notes = () => {
 
         if (response.ok) {
             const responseJson = await response.json();
-            console.log(responseJson.notes);
             dispatch({
-            type: ReducerActionType.GET_ALL_NOTES,
-            payload: responseJson.notes,
+                type: ReducerActionType.GET_ALL_NOTES,
+                payload: responseJson.notes,
             });
             if (responseJson.count > 0) {
-            setTotalPages(Math.trunc(responseJson.count / 10) + 1);
+                setTotalPages(Math.trunc(responseJson.count / 10) + 1);
             }
         } else if (response.status === 403) {
-            throw new Error(
-            "Forbidden, no hay acceso al recurso solicitado"
-            ); 
+                throw new Error(
+                    "Forbidden, no hay acceso al recurso solicitado"
+                ); 
         } else {
             throw new Error("Error en la respuesta de la API");
         }
