@@ -71,24 +71,28 @@ const Tasks = () => {
         
     }
 
-    const addTask = (task:Task):void => {
+    const addTask = async (task:Task): Promise<void> => {
         try{
             const headers = new Headers() as HeadersInit["headers"];
             headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
             headers.append('Content-Type', 'application/json');
 
-            fetch(properties.api_url+"/tasks", {
+            const response = await fetch(properties.api_url+"/tasks", {
                 method: 'POST',
                 headers,
                 credentials: 'include',
                 body: JSON.stringify(task),
             })
-            .then((response) => {
-                if(!response.ok){
-                    console.log("Error", response);
-                }else
-                    dispatch({type: ReducerActionType.SET_TASK,payload:task})
-            })
+
+            if (!response.ok) {
+                console.log("Error", response);
+                return;
+            }
+
+            const responseJson = await response.json();
+            const createdTask: Task = responseJson;
+
+            dispatch({type: ReducerActionType.SET_TASK,payload:createdTask})
 
         }catch(response){
             console.log("Error", response);
@@ -149,12 +153,16 @@ const Tasks = () => {
 
     const updateLabels = (id:string, labels: string[]):void => {
         try{
+
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+            headers.append('Content-Type', 'application/json');
+
             const data = { labels: labels };
             fetch(properties.api_url+"/tasks/"+id, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                method: 'PATCH',
+                headers,
+                credentials: 'include',
                 body: JSON.stringify(data),
             })
             .then((response) => {
