@@ -14,6 +14,7 @@ import StatusChipComponent from '../../common/StatusChipComponent';
 import LabelsComponent from '../../common/Labels/LabelsComponent';
 
 import { Task } from '../../../interfaces/tasks/interfaces';
+import Priority from '../../common/Priority/Priority';
 
 
 interface Props {
@@ -21,9 +22,10 @@ interface Props {
     taskModalOpen:boolean,
     selectedTaskProp: Task | undefined
     updateLabels: (id:string, labels: string[]) => void
+    updatePriority: (id: string, newPriority: Number) => void;
 }
 
-export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedTaskProp,updateLabels}:Props) {
+export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedTaskProp,updateLabels,updatePriority}:Props) {
 
     const [selectedTask, setSelectedTask] = useState<Task>();
     const [loading, setLoading] = useState(true);
@@ -43,9 +45,17 @@ export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedT
             aria-labelledby="scroll-dialog-title"
             aria-describedby="scroll-dialog-description"
         >
-            <DialogTitle id="scroll-dialog-title">
-            {selectedTask && selectedTask.title}
+            <DialogTitle id="scroll-dialog-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            {selectedTask && (
+                <>
+                <div style={{ alignSelf: 'flex-start' }}>{selectedTask.title}</div>
+                <div style={{ alignSelf: 'flex-end' }}>
+                    <Priority priority={selectedTask.priority} taskId={selectedTask._id} updatePriority={updatePriority} />
+                </div>
+                </>
+            )}
             </DialogTitle>
+
             <DialogContent dividers>
             <DialogContentText
                 id="scroll-dialog-description"

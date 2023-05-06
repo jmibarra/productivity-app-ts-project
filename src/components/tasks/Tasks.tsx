@@ -30,7 +30,7 @@ const Tasks = () => {
         const token = Cookies.get('PROD-APP-AUTH');
         if(token)
             setSessionToken(token);    
-        fetchAllTasks(page, 5);
+        fetchAllTasks(page, 10);
     }, [page]);
 
     const handleCloseModal = () => {

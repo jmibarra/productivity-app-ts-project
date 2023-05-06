@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Divider } from "@mui/material";
 import {CompletedText} from "./styles/TasksStyles"
+import Priority from "../common/Priority/Priority";
 
 interface Props {
     task: Task;
@@ -15,9 +16,10 @@ interface Props {
     deleteTask: (id: string) => void;
     toogleTask: (id: string, completed: boolean) => void;
     handleSelectTask: (selectedTask: Task) => void;
+    updatePriority: (id: string, newPriority: Number) => void;
 }
 
-const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
+const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask,updatePriority}:Props) => {
     
     const labelId = `checkbox-list-label-${task._id}`;
     
@@ -55,6 +57,7 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
                     primaryTypographyProps={task.completed ? { component: CompletedText } : {}}
                     secondaryTypographyProps={task.completed ? { component: CompletedText } : {}}
                 />
+                <Priority priority={task.priority} taskId={task._id} updatePriority={updatePriority}/>
             </ListItemButton>
         </ListItem>
         <Divider variant="inset" component="li" />

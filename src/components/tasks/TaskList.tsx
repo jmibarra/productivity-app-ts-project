@@ -29,16 +29,20 @@ const TaskList = ({tasks,deleteTask,toogleTask,updateLabels}:Props) => {
         setTaskModalOpen(true);
       };
 
+    const updatePriority = (id:String, priority:Number):void => {
+        console.log("hola")
+    }
+
     return (
     <>
         <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
             {tasks.map((task:Task,index) => {
                 return (
-                    <TaskComponent task={task} index={index} deleteTask={deleteTask} toogleTask={toogleTask} handleSelectTask={handleSelectTask} key={task._id}/>
+                    <TaskComponent task={task} index={index} deleteTask={deleteTask} toogleTask={toogleTask} handleSelectTask={handleSelectTask} key={task._id} updatePriority={updatePriority}/>
                 );
             })}
         </List>
-        <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskProp={selectedTask} updateLabels={updateLabels} />
+        <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskProp={selectedTask} updateLabels={updateLabels} updatePriority={updatePriority} />
     </>
   )
 }
