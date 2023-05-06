@@ -57,7 +57,7 @@ export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedT
                 <>
                     <Grid container spacing={2}>
                     <Grid item xs={12} md={8}>
-                        <ItemLarge>{selectedTask.desc}</ItemLarge>
+                        <ItemLarge>{selectedTask.description}</ItemLarge>
                     </Grid>
                     <Grid item xs={12} md={4}>
                         <Item>
@@ -65,7 +65,7 @@ export default function TaskDetailViewModal({handleClose,taskModalOpen,selectedT
                         </Item>
                         <Item>
                             <b>Labels</b>
-                            <LabelsComponent labels={selectedTask.labels ?? []} taskId={selectedTask.id} updateLabels={updateLabels} />
+                            <LabelsComponent labels={selectedTask.labels ?? []} taskId={selectedTask._id} updateLabels={updateLabels} />
                         </Item>
                     </Grid>
                     </Grid>

@@ -22,13 +22,14 @@ const TaskQuickInputComponent = ({addTask}:Props) => {
     
     const createNewTask = (taskTile:String):void => {
         const newTask = {
-            id: shortid(),
+            _id: "",
             title: taskTile,
-            desc: "",
-            completed: false
+            completed: false,
+            list: 1
         } as Task;
         addTask(newTask);
     }
+    
 
     return (
         <>

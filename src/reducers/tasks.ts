@@ -26,7 +26,7 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
             };
         case ReducerActionType.GET_TASK: {
             const selectedTask = state.tasks.find(
-                (task:Task) => task.id === action.payload.id
+                (task:Task) => task._id === action.payload.id
             );
 
             return {
@@ -36,7 +36,7 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
         }
         case ReducerActionType.DELETE_TASK: {
             const newTasks = state.tasks.filter(
-                (task:Task) => task.id !== action.payload
+                (task:Task) => task._id !== action.payload
             ) as Task[];
             return{
                 ...state,
@@ -47,14 +47,14 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
 
             const clonedTasks = [...state.tasks]
             const selectedTask = state.tasks.find(
-                (task:Task) => task.id === action.payload
+                (task:Task) => task._id === action.payload
             );
             
             const newTask = {...selectedTask}
 
             newTask.completed = !selectedTask?.completed
 
-            const updatedTasks = clonedTasks.map(task => task.id === newTask.id ? newTask : task);
+            const updatedTasks = clonedTasks.map(task => task._id === newTask._id ? newTask : task);
 
             return {
                 ...state, 
@@ -65,14 +65,14 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
 
             const clonedTasks = [...state.tasks]
             const selectedTask = state.tasks.find(
-                (task:Task) => task.id === action.payload.id
+                (task:Task) => task._id === action.payload.id
             );
             
             const newTask = {...selectedTask}
 
             newTask.labels = action.payload.labels
 
-            const updatedTasks = clonedTasks.map(task => task.id === newTask.id ? newTask : task);
+            const updatedTasks = clonedTasks.map(task => task._id === newTask._id ? newTask : task);
 
             return {
                 ...state, 

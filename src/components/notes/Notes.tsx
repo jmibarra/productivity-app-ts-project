@@ -39,58 +39,59 @@ const Notes = () => {
     };
 
     async function fetchAllNotes(page: number, limit: number) {
+        
         try {
 
-        const headers = new Headers() as HeadersInit["headers"];
-        headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 
-        const response = await fetch(
-            `${properties.api_url}/notes?page=${page}&limit=${limit}`,
-            {
-            headers,
-            credentials: "include",
-            }
-        );
+            const response = await fetch(
+                `${properties.api_url}/notes?page=${page}&limit=${limit}`,
+                {
+                    headers,
+                    credentials: "include",
+                }
+            );
 
-        if (response.ok) {
-            const responseJson = await response.json();
-            dispatch({
-                type: ReducerActionType.GET_ALL_NOTES,
-                payload: responseJson.notes,
-            });
-            if (responseJson.count > 0) {
-                setTotalPages(Math.trunc(responseJson.count / 10) + 1);
+            if (response.ok) {
+                const responseJson = await response.json();
+                dispatch({
+                    type: ReducerActionType.GET_ALL_NOTES,
+                    payload: responseJson.notes,
+                });
+                if (responseJson.count > 0) {
+                    setTotalPages(Math.trunc(responseJson.count / 10) + 1);
+                }
+            } else if (response.status === 403) {
+                    throw new Error(
+                        "Forbidden, no hay acceso al recurso solicitado"
+                    ); 
+            } else {
+                throw new Error("Error en la respuesta de la API");
             }
-        } else if (response.status === 403) {
-                throw new Error(
-                    "Forbidden, no hay acceso al recurso solicitado"
-                ); 
-        } else {
-            throw new Error("Error en la respuesta de la API");
-        }
-        } catch (error) {
-            console.log("Error", error);
-        }
+            } catch (error) {
+                console.log("Error", error);
+            }
     }
 
     const deleteNote = async (id: string) => {
         try {
-        const headers = new Headers() as HeadersInit["headers"];
-        headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 
-        const response = await fetch(`${properties.api_url}/notes/${id}`, {
-            method: "DELETE",
-            headers,
-            credentials: "include",
-        });
+            const response = await fetch(`${properties.api_url}/notes/${id}`, {
+                method: "DELETE",
+                headers,
+                credentials: "include",
+            });
 
-        if (!response.ok) {
-            console.log("Error", response);
-        } else {
-            dispatch({ type: ReducerActionType.DELETE_NOTES, payload: id });
-        }
+            if (!response.ok) {
+                console.log("Error", response);
+            } else {
+                dispatch({ type: ReducerActionType.DELETE_NOTES, payload: id });
+            }
         } catch (response) {
-        console.log("Error", response);
+            console.log("Error", response);
         }
     };
 

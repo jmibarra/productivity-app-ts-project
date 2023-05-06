@@ -19,7 +19,7 @@ interface Props {
 
 const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
     
-    const labelId = `checkbox-list-label-${task.id}`;
+    const labelId = `checkbox-list-label-${task._id}`;
     
     const handleToggle = (id: string, completed: boolean) => () => {
         toogleTask(id,completed)
@@ -29,7 +29,7 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
         <>
         <ListItem
             secondaryAction={
-                <IconButton edge="end" aria-label="delete-action" onClick={() => deleteTask(task.id)}>
+                <IconButton edge="end" aria-label="delete-action" onClick={() => deleteTask(task._id)}>
                     <DeleteIcon />
                 </IconButton>
             }
@@ -44,13 +44,13 @@ const TaskComponent = ({task,deleteTask,toogleTask,handleSelectTask}:Props) => {
                         tabIndex={-1}
                         disableRipple
                         inputProps={{ 'aria-labelledby': labelId }}
-                        onClick={handleToggle(task.id,task.completed)}
+                        onClick={handleToggle(task._id,task.completed)}
                     />
                 </ListItemIcon>
                 <ListItemText
                     id={labelId} 
                     primary={task.title} 
-                    secondary={task.desc}
+                    secondary={task.description}
                     onClick={() => handleSelectTask(task)}
                     primaryTypographyProps={task.completed ? { component: CompletedText } : {}}
                     secondaryTypographyProps={task.completed ? { component: CompletedText } : {}}

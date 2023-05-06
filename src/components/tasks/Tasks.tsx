@@ -11,6 +11,12 @@ import {Item, ItemHeader,ListFooterBox} from "./styles/TasksStyles"
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import TaskQuickInputComponent from "./TaskQuickInput";
+import Cookies from "js-cookie";
+
+interface HeadersInit {
+    headers: Headers;
+    credentials: RequestCredentials;
+}
 
 const Tasks = () => {
     
@@ -18,10 +24,14 @@ const Tasks = () => {
     const [taskFormModalOpen, settaskFormModalOpen] = useState(false)
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0)
+    const [sessionToken, setSessionToken] = useState<string | null>(null);
 
-    useEffect(()=> {
-        fetchAllTasks(page,10)
-    },[page]);
+    useEffect(() => {
+        const token = Cookies.get('PROD-APP-AUTH');
+        if(token)
+            setSessionToken(token);    
+        fetchAllTasks(page, 5);
+    }, [page]);
 
     const handleCloseModal = () => {
         settaskFormModalOpen(false)
@@ -33,15 +43,24 @@ const Tasks = () => {
 
     async function fetchAllTasks(page:number,limit:number){
         try{
-            fetch(properties.mock_api_url+'/todos?page='+page+'&limit='+limit)
-            .then(
+
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+
+            fetch(
+                properties.api_url+'/tasks?page='+page+'&limit='+limit
+                ,
+                {
+                    headers,
+                    credentials: "include",
+                }
+            ).then(
                 response => response.json()
-            )
-            .then(
+            ).then(
                 responseJson => {
-                    dispatch({type: ReducerActionType.GET_ALL_TASKS,payload:responseJson.items})
+                    dispatch({type: ReducerActionType.GET_ALL_TASKS,payload:responseJson.tasks})
                     if(responseJson.count > 0){
-                        setTotalPages(Math.trunc(responseJson.count/10)+1)
+                        setTotalPages(Math.trunc(responseJson.count/limit)+1)
                     }
                     
                 }
@@ -54,11 +73,16 @@ const Tasks = () => {
 
     const addTask = (task:Task):void => {
         try{
-            fetch(properties.mock_api_url+"/todos/", {
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+            headers.append('Content-Type', 'application/json');
+
+            console.log(task)
+
+            fetch(properties.api_url+"/tasks", {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers,
+                credentials: 'include',
                 body: JSON.stringify(task),
             })
             .then((response) => {
@@ -75,7 +99,7 @@ const Tasks = () => {
 
     const deleteTask = (id:string):void => {
         try{
-            fetch(properties.mock_api_url+"/todos/"+id, {
+            fetch(properties.api_url+"/tasks/"+id, {
                 method: 'DELETE',
             })
             .then((response) => {
@@ -94,7 +118,7 @@ const Tasks = () => {
         dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
         try{
             const data = { completed: !completed };
-            fetch(properties.mock_api_url+"/todos/"+id, {
+            fetch(properties.api_url+"/tasks/"+id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -116,7 +140,7 @@ const Tasks = () => {
     const updateLabels = (id:string, labels: string[]):void => {
         try{
             const data = { labels: labels };
-            fetch(properties.mock_api_url+"/todos/"+id, {
+            fetch(properties.api_url+"/tasks/"+id, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
