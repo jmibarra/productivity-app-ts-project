@@ -104,7 +104,7 @@ const Tasks = () => {
             fetch(properties.api_url+"/tasks/"+id, {
                 method: 'DELETE',
                 headers,
-                credentials: 'include',
+                credentials: 'include'
             })
             .then((response) => {
                 if(!response.ok){
@@ -119,14 +119,20 @@ const Tasks = () => {
     }
 
     const toogleTask = (id:string,completed:boolean):void => {
-        dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
+         
         try{
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+            headers.append('Content-Type', 'application/json');
+
+            dispatch({type: ReducerActionType.COMPLETE_TASK,payload:id})
+
             const data = { completed: !completed };
+            
             fetch(properties.api_url+"/tasks/"+id, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                method: 'PATCH',
+                headers,
+                credentials: 'include',
                 body: JSON.stringify(data),
             })
             .then((response) => {
