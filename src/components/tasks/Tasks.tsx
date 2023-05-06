@@ -77,8 +77,6 @@ const Tasks = () => {
             headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
             headers.append('Content-Type', 'application/json');
 
-            console.log(task)
-
             fetch(properties.api_url+"/tasks", {
                 method: 'POST',
                 headers,
@@ -99,8 +97,14 @@ const Tasks = () => {
 
     const deleteTask = (id:string):void => {
         try{
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+            headers.append('Content-Type', 'application/json');
+
             fetch(properties.api_url+"/tasks/"+id, {
                 method: 'DELETE',
+                headers,
+                credentials: 'include',
             })
             .then((response) => {
                 if(!response.ok){
