@@ -18,6 +18,7 @@
     "formik": "^2.2.9",
     "js-cookie": "^3.0.5",
     "react": "^18.0.0",
+    "react-color": "^2.19.3",
     "react-dom": "^18.0.0",
     "react-hook-form": "^7.29.0",
     "react-router-dom": "^6.3.0",
@@ -53,6 +54,7 @@
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
+    "@types/react-color": "^3.0.6",
     "@types/shortid": "^0.0.29"
   }
 }

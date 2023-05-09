@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { ListItem, TextField } from '@mui/material';
+import { SketchPicker } from 'react-color';
 
 import { useFormik } from 'formik';
 import { initialValues, validationSchema } from './shemas';
@@ -17,20 +18,21 @@ import { initialValues, validationSchema } from './shemas';
 import { Note } from '../../../interfaces/tasks/interfaces';
 
 interface Props {
-    addNote: (note:Note) => void
+    addNote: (note: Note) => void;
 }
 
 const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement;
-  },
-  ref: React.Ref<unknown>,
+    props: TransitionProps & {
+        children: React.ReactElement;
+    },
+    ref: React.Ref<unknown>,
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+    return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CreateNoteModalComponent({addNote}:Props) {
+export default function CreateNoteModalComponent({ addNote }: Props) {
     const [open, setOpen] = React.useState(false);
+    const [selectedColor, setSelectedColor] = React.useState('#000000'); // Estado para almacenar el color seleccionado
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -43,80 +45,80 @@ export default function CreateNoteModalComponent({addNote}:Props) {
     const formik = useFormik({
         initialValues,
         validationSchema,
-        onSubmit: (object:any) => {
-            createNote(object);
-        }
-    })
+        onSubmit: (object: any) => {
+        createNote(object);
+        },
+    });
 
-    const createNote = (object:any) => {
-        let note:Note  = {...object,createdAt:new Date(),favorite:false,color:"tests"}
+    const createNote = (object: any) => {
+        let note: Note = { ...object, createdAt: new Date(), favorite: false, color: selectedColor }; // Utiliza el color seleccionado en la nota
         addNote(note);
         handleClose();
-    }
+    };
 
-  return (
-    <div>
-        <Button variant="outlined" onClick={handleClickOpen}>
-            Nueva nota
-        </Button>
-        <Dialog
-            fullScreen
-            open={open}
-            onClose={handleClose}
-            TransitionComponent={Transition}
-        >
-            <form onSubmit={formik.handleSubmit}>
+    const handleColorChange = (color: any) => {
+        setSelectedColor(color.hex);
+    };
+
+    return (
+        <div>
+            <Button variant="outlined" onClick={handleClickOpen}>
+                Nueva nota
+            </Button>
+            <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+                <form onSubmit={formik.handleSubmit}>
                 <AppBar sx={{ position: 'relative' }}>
-                <Toolbar>
-                    <IconButton
-                    edge="start"
-                    color="inherit"
-                    onClick={handleClose}
-                    aria-label="close"
-                    >
+                    <Toolbar>
+                    <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                         <CloseIcon />
                     </IconButton>
                     <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-                    Nueva nota
+                        Nueva nota
                     </Typography>
-                    <Button type="submit" autoFocus color="inherit" onClick={handleClose}  disabled={!formik.isValid}>
+                    <Button type="submit" autoFocus color="inherit" onClick={handleClose} disabled={!formik.isValid}>
                         crear
                     </Button>
-                </Toolbar>
+                    </Toolbar>
                 </AppBar>
                 <List>
-                <ListItem>
-                    <TextField type="text" 
-                        fullWidth 
-                        variant="outlined" 
+                    <ListItem>
+                    <TextField
+                        type="text"
+                        fullWidth
+                        variant="outlined"
                         name="title"
-                        placeholder="Título" 
-                        onChange={formik.handleChange} 
+                        placeholder="Título"
+                        onChange={formik.handleChange}
                         error={formik.touched.title && Boolean(formik.errors.title)}
-                        helperText={formik.touched.title && formik.errors.title} 
+                        helperText={formik.touched.title && formik.errors.title}
                         onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                e.preventDefault();
-                            }
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                        }
                         }}
                     />
-
-                </ListItem>
-                <ListItem>
-                    <TextField 
+                    </ListItem>
+                    <ListItem>
+                    <TextField
                         fullWidth
                         multiline
-                        variant="outlined" 
+                        variant="outlined"
                         name="content"
-                        placeholder="Contenido" 
-                        onChange={formik.handleChange} 
+                        placeholder="Contenido"
+                        onChange={formik.handleChange}
                         error={formik.touched.content && Boolean(formik.errors.content)}
-                        helperText={formik.touched.content && formik.errors.content} 
+                        helperText={formik.touched.content && formik.errors.content}
                     />
-                </ListItem>
+                    </ListItem>
+                    <ListItem>
+                        <SketchPicker
+                            color={selectedColor}
+                            onChange={handleColorChange}
+                        />
+                    </ListItem>
                 </List>
-            </form>
-        </Dialog>
-    </div>
-  );
+                </form>
+            </Dialog>
+        </div>
+    ); 
 }

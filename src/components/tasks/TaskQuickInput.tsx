@@ -6,7 +6,6 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import { Task } from '../../interfaces/tasks/interfaces';
 import { useState } from 'react';
-import shortid from 'shortid';
 
 interface Props {
     addTask: (task:Task) => void,

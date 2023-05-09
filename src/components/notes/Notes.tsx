@@ -1,12 +1,12 @@
-import { useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { ReducerActionType } from "../../actions/notes";
 import { notesReducer, initialState } from "../../reducers/notes";
 
 import NoteList from "./NoteList";
-import { ItemHeader, Item } from "./styles/NotesStyles";
+import { ItemHeader, Item, ItemFooter, ItemLoading } from "./styles/NotesStyles";
 import { properties } from "../../properties";
 import { ListFooterBox } from "../tasks/styles/TasksStyles";
-import { Pagination } from "@mui/material";
+import { CircularProgress, Pagination } from "@mui/material";
 
 import Cookies from "js-cookie";
 import CreateNoteModalComponent from "./modal/CreateNoteModal";
@@ -22,15 +22,8 @@ const Notes = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     const [sessionToken, setSessionToken] = useState<string | null>(null);
-
-    useEffect(() => {
-        const token = Cookies.get('PROD-APP-AUTH');
-        if(token)
-            setSessionToken(token);    
-        
-        fetchAllNotes(page, 5);
-    }, [page]);
-
+    const [loading, setloading] = useState(false)
+    
     const handlePageChange = (
         event: React.ChangeEvent<unknown>,
         value: number
@@ -38,10 +31,10 @@ const Notes = () => {
         setPage(value);
     };
 
-    async function fetchAllNotes(page: number, limit: number) {
+    const fetchAllNotes = useCallback(async (page: number, limit: number) => {
         
         try {
-
+            setloading(true)
             const headers = new Headers() as HeadersInit["headers"];
             headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 
@@ -60,8 +53,9 @@ const Notes = () => {
                     payload: responseJson.notes,
                 });
                 if (responseJson.count > 0) {
-                    setTotalPages(Math.trunc(responseJson.count / 10) + 1);
+                    setTotalPages(Math.trunc(responseJson.count / limit) + 1);
                 }
+                setloading(false)
             } else if (response.status === 403) {
                     throw new Error(
                         "Forbidden, no hay acceso al recurso solicitado"
@@ -72,7 +66,7 @@ const Notes = () => {
             } catch (error) {
                 console.log("Error", error);
             }
-    }
+    },[sessionToken]);
 
     const deleteNote = async (id: string) => {
         try {
@@ -122,15 +116,32 @@ const Notes = () => {
         }
     }
 
+    useEffect(() => {
+        const token = Cookies.get('PROD-APP-AUTH');
+        if(token)
+            setSessionToken(token);    
+        
+        fetchAllNotes(page, 9);
+    }, [fetchAllNotes,page]);
+
     return (
         <>   
             <ItemHeader><h1>Notes</h1><CreateNoteModalComponent addNote={addNote}/></ItemHeader>
-            <Item>
-                <NoteList notes={state.notes} deleteNote={deleteNote}/>
+            { loading && 
+                <ItemLoading>
+                    <CircularProgress />
+                </ItemLoading>
+            }
+            { !loading && 
+                <Item>
+                    <NoteList notes={state.notes} deleteNote={deleteNote}/>
+                </Item>
+            }
+            <ItemFooter>
                 <ListFooterBox>
-                    <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
+                        <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
                 </ListFooterBox>
-            </Item>
+            </ItemFooter>
         </> 
     )
 }

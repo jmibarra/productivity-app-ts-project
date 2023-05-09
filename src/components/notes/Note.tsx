@@ -51,8 +51,12 @@ export default function NoteComponent({note, deleteNote}:Props) {
         deleteNote(note._id)
     }
 
+    const cardStyle = {
+        backgroundColor: note.color || 'inherit', // Establece el color de fondo de la nota
+    };
+
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345 }} style={cardStyle}>
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
