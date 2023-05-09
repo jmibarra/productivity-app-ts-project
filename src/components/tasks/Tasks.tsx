@@ -195,12 +195,9 @@ const Tasks = () => {
                 <ListFooterBox>
                     <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
                 </ListFooterBox>
-
-                    
-
             </ItemFooter>
-            <Fab sx={fabStyle} color="primary" aria-label="add">
-                <AddIcon onClick={ () => settaskFormModalOpen(true)}/>
+            <Fab sx={fabStyle} color="primary" aria-label="add" onClick={ () => settaskFormModalOpen(true)}>
+                <AddIcon/>
             </Fab>
             <TaskForm addTask={addTask} handleCloseModal={handleCloseModal} taskModalOpen={taskFormModalOpen}/>
         </>
