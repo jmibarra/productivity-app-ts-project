@@ -7,11 +7,12 @@ import TaskForm from "./taskForm/TaskForm";
 import TaskList from "./TaskList";
 import Pagination from '@mui/material/Pagination';
 
-import {Item, ItemHeader,ListFooterBox} from "./styles/TasksStyles"
+import {Item, ItemFooter, ItemHeader,ListFooterBox} from "./styles/TasksStyles"
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import TaskQuickInputComponent from "./TaskQuickInput";
 import Cookies from "js-cookie";
+import { Zoom } from "@mui/material";
 
 interface HeadersInit {
     headers: Headers;
@@ -25,6 +26,13 @@ const Tasks = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0)
     const [sessionToken, setSessionToken] = useState<string | null>(null);
+
+
+    const fabStyle = {
+        position: 'absolute',
+        bottom: 16,
+        right: 16,
+      };
 
     useEffect(() => {
         const token = Cookies.get('PROD-APP-AUTH');
@@ -182,15 +190,18 @@ const Tasks = () => {
             <Item>
                 <TaskQuickInputComponent addTask={addTask}/>
                 <TaskList tasks={state.tasks} deleteTask={deleteTask} toogleTask={toogleTask} updateLabels={updateLabels}/>
+            </Item>
+            <ItemFooter>
                 <ListFooterBox>
                     <Pagination count={totalPages} page={page} onChange={handlePageChange} variant="outlined" color="primary" />
                 </ListFooterBox>
-                <ListFooterBox>
-                    <Fab color="primary" aria-label="add">
-                        <AddIcon onClick={ () => settaskFormModalOpen(true)}/>
-                    </Fab>
-                </ListFooterBox>
-            </Item>
+
+                    
+
+            </ItemFooter>
+            <Fab sx={fabStyle} color="primary" aria-label="add">
+                <AddIcon onClick={ () => settaskFormModalOpen(true)}/>
+            </Fab>
             <TaskForm addTask={addTask} handleCloseModal={handleCloseModal} taskModalOpen={taskFormModalOpen}/>
         </>
     )
