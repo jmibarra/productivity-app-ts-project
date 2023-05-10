@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 
 export const ListItem = styled('li')(({ theme }) => ({
     margin: theme.spacing(0.5),
+    listStyle: 'none',
 }));
   
 export const InputContainer = styled('div')(({ theme }) => ({

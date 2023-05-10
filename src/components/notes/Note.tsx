@@ -18,11 +18,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Delete } from '@mui/icons-material';
+import LabelsComponent from '../common/Labels/LabelsComponent';
+import { Item } from './styles/NotesStyles';
 
 interface Props {
     note: Note;
     index: number;
-    deleteNote: (id: string) => void
+    deleteNote: (id: string) => void;
+    updateLabels: (id:string, labels: string[]) => void;
 }
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -40,7 +43,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
-export default function NoteComponent({note, deleteNote}:Props) {
+export default function NoteComponent({note, deleteNote, updateLabels}:Props) {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -87,6 +90,7 @@ export default function NoteComponent({note, deleteNote}:Props) {
                         ))
                     }
                 </Typography>
+                <LabelsComponent labels={note.labels ?? []} taskId={note._id} updateLabels={updateLabels} />
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites">

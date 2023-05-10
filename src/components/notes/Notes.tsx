@@ -116,6 +116,32 @@ const Notes = () => {
         }
     }
 
+    const updateLabels = (id:string, labels: string[]):void => {
+        try{
+
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+            headers.append('Content-Type', 'application/json');
+
+            console.log(labels)
+            const data = { labels: labels };
+            fetch(properties.api_url+"/notes/"+id, {
+                method: 'PATCH',
+                headers,
+                credentials: 'include',
+                body: JSON.stringify(data),
+            })
+            .then((response) => {
+                if(response.ok){
+                    dispatch({type: ReducerActionType.MODIFI_NOTES_LABELS,payload:{labels:labels,id:id}})
+                }   
+            })
+
+        }catch(response){
+            console.log("Error", response);
+        }
+    }
+
     useEffect(() => {
         const token = Cookies.get('PROD-APP-AUTH');
         if(token)
@@ -134,7 +160,7 @@ const Notes = () => {
             }
             { !loading && 
                 <Item>
-                    <NoteList notes={state.notes} deleteNote={deleteNote}/>
+                    <NoteList notes={state.notes} deleteNote={deleteNote} updateLabels={updateLabels}/>
                 </Item>
             }
             <ItemFooter>

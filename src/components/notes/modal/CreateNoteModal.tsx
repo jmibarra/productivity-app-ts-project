@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import { initialValues, validationSchema } from './shemas';
 
 import { Note } from '../../../interfaces/tasks/interfaces';
+import LabelsComponent from '../../common/Labels/LabelsComponent';
 
 interface Props {
     addNote: (note: Note) => void;
@@ -33,6 +34,7 @@ const Transition = React.forwardRef(function Transition(
 export default function CreateNoteModalComponent({ addNote }: Props) {
     const [open, setOpen] = React.useState(false);
     const [selectedColor, setSelectedColor] = React.useState('#000000'); // Estado para almacenar el color seleccionado
+    const [labels, setLabels] = React.useState<string[]>([]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -51,10 +53,14 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
     });
 
     const createNote = (object: any) => {
-        let note: Note = { ...object, createdAt: new Date(), favorite: false, color: selectedColor }; // Utiliza el color seleccionado en la nota
+        let note: Note = { ...object, createdAt: new Date(), favorite: false, color: selectedColor, labels:labels }; // Utiliza el color seleccionado en la nota
         addNote(note);
         handleClose();
     };
+
+    const updateLabels = (id:string, labels: string[]):void => {
+        setLabels(labels);
+    }
 
     const handleColorChange = (color: any) => {
         setSelectedColor(color.hex);
@@ -115,6 +121,9 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
                             color={selectedColor}
                             onChange={handleColorChange}
                         />
+                    </ListItem>
+                    <ListItem>
+                        <LabelsComponent labels={labels} taskId='' updateLabels={updateLabels}/>
                     </ListItem>
                 </List>
                 </form>

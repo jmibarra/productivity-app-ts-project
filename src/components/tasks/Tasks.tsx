@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer,initialState } from "../../reducers/tasks";
 import { Task } from "../../interfaces/tasks/interfaces";
@@ -12,7 +12,6 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import TaskQuickInputComponent from "./TaskQuickInput";
 import Cookies from "js-cookie";
-import { Zoom } from "@mui/material";
 
 interface HeadersInit {
     headers: Headers;
@@ -34,22 +33,11 @@ const Tasks = () => {
         right: 16,
       };
 
-    useEffect(() => {
-        const token = Cookies.get('PROD-APP-AUTH');
-        if(token)
-            setSessionToken(token);    
-        fetchAllTasks(page, 10);
-    }, [page]);
-
-    const handleCloseModal = () => {
-        settaskFormModalOpen(false)
-    }
-
     const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
 
-    async function fetchAllTasks(page:number,limit:number){
+    const fetchAllTasks = useCallback(async (page:number,limit:number) => {
         try{
 
             const headers = new Headers() as HeadersInit["headers"];
@@ -77,7 +65,7 @@ const Tasks = () => {
             console.log("Error", response);
         }
         
-    }
+    },[sessionToken]);
 
     const addTask = async (task:Task): Promise<void> => {
         try{
@@ -182,6 +170,20 @@ const Tasks = () => {
         }catch(response){
             console.log("Error", response);
         }
+    }
+
+    useEffect(() => {
+        const token = Cookies.get('PROD-APP-AUTH');
+        
+        if(token)
+            setSessionToken(token);    
+        
+        fetchAllTasks(page, 10);
+        
+    }, [fetchAllTasks,page]);
+
+    const handleCloseModal = () => {
+        settaskFormModalOpen(false)
     }
 
     return (
