@@ -34,6 +34,24 @@ export const notesReducer: Reducer<NotesState, ReducerAction> = (state = initial
                 notes: [action.payload,...state.notes]
             }
         }
+        case ReducerActionType.FAVORITE: {
+
+            const clonedNotes = [...state.notes]
+            const selectedNote = state.notes.find(
+                (note:Note) => note._id === action.payload
+            );
+            
+            const newNote = {...selectedNote}
+
+            newNote.favorite = !selectedNote?.favorite
+
+            const updatedNotes = clonedNotes.map(note => note._id === newNote._id ? newNote : note);
+
+            return {
+                ...state, 
+                notes: updatedNotes
+             };
+        }
         default:
             return state
     }

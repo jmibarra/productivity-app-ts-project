@@ -19,13 +19,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Delete } from '@mui/icons-material';
 import LabelsComponent from '../common/Labels/LabelsComponent';
-import { Item } from './styles/NotesStyles';
 
 interface Props {
     note: Note;
     index: number;
     deleteNote: (id: string) => void;
     updateLabels: (id:string, labels: string[]) => void;
+    updateFavorite: (id:string, favorite:boolean) => void;
 }
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -43,7 +43,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     }),
 }));
 
-export default function NoteComponent({note, deleteNote, updateLabels}:Props) {
+export default function NoteComponent({note, deleteNote, updateLabels, updateFavorite}:Props) {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -52,6 +52,10 @@ export default function NoteComponent({note, deleteNote, updateLabels}:Props) {
 
     const handleDelete = () => {
         deleteNote(note._id)
+    }
+
+    const handleFavorite = () => {
+        updateFavorite(note._id,note.favorite)
     }
 
     const cardStyle = {
@@ -93,8 +97,12 @@ export default function NoteComponent({note, deleteNote, updateLabels}:Props) {
                 <LabelsComponent labels={note.labels ?? []} taskId={note._id} updateLabels={updateLabels} />
             </CardContent>
             <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                    <FavoriteIcon />
+                <IconButton aria-label="add to favorites" onClick={handleFavorite}>
+                    {note.favorite ? (
+                        <FavoriteIcon sx={{ color: red[500] }} />
+                    ) : (
+                        <FavoriteIcon />
+                    )}
                 </IconButton>
                 <IconButton aria-label="share" onClick={handleDelete}>
                     <Delete />

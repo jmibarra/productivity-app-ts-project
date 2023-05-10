@@ -109,8 +109,9 @@ const Notes = () => {
 
             const responseJson = await response.json();
             const createdNote: Note = responseJson;
-            console.log(createdNote)
+            
             dispatch({type: ReducerActionType.ADD_NOTE, payload: createdNote});
+        
         } catch (error) {
             console.log("Error", error);
         }
@@ -131,9 +132,32 @@ const Notes = () => {
                 credentials: 'include',
                 body: JSON.stringify(data),
             })
+        }catch(response){
+            console.log("Error", response);
+        }
+    }
+
+    const updateFavorite = (id:string, favorite:boolean):void => {
+        try{
+
+            const headers = new Headers() as HeadersInit["headers"];
+            headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+            headers.append('Content-Type', 'application/json');
+
+            dispatch({type: ReducerActionType.FAVORITE,payload:id})
+
+            const data = { favorite: !favorite};
+            
+            fetch(properties.api_url+"/notes/"+id, {
+                method: 'PATCH',
+                headers,
+                credentials: 'include',
+                body: JSON.stringify(data),
+            })
             .then((response) => {
-                if(response.ok){
-                    dispatch({type: ReducerActionType.MODIFI_NOTES_LABELS,payload:{labels:labels,id:id}})
+                if(!response.ok){
+                    dispatch({type: ReducerActionType.FAVORITE,payload:id})
+                    console.log("Error", response);
                 }   
             })
 
@@ -160,7 +184,7 @@ const Notes = () => {
             }
             { !loading && 
                 <Item>
-                    <NoteList notes={state.notes} deleteNote={deleteNote} updateLabels={updateLabels}/>
+                    <NoteList notes={state.notes} deleteNote={deleteNote} updateLabels={updateLabels} updateFavorite={updateFavorite}/>
                 </Item>
             }
             <ItemFooter>
