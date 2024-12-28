@@ -4,12 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
-import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -17,19 +14,14 @@ import ListItemText from "@mui/material/ListItemText";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import NotesIcon from "@mui/icons-material/Notes";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import { AccountCircle } from "@mui/icons-material";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
 
-import { Button, ListItemButton, Menu, MenuItem } from "@mui/material";
+import { ListItemButton } from "@mui/material";
 
-import {
-	AppBar,
-	DrawerHeader,
-	Main,
-	StyledDrawer,
-} from "./DrawerComponentStyles";
+import { DrawerHeader, Main, StyledDrawer } from "./DrawerComponentStyles";
 import Logout from "../../login/Logout";
+import NavBar from "./AppBar/NavBar";
 
 const mainActions = [
 	{ icon: <TaskAltIcon />, name: "Tareas", route: "/todos" },
@@ -62,13 +54,8 @@ export default function PersistentDrawerLeft({
 }: Props) {
 	const theme = useTheme();
 	const [open, setOpen] = useState(false);
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
 	const navigate = useNavigate();
-
-	const handleDrawerOpen = () => {
-		setOpen(true);
-	};
 
 	const handleDrawerClose = () => {
 		setOpen(false);
@@ -78,78 +65,14 @@ export default function PersistentDrawerLeft({
 		navigate(route);
 	};
 
-	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
-
 	return (
 		<Box sx={{ display: "flex" }}>
 			<CssBaseline />
-			<AppBar position="fixed" open={open}>
-				<Toolbar>
-					<IconButton
-						color="inherit"
-						aria-label="open drawer"
-						onClick={handleDrawerOpen}
-						edge="start"
-						sx={{ mr: 2, ...(open && { display: "none" }) }}
-					>
-						<MenuIcon />
-					</IconButton>
-					<Typography variant="h6" noWrap component="div">
-						Productivity App
-					</Typography>
-					<Box sx={{ ml: "auto" }}>
-						{isLoggedIn ? (
-							<>
-								<IconButton
-									size="large"
-									aria-label="account of current user"
-									aria-controls="menu-appbar"
-									aria-haspopup="true"
-									onClick={handleMenu}
-									color="inherit"
-								>
-									<AccountCircle />
-								</IconButton>
-								<Menu
-									id="menu-appbar"
-									anchorEl={anchorEl}
-									anchorOrigin={{
-										vertical: "top",
-										horizontal: "right",
-									}}
-									keepMounted
-									transformOrigin={{
-										vertical: "top",
-										horizontal: "right",
-									}}
-									open={Boolean(anchorEl)}
-									onClose={handleClose}
-								>
-									<MenuItem onClick={handleClose}>
-										Profile
-									</MenuItem>
-									<MenuItem onClick={handleClose}>
-										My account
-									</MenuItem>
-								</Menu>
-							</>
-						) : (
-							<Button
-								color="inherit"
-								onClick={() => handleRouteClick("/login")}
-							>
-								Login
-							</Button>
-						)}
-					</Box>
-				</Toolbar>
-			</AppBar>
+			<NavBar
+				open={open}
+				isLoggedIn={isLoggedIn}
+				handleDrawerOpen={() => setOpen(true)}
+			/>
 			<StyledDrawer variant="persistent" anchor="left" open={open}>
 				<DrawerHeader>
 					<IconButton onClick={handleDrawerClose}>
