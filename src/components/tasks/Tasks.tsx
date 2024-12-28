@@ -184,6 +184,10 @@ const Tasks = () => {
 		}
 	};
 
+	const updatePriority = (id: String, priority: Number): void => {
+		console.log("hola");
+	};
+
 	useEffect(() => {
 		const token = Cookies.get("PROD-APP-AUTH");
 
@@ -206,6 +210,7 @@ const Tasks = () => {
 					deleteTask={deleteTask}
 					toogleTask={toogleTask}
 					updateLabels={updateLabels}
+					updatePriority={updatePriority}
 				/>
 			</Content>
 			<Footer>

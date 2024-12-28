@@ -1,50 +1,65 @@
 import { useState } from "react";
 
-import { Task } from "../../interfaces/tasks/interfaces"
+import { Task } from "../../interfaces/tasks/interfaces";
 
 import TaskComponent from "./Task";
 import TaskDetailViewModal from "./modal/TaskDetailViewModal";
 
-import List from '@mui/material/List';
+import List from "@mui/material/List";
 
 interface Props {
-    tasks: Task[],
-    deleteTask: (id: string) => void,
-    toogleTask: (id: string, completed: boolean) => void
-    updateLabels: (id:string, labels: string[]) => void
+	tasks: Task[];
+	deleteTask: (id: string) => void;
+	toogleTask: (id: string, completed: boolean) => void;
+	updateLabels: (id: string, labels: string[]) => void;
+	updatePriority: (id: string, newPriority: number) => void;
 }
 
-const TaskList = ({tasks,deleteTask,toogleTask,updateLabels}:Props) => {
+const TaskList = ({
+	tasks,
+	deleteTask,
+	toogleTask,
+	updateLabels,
+	updatePriority,
+}: Props) => {
+	const [taskModalOpen, setTaskModalOpen] = useState(false);
+	const [selectedTask, setSelectedTask] = useState<Task>();
 
+	const handleCloseModal = () => {
+		setTaskModalOpen(false);
+	};
 
-    const [taskModalOpen, setTaskModalOpen] = useState(false);
-    const [selectedTask, setSelectedTask] = useState<Task>();
+	const handleSelectTask = (selectedTask: Task) => {
+		setSelectedTask(selectedTask);
+		setTaskModalOpen(true);
+	};
 
-    const handleCloseModal = () => {
-        setTaskModalOpen(false)
-    }
+	return (
+		<>
+			<List sx={{ width: "100%", bgcolor: "background.paper" }}>
+				{tasks.map((task: Task, index) => {
+					return (
+						<TaskComponent
+							task={task}
+							index={index}
+							deleteTask={deleteTask}
+							toogleTask={toogleTask}
+							handleSelectTask={handleSelectTask}
+							key={task._id}
+							updatePriority={updatePriority}
+						/>
+					);
+				})}
+			</List>
+			<TaskDetailViewModal
+				handleClose={handleCloseModal}
+				taskModalOpen={taskModalOpen}
+				selectedTaskProp={selectedTask}
+				updateLabels={updateLabels}
+				updatePriority={updatePriority}
+			/>
+		</>
+	);
+};
 
-    const handleSelectTask = (selectedTask: Task) => {
-        setSelectedTask(selectedTask);
-        setTaskModalOpen(true);
-      };
-
-    const updatePriority = (id:String, priority:Number):void => {
-        console.log("hola")
-    }
-
-    return (
-    <>
-        <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            {tasks.map((task:Task,index) => {
-                return (
-                    <TaskComponent task={task} index={index} deleteTask={deleteTask} toogleTask={toogleTask} handleSelectTask={handleSelectTask} key={task._id} updatePriority={updatePriority}/>
-                );
-            })}
-        </List>
-        <TaskDetailViewModal handleClose={handleCloseModal} taskModalOpen={taskModalOpen} selectedTaskProp={selectedTask} updateLabels={updateLabels} updatePriority={updatePriority} />
-    </>
-  )
-}
-
-export default TaskList
+export default TaskList;

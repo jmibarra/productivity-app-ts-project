@@ -16,7 +16,7 @@ interface Props {
 	deleteTask: (id: string) => void;
 	toogleTask: (id: string, completed: boolean) => void;
 	handleSelectTask: (selectedTask: Task) => void;
-	updatePriority: (id: string, newPriority: Number) => void;
+	updatePriority: (id: string, newPriority: number) => void;
 }
 
 const TaskComponent = ({
