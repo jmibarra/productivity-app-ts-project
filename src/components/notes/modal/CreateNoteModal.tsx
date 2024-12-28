@@ -1,17 +1,19 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import List from "@mui/material/List";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
+import {
+	AppBar,
+	Button,
+	Dialog,
+	IconButton,
+	List,
+	ListItem,
+	TextField,
+	Toolbar,
+	Typography,
+	Slide,
+	Box,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
-import { ListItem, TextField } from "@mui/material";
-import { SketchPicker } from "react-color";
-
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./shemas";
 
@@ -31,9 +33,12 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
+const colorOptions = ["#79addc", "#ffc09f", "#ffee93", "#fcf5c7", "#adf7b6"];
+
 export default function CreateNoteModalComponent({ addNote }: Props) {
 	const [open, setOpen] = React.useState(false);
-	const [selectedColor, setSelectedColor] = React.useState("#000000"); // Estado para almacenar el color seleccionado
+	const [selectedColor, setSelectedColor] = React.useState(colorOptions[0]); // Color inicial
+	const [colorPickerOpen, setColorPickerOpen] = React.useState(false);
 	const [labels, setLabels] = React.useState<string[]>([]);
 
 	const handleClickOpen = () => {
@@ -42,6 +47,7 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 
 	const handleClose = () => {
 		setOpen(false);
+		setColorPickerOpen(false);
 	};
 
 	const formik = useFormik({
@@ -59,8 +65,9 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 			favorite: false,
 			color: selectedColor,
 			labels: labels,
-		}; // Utiliza el color seleccionado en la nota
+		};
 		addNote(note);
+		setLabels([]);
 		handleClose();
 	};
 
@@ -68,13 +75,18 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 		setLabels(labels);
 	};
 
-	const handleColorChange = (color: any) => {
-		setSelectedColor(color.hex);
+	const toggleColorPicker = () => {
+		setColorPickerOpen(!colorPickerOpen);
+	};
+
+	const selectColor = (color: string) => {
+		setSelectedColor(color);
+		setColorPickerOpen(false);
 	};
 
 	return (
 		<div>
-			<Button variant="outlined" onClick={handleClickOpen}>
+			<Button variant="contained" onClick={handleClickOpen}>
 				Nueva nota
 			</Button>
 			<Dialog
@@ -84,7 +96,10 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 				TransitionComponent={Transition}
 			>
 				<form onSubmit={formik.handleSubmit}>
-					<AppBar sx={{ position: "relative" }}>
+					<AppBar
+						position="sticky"
+						sx={{ backgroundColor: "#6200ea" }}
+					>
 						<Toolbar>
 							<IconButton
 								edge="start"
@@ -105,68 +120,132 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 								type="submit"
 								autoFocus
 								color="inherit"
-								onClick={handleClose}
 								disabled={!formik.isValid}
 							>
-								crear
+								Crear
 							</Button>
 						</Toolbar>
 					</AppBar>
-					<List>
-						<ListItem>
-							<TextField
-								type="text"
-								fullWidth
-								variant="outlined"
-								name="title"
-								placeholder="Título"
-								onChange={formik.handleChange}
-								error={
-									formik.touched.title &&
-									Boolean(formik.errors.title)
-								}
-								helperText={
-									formik.touched.title && formik.errors.title
-								}
-								onKeyDown={(e) => {
-									if (e.key === "Enter") {
-										e.preventDefault();
-									}
+					<Box sx={{ p: 3 }}>
+						<List sx={{ gap: 3 }}>
+							<ListItem
+								sx={{
+									flexDirection: "column",
+									alignItems: "flex-start",
 								}}
-							/>
-						</ListItem>
-						<ListItem>
-							<TextField
-								fullWidth
-								multiline
-								variant="outlined"
-								name="content"
-								placeholder="Contenido"
-								onChange={formik.handleChange}
-								error={
-									formik.touched.content &&
-									Boolean(formik.errors.content)
-								}
-								helperText={
-									formik.touched.content &&
-									formik.errors.content
-								}
-							/>
-						</ListItem>
-						<ListItem>
-							<SketchPicker
-								color={selectedColor}
-								onChange={handleColorChange}
-							/>
-						</ListItem>
-						<ListItem>
-							<LabelsComponent
-								labels={labels}
-								taskId=""
-								updateLabels={updateLabels}
-							/>
-						</ListItem>
-					</List>
+							>
+								<Typography variant="subtitle1" sx={{ mb: 1 }}>
+									Título
+								</Typography>
+								<TextField
+									type="text"
+									fullWidth
+									variant="outlined"
+									name="title"
+									placeholder="Título"
+									onChange={formik.handleChange}
+									error={
+										formik.touched.title &&
+										Boolean(formik.errors.title)
+									}
+									helperText={
+										formik.touched.title &&
+										formik.errors.title
+									}
+								/>
+							</ListItem>
+							<ListItem
+								sx={{
+									flexDirection: "column",
+									alignItems: "flex-start",
+								}}
+							>
+								<Typography variant="subtitle1" sx={{ mb: 1 }}>
+									Contenido
+								</Typography>
+								<TextField
+									fullWidth
+									multiline
+									rows={4}
+									variant="outlined"
+									name="content"
+									placeholder="Contenido"
+									onChange={formik.handleChange}
+									error={
+										formik.touched.content &&
+										Boolean(formik.errors.content)
+									}
+									helperText={
+										formik.touched.content &&
+										formik.errors.content
+									}
+								/>
+							</ListItem>
+							<ListItem
+								sx={{
+									display: "flex",
+									justifyContent: "space-between",
+									alignItems: "center",
+									gap: 3,
+								}}
+							>
+								<Box
+									sx={{
+										display: "flex",
+										alignItems: "center",
+										gap: 2,
+									}}
+								>
+									<Typography variant="subtitle1">
+										Color
+									</Typography>
+									<Box
+										onClick={toggleColorPicker}
+										sx={{
+											width: 32,
+											height: 32,
+											borderRadius: "50%",
+											backgroundColor: selectedColor,
+											cursor: "pointer",
+											boxShadow:
+												"0 0 4px rgba(0, 0, 0, 0.3)",
+										}}
+									/>
+									{colorPickerOpen && (
+										<Box sx={{ display: "flex", gap: 1 }}>
+											{colorOptions.map((color) => (
+												<Box
+													key={color}
+													onClick={() =>
+														selectColor(color)
+													}
+													sx={{
+														width: 32,
+														height: 32,
+														borderRadius: "50%",
+														backgroundColor: color,
+														cursor: "pointer",
+														border:
+															color ===
+															selectedColor
+																? "2px solid #6200ea"
+																: "none",
+													}}
+												/>
+											))}
+										</Box>
+									)}
+								</Box>
+								<Box sx={{ flex: 1 }}>
+									<LabelsComponent
+										labels={labels}
+										taskId=""
+										updateLabels={updateLabels}
+									/>
+								</Box>
+							</ListItem>
+						</List>
+					</Box>
 				</form>
 			</Dialog>
 		</div>
