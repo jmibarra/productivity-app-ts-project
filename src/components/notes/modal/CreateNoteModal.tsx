@@ -21,6 +21,7 @@ import { initialValues, validationSchema } from "./shemas";
 
 import { Note } from "../../../interfaces/tasks/interfaces";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
+import ColorPickerComponent from "../../common/ColorPicker/ColorPickerComponent";
 
 interface Props {
 	addNote: (note: Note) => void;
@@ -35,12 +36,9 @@ const Transition = React.forwardRef(function Transition(
 	return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const colorOptions = ["#79addc", "#ffc09f", "#ffee93", "#fcf5c7", "#adf7b6"];
-
 export default function CreateNoteModalComponent({ addNote }: Props) {
 	const [open, setOpen] = React.useState(false);
-	const [selectedColor, setSelectedColor] = React.useState(colorOptions[0]); // Color inicial
-	const [colorPickerOpen, setColorPickerOpen] = React.useState(false);
+	const [selectedColor, setSelectedColor] = React.useState("#ffee93");
 	const [labels, setLabels] = React.useState<string[]>([]);
 	const [content, setContent] = React.useState("");
 
@@ -55,7 +53,6 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 
 	const handleClose = () => {
 		setOpen(false);
-		setColorPickerOpen(false);
 	};
 
 	const formik = useFormik({
@@ -81,15 +78,6 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 
 	const updateLabels = (id: string, labels: string[]): void => {
 		setLabels(labels);
-	};
-
-	const toggleColorPicker = () => {
-		setColorPickerOpen(!colorPickerOpen);
-	};
-
-	const selectColor = (color: string) => {
-		setSelectedColor(color);
-		setColorPickerOpen(false);
 	};
 
 	return (
@@ -200,53 +188,10 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 									gap: 3,
 								}}
 							>
-								<Box
-									sx={{
-										display: "flex",
-										alignItems: "center",
-										gap: 2,
-									}}
-								>
-									<Typography variant="subtitle1">
-										Color
-									</Typography>
-									<Box
-										onClick={toggleColorPicker}
-										sx={{
-											width: 32,
-											height: 32,
-											borderRadius: "50%",
-											backgroundColor: selectedColor,
-											cursor: "pointer",
-											boxShadow:
-												"0 0 4px rgba(0, 0, 0, 0.3)",
-										}}
-									/>
-									{colorPickerOpen && (
-										<Box sx={{ display: "flex", gap: 1 }}>
-											{colorOptions.map((color) => (
-												<Box
-													key={color}
-													onClick={() =>
-														selectColor(color)
-													}
-													sx={{
-														width: 32,
-														height: 32,
-														borderRadius: "50%",
-														backgroundColor: color,
-														cursor: "pointer",
-														border:
-															color ===
-															selectedColor
-																? "2px solid #6200ea"
-																: "none",
-													}}
-												/>
-											))}
-										</Box>
-									)}
-								</Box>
+								<ColorPickerComponent
+									selectedColor={selectedColor}
+									setSelectedColor={setSelectedColor}
+								/>
 								<div
 									style={{
 										display: "flex",
