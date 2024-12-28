@@ -15,7 +15,6 @@ import { initialValues, validationSchema } from "./schemas";
 import * as Yup from "yup";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
 import { Item } from "./TaskFormStyles";
-import { lastDayOfDecade } from "date-fns";
 import { useState } from "react";
 
 interface Props {
@@ -32,6 +31,8 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 		validationSchema: Yup.object(validationSchema),
 		onSubmit: (values) => {
 			createTask(values);
+			setLabels([]);
+			formik.resetForm();
 		},
 	});
 
