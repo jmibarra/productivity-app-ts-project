@@ -41,18 +41,16 @@ const Priority = ({ priority, taskId, updatePriority }: Props) => {
 	return (
 		<>
 			<IconButton edge="end" onClick={handleOpen}>
-				{!currentPriority && (
+				{(!priority || priority === 0) && (
 					<QuestionMarkIcon sx={{ color: grey[500] }} />
 				)}
-				{currentPriority === 1 && (
+				{priority === 1 && (
 					<PriorityHighIcon sx={{ color: red[500] }} />
 				)}
-				{currentPriority === 2 && (
+				{priority === 2 && (
 					<LowPriorityIcon sx={{ color: yellow[500] }} />
 				)}
-				{currentPriority === 3 && (
-					<AcUnitIcon sx={{ color: blue[500] }} />
-				)}
+				{priority === 3 && <AcUnitIcon sx={{ color: blue[500] }} />}
 			</IconButton>
 
 			<Menu

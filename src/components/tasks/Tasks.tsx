@@ -174,7 +174,7 @@ const Tasks = () => {
 			}).then((response) => {
 				if (response.ok) {
 					dispatch({
-						type: ReducerActionType.MODIFI_TASK_LABELS,
+						type: ReducerActionType.UPDATE_TASK_LABELS,
 						payload: { labels: labels, id: id },
 					});
 				}
@@ -185,7 +185,28 @@ const Tasks = () => {
 	};
 
 	const updatePriority = (id: String, priority: Number): void => {
-		console.log("hola");
+		try {
+			const headers = new Headers() as HeadersInit["headers"];
+			headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
+			headers.append("Content-Type", "application/json");
+
+			const data = { priority: priority };
+			fetch(properties.api_url + "/tasks/" + id, {
+				method: "PATCH",
+				headers,
+				credentials: "include",
+				body: JSON.stringify(data),
+			}).then((response) => {
+				if (response.ok) {
+					dispatch({
+						type: ReducerActionType.UPDATE_TASK_PRIORITY,
+						payload: { priority: priority, id: id },
+					});
+				}
+			});
+		} catch (response) {
+			console.log("Error", response);
+		}
 	};
 
 	useEffect(() => {

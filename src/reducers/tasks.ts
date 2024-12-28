@@ -61,7 +61,7 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
                 tasks: updatedTasks
              };
         }
-        case ReducerActionType.MODIFI_TASK_LABELS: {
+        case ReducerActionType.UPDATE_TASK_LABELS: {
 
             const clonedTasks = [...state.tasks]
             const selectedTask = state.tasks.find(
@@ -71,6 +71,24 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
             const newTask = {...selectedTask}
 
             newTask.labels = action.payload.labels
+
+            const updatedTasks = clonedTasks.map(task => task._id === newTask._id ? newTask : task);
+
+            return {
+                ...state, 
+                tasks: updatedTasks
+             };
+        }
+        case ReducerActionType.UPDATE_TASK_PRIORITY: {
+
+            const clonedTasks = [...state.tasks]
+            const selectedTask = state.tasks.find(
+                (task:Task) => task._id === action.payload.id
+            );
+            
+            const newTask = {...selectedTask}
+
+            newTask.priority = action.payload.priority
 
             const updatedTasks = clonedTasks.map(task => task._id === newTask._id ? newTask : task);
 
