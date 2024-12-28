@@ -1,4 +1,6 @@
 import * as React from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import {
 	AppBar,
 	Button,
@@ -40,6 +42,12 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 	const [selectedColor, setSelectedColor] = React.useState(colorOptions[0]); // Color inicial
 	const [colorPickerOpen, setColorPickerOpen] = React.useState(false);
 	const [labels, setLabels] = React.useState<string[]>([]);
+	const [content, setContent] = React.useState("");
+
+	const handleContentChange = (value: string) => {
+		setContent(value);
+		formik.setFieldValue("content", value);
+	};
 
 	const handleClickOpen = () => {
 		setOpen(true);
@@ -163,23 +171,26 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 								<Typography variant="subtitle1" sx={{ mb: 1 }}>
 									Contenido
 								</Typography>
-								<TextField
-									fullWidth
-									multiline
-									rows={4}
-									variant="outlined"
-									name="content"
-									placeholder="Contenido"
-									onChange={formik.handleChange}
-									error={
-										formik.touched.content &&
-										Boolean(formik.errors.content)
-									}
-									helperText={
-										formik.touched.content &&
-										formik.errors.content
-									}
+								<ReactQuill
+									value={content}
+									onChange={handleContentChange}
+									placeholder="Escribe aquí el contenido de tu nota..."
+									theme="snow"
+									style={{
+										width: "100%",
+										minHeight: "150px",
+									}}
 								/>
+								{formik.touched.content &&
+									formik.errors.content && (
+										<Typography
+											variant="caption"
+											color="error"
+											sx={{ mt: 1 }}
+										>
+											{formik.errors.content}
+										</Typography>
+									)}
 							</ListItem>
 							<ListItem
 								sx={{

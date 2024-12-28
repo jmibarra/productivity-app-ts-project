@@ -80,54 +80,70 @@ export default function NoteComponent({
 						<MoreVertIcon />
 					</IconButton>
 				}
-				title={note.title}
+				title={
+					<Typography
+						variant="h6"
+						sx={{
+							fontWeight: "bold",
+							padding: "4px 8px", // Espaciado interno
+							borderRadius: "4px", // Bordes redondeados
+						}}
+					>
+						{note.title}
+					</Typography>
+				}
 				subheader={
 					note.createdAt && isValid(new Date(note.createdAt))
 						? format(new Date(note.createdAt), "dd/MM/yyyy HH:mm")
 						: ""
 				}
 			/>
+
 			<CardContent>
-				<Typography variant="body2" color="text.secondary">
-					{note.content.length > 400
-						? (
-								note.content
-									.slice(0, 400)
-									.substring(
-										0,
-										note.content
-											.slice(0, 400)
-											.lastIndexOf(" ")
-									) + "..."
-						  )
-								.split("\n")
-								.map((paragraph, index) => (
-									<Typography
-										key={index}
-										paragraph
-										variant="body2"
-										color="text.secondary"
-									>
-										{paragraph}
-									</Typography>
-								))
-						: note.content.split("\n").map((paragraph, index) => (
-								<Typography
-									key={index}
-									paragraph
-									variant="body2"
-									color="text.secondary"
-								>
-									{paragraph}
-								</Typography>
-						  ))}
-				</Typography>
+				{/* Muestra una vista previa del contenido si es largo */}
+				{note.content.length > 200 ? (
+					<div
+						dangerouslySetInnerHTML={{
+							__html: `${note.content
+								.slice(0, 200)
+								.substring(
+									0,
+									note.content.slice(0, 200).lastIndexOf(" ")
+								)}...`,
+						}}
+						style={{
+							color: "text.secondary",
+							whiteSpace: "pre-wrap",
+						}}
+					/>
+				) : (
+					<div
+						dangerouslySetInnerHTML={{
+							__html: note.content,
+						}}
+						style={{
+							color: "text.secondary",
+							whiteSpace: "pre-wrap",
+						}}
+					/>
+				)}
 				<LabelsComponent
 					labels={note.labels ?? []}
 					taskId={note._id}
 					updateLabels={updateLabels}
 				/>
 			</CardContent>
+			<Collapse in={expanded} timeout="auto" unmountOnExit>
+				<CardContent>
+					<Typography paragraph>Detalle:</Typography>
+					<div
+						dangerouslySetInnerHTML={{
+							__html: note.content,
+						}}
+						style={{ whiteSpace: "pre-wrap" }}
+					/>
+				</CardContent>
+			</Collapse>
 			<CardActions disableSpacing>
 				<IconButton
 					aria-label="add to favorites"
@@ -145,7 +161,7 @@ export default function NoteComponent({
 				<IconButton aria-label="share">
 					<ColorLens />
 				</IconButton>
-				{note.content && note.content.length > 400 && (
+				{note.content && note.content.length > 200 && (
 					<ExpandMore
 						expand={expanded}
 						onClick={handleExpandClick}
@@ -156,18 +172,6 @@ export default function NoteComponent({
 					</ExpandMore>
 				)}
 			</CardActions>
-			<Collapse in={expanded} timeout="auto" unmountOnExit>
-				<CardContent>
-					<Typography paragraph>Detalle:</Typography>
-					<Typography>
-						{note.content.split("\n").map((paragraph, index) => (
-							<Typography key={index} paragraph>
-								{paragraph}
-							</Typography>
-						))}
-					</Typography>
-				</CardContent>
-			</Collapse>
 		</Card>
 	);
 }
