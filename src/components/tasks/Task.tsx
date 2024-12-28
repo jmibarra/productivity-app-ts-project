@@ -8,6 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CompletedText, TaskContainer } from "./styles/TasksStyles";
 import Priority from "../common/Priority/Priority";
+import { Box } from "@mui/material";
 
 interface Props {
 	task: Task;
@@ -36,13 +37,20 @@ const TaskComponent = ({
 			<TaskContainer>
 				<ListItem
 					secondaryAction={
-						<IconButton
-							edge="end"
-							aria-label="delete-action"
-							onClick={() => deleteTask(task._id)}
-						>
-							<DeleteIcon />
-						</IconButton>
+						<Box display="flex" alignItems="center" gap={2}>
+							<Priority
+								priority={task.priority}
+								taskId={task._id}
+								updatePriority={updatePriority}
+							/>
+							<IconButton
+								edge="end"
+								aria-label="delete-action"
+								onClick={() => deleteTask(task._id)}
+							>
+								<DeleteIcon />
+							</IconButton>
+						</Box>
 					}
 					disablePadding
 					alignItems="flex-start"
@@ -78,11 +86,6 @@ const TaskComponent = ({
 									? { component: CompletedText }
 									: { style: { color: "#555" } }
 							}
-						/>
-						<Priority
-							priority={task.priority}
-							taskId={task._id}
-							updatePriority={updatePriority}
 						/>
 					</ListItemButton>
 				</ListItem>
