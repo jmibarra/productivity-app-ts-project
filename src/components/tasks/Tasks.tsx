@@ -6,6 +6,7 @@ import { properties } from "../../properties";
 import TaskForm from "./taskForm/TaskForm";
 import TaskList from "./TaskList";
 import Pagination from "@mui/material/Pagination";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
 import {
 	Container,
@@ -194,7 +195,9 @@ const Tasks = () => {
 	return (
 		<Container>
 			<Header>
-				<h1>Tareas</h1>
+				<h1>
+					<TaskAltIcon /> Tareas
+				</h1>
 			</Header>
 			<Content>
 				<TaskQuickInputComponent addTask={addTask} />
