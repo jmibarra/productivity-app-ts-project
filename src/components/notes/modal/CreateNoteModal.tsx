@@ -247,13 +247,19 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 										</Box>
 									)}
 								</Box>
-								<Box sx={{ flex: 1 }}>
+								<div
+									style={{
+										display: "flex",
+										justifyContent: "flex-end", // Alinea el selector de etiquetas a la derecha
+										marginTop: "8px", // Espaciado superior opcional
+									}}
+								>
 									<LabelsComponent
 										labels={labels}
 										taskId=""
 										updateLabels={updateLabels}
 									/>
-								</Box>
+								</div>
 							</ListItem>
 						</List>
 					</Box>

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Chip from "@mui/material/Chip";
 import Input from "@mui/material/Input";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 import { ListItem, InputContainer } from "./LabelComponentStyles";
 
@@ -46,6 +47,7 @@ const LabelsComponent = ({ labels, taskId, updateLabels }: Props) => {
 			})}
 			<ListItem key="end-index">
 				<InputContainer>
+					<LocalOfferIcon />
 					<Input
 						name="labels"
 						placeholder="Agregar etiqueta"
