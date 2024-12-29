@@ -42,7 +42,8 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 			id: shortid.generate(),
 			completed: false,
 			labels: labels,
-			list: 0,
+			list: 1,
+			priority: 4,
 		};
 		addTask(task);
 		handleCloseModal();

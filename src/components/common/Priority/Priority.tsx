@@ -44,7 +44,7 @@ const Priority = ({ priority, taskId, updatePriority }: Props) => {
 	return (
 		<>
 			<IconButton edge="end" onClick={handleOpen}>
-				{(!currentPriority || currentPriority === 0) && (
+				{(!currentPriority || currentPriority === 4) && (
 					<QuestionMarkIcon sx={{ color: grey[500] }} />
 				)}
 				{currentPriority === 1 && (
@@ -84,7 +84,7 @@ const Priority = ({ priority, taskId, updatePriority }: Props) => {
 					</ListItemIcon>
 					<ListItemText primary="Low Priority" />
 				</MenuItem>
-				<MenuItem onClick={() => handleSelectPriority(0)}>
+				<MenuItem onClick={() => handleSelectPriority(4)}>
 					<ListItemIcon>
 						<QuestionMarkIcon sx={{ color: grey[500] }} />
 					</ListItemIcon>
