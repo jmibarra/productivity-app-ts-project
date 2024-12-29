@@ -15,13 +15,13 @@ import {
 	Box,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { TransitionProps } from "@mui/material/transitions";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./shemas";
 
 import { Note } from "../../../interfaces/tasks/interfaces";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
 import ColorPickerComponent from "../../common/ColorPicker/ColorPickerComponent";
+import { TransitionProps } from "@mui/material/transitions";
 
 interface Props {
 	addNote: (note: Note) => void;
@@ -80,16 +80,25 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 		setLabels(labels);
 	};
 
+	const Transition = React.forwardRef(function Transition(
+		props: TransitionProps & {
+			children: React.ReactElement<any, any>;
+		},
+		ref: React.Ref<unknown>
+	) {
+		return <Slide direction="up" ref={ref} {...props} />;
+	});
+
 	return (
 		<div>
 			<Button variant="contained" onClick={handleClickOpen}>
 				Nueva nota
 			</Button>
 			<Dialog
-				fullScreen
 				open={open}
 				onClose={handleClose}
 				TransitionComponent={Transition}
+				fullWidth
 			>
 				<form onSubmit={formik.handleSubmit}>
 					<AppBar
