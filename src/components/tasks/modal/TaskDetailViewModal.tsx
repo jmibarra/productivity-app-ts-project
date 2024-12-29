@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react";
 import {
 	Button,
 	Dialog,
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	CircularProgress,
 	Grid,
 	Typography,
 } from "@mui/material";
@@ -30,15 +28,6 @@ export default function TaskDetailViewModal({
 	updateLabels,
 	updatePriority,
 }: Props) {
-	const [selectedTask, setSelectedTask] = useState<Task>();
-	const [loading, setLoading] = useState(true);
-	const descriptionElementRef = useRef<HTMLElement>(null);
-
-	useEffect(() => {
-		setSelectedTask(selectedTaskProp);
-		setLoading(false);
-	}, [selectedTaskProp]);
-
 	return (
 		<Dialog
 			open={taskModalOpen}
@@ -55,61 +44,57 @@ export default function TaskDetailViewModal({
 					alignItems: "center",
 				}}
 			>
-				{selectedTask && (
+				{selectedTaskProp && (
 					<>
 						<Typography variant="h6" style={{ fontWeight: "bold" }}>
-							{selectedTask.title}
+							{selectedTaskProp.title}
 						</Typography>
 						<Priority
-							priority={selectedTask.priority}
-							taskId={selectedTask._id}
+							priority={selectedTaskProp.priority}
+							taskId={selectedTaskProp._id}
 							updatePriority={updatePriority}
 						/>
 					</>
 				)}
 			</DialogTitle>
 			<DialogContent dividers>
-				{loading ? (
-					<CircularProgress />
-				) : (
-					selectedTask && (
-						<Grid container spacing={4}>
-							<Grid item xs={12} md={8}>
-								<ItemLarge>
-									<Typography
-										variant="body1"
-										style={{ whiteSpace: "pre-line" }}
-									>
-										{selectedTask.description ||
-											"Sin descripción"}
-									</Typography>
-								</ItemLarge>
-							</Grid>
-							<Grid item xs={12} md={4}>
-								<Item>
-									<StatusChipComponent
-										completed={selectedTask.completed}
-									/>
-								</Item>
-								<Item>
-									<Typography
-										variant="subtitle1"
-										style={{
-											fontWeight: "bold",
-											marginBottom: 8,
-										}}
-									>
-										Etiquetas
-									</Typography>
-									<LabelsComponent
-										labels={selectedTask.labels ?? []}
-										taskId={selectedTask._id}
-										updateLabels={updateLabels}
-									/>
-								</Item>
-							</Grid>
+				{selectedTaskProp && (
+					<Grid container spacing={4}>
+						<Grid item xs={12} md={8}>
+							<ItemLarge>
+								<Typography
+									variant="body1"
+									style={{ whiteSpace: "pre-line" }}
+								>
+									{selectedTaskProp.description ||
+										"Sin descripción"}
+								</Typography>
+							</ItemLarge>
 						</Grid>
-					)
+						<Grid item xs={12} md={4}>
+							<Item>
+								<StatusChipComponent
+									completed={selectedTaskProp.completed}
+								/>
+							</Item>
+							<Item>
+								<Typography
+									variant="subtitle1"
+									style={{
+										fontWeight: "bold",
+										marginBottom: 8,
+									}}
+								>
+									Etiquetas
+								</Typography>
+								<LabelsComponent
+									labels={selectedTaskProp.labels ?? []}
+									taskId={selectedTaskProp._id}
+									updateLabels={updateLabels}
+								/>
+							</Item>
+						</Grid>
+					</Grid>
 				)}
 			</DialogContent>
 			<DialogActions>

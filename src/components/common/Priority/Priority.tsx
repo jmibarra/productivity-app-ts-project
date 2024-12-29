@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
 	IconButton,
 	Menu,
@@ -20,9 +20,12 @@ interface Props {
 
 const Priority = ({ priority, taskId, updatePriority }: Props) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const [currentPriority, setCurrentPriority] = useState<number | undefined>(
-		priority
-	);
+	const [currentPriority, setCurrentPriority] = useState(priority);
+
+	useEffect(() => {
+		// Sincronizar el estado interno con la prop cuando esta cambie
+		setCurrentPriority(priority);
+	}, [priority]);
 
 	const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -41,16 +44,18 @@ const Priority = ({ priority, taskId, updatePriority }: Props) => {
 	return (
 		<>
 			<IconButton edge="end" onClick={handleOpen}>
-				{(!priority || priority === 0) && (
+				{(!currentPriority || currentPriority === 0) && (
 					<QuestionMarkIcon sx={{ color: grey[500] }} />
 				)}
-				{priority === 1 && (
+				{currentPriority === 1 && (
 					<PriorityHighIcon sx={{ color: red[500] }} />
 				)}
-				{priority === 2 && (
+				{currentPriority === 2 && (
 					<LowPriorityIcon sx={{ color: yellow[500] }} />
 				)}
-				{priority === 3 && <AcUnitIcon sx={{ color: blue[500] }} />}
+				{currentPriority === 3 && (
+					<AcUnitIcon sx={{ color: blue[500] }} />
+				)}
 			</IconButton>
 
 			<Menu
