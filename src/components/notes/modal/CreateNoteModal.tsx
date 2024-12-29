@@ -11,8 +11,8 @@ import {
 	TextField,
 	Toolbar,
 	Typography,
-	Slide,
 	Box,
+	Slide,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
@@ -21,20 +21,21 @@ import { initialValues, validationSchema } from "./shemas";
 import { Note } from "../../../interfaces/tasks/interfaces";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
 import ColorPickerComponent from "../../common/ColorPicker/ColorPickerComponent";
-import { TransitionProps } from "@mui/material/transitions";
 
-interface Props {
-	addNote: (note: Note) => void;
-}
+import { TransitionProps } from "@mui/material/transitions";
 
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
-		children: React.ReactElement;
+		children: React.ReactElement<any, any>;
 	},
 	ref: React.Ref<unknown>
 ) {
 	return <Slide direction="up" ref={ref} {...props} />;
 });
+
+interface Props {
+	addNote: (note: Note) => void;
+}
 
 export default function CreateNoteModalComponent({ addNote }: Props) {
 	const [open, setOpen] = React.useState(false);
@@ -53,6 +54,10 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 
 	const handleClose = () => {
 		setOpen(false);
+		formik.resetForm();
+		setSelectedColor("#ffee93");
+		setLabels([]);
+		setContent("");
 	};
 
 	const formik = useFormik({
@@ -79,15 +84,6 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 	const updateLabels = (id: string, labels: string[]): void => {
 		setLabels(labels);
 	};
-
-	const Transition = React.forwardRef(function Transition(
-		props: TransitionProps & {
-			children: React.ReactElement<any, any>;
-		},
-		ref: React.Ref<unknown>
-	) {
-		return <Slide direction="up" ref={ref} {...props} />;
-	});
 
 	return (
 		<div>
