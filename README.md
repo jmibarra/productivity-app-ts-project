@@ -44,3 +44,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# API
+This project connects to an API that interfaces with our MongoDB database.  
+You can access the API project [here](https://github.com/jmibarra/productivity-app-ts-api-project).
