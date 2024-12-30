@@ -59,7 +59,7 @@ export const CompletedText = styled(Typography)(({ theme }) => ({
 
 export const DescriptionText = styled(Typography)(({ theme }) => ({
     color: "#555",
-    width: "70%",
+    width: "60%",
 }));
 
 export const Container = styled("div")({

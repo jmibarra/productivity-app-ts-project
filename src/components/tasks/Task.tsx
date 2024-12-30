@@ -43,7 +43,7 @@ const TaskComponent = ({
 			<TaskContainer>
 				<ListItem
 					secondaryAction={
-						<Box display="flex" alignItems="center" gap={2}>
+						<Box display="flex" alignItems="center" gap={1}>
 							{task.dueDate && (
 								<DueDateComponent dueDate={task.dueDate} />
 							)}
