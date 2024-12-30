@@ -51,13 +51,16 @@ const TaskList = ({
 					);
 				})}
 			</List>
-			<TaskDetailViewModal
-				handleClose={handleCloseModal}
-				taskModalOpen={taskModalOpen}
-				selectedTaskProp={selectedTask}
-				updateLabels={updateLabels}
-				updatePriority={updatePriority}
-			/>
+			{selectedTask && (
+				<TaskDetailViewModal
+					handleClose={handleCloseModal}
+					taskModalOpen={taskModalOpen}
+					selectedTaskProp={selectedTask}
+					updateLabels={updateLabels}
+					updatePriority={updatePriority}
+					toogleTask={toogleTask}
+				/>
+			)}
 		</>
 	);
 };

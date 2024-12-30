@@ -1,5 +1,6 @@
 import {
 	Button,
+	Checkbox,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -12,13 +13,15 @@ import StatusChipComponent from "../../common/StatusChipComponent";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
 import { Task } from "../../../interfaces/tasks/interfaces";
 import Priority from "../../common/Priority/Priority";
+import { useEffect, useState } from "react";
 
 interface Props {
 	handleClose: () => void;
 	taskModalOpen: boolean;
-	selectedTaskProp: Task | undefined;
+	selectedTaskProp: Task;
 	updateLabels: (id: string, labels: string[]) => void;
 	updatePriority: (id: string, newPriority: number) => void;
+	toogleTask: (id: string, completed: boolean) => void;
 }
 
 export default function TaskDetailViewModal({
@@ -27,7 +30,17 @@ export default function TaskDetailViewModal({
 	selectedTaskProp,
 	updateLabels,
 	updatePriority,
+	toogleTask,
 }: Props) {
+	const [localCompleted, setLocalCompleted] = useState(
+		selectedTaskProp.completed
+	);
+
+	const handleToggle = (id: string, completed: boolean) => () => {
+		setLocalCompleted(!localCompleted);
+		toogleTask(id, completed);
+	};
+
 	return (
 		<Dialog
 			open={taskModalOpen}
@@ -46,6 +59,16 @@ export default function TaskDetailViewModal({
 			>
 				{selectedTaskProp && (
 					<>
+						<Checkbox
+							edge="start"
+							checked={localCompleted}
+							tabIndex={-1}
+							disableRipple
+							onClick={handleToggle(
+								selectedTaskProp._id,
+								selectedTaskProp.completed
+							)}
+						/>
 						<Typography variant="h6" style={{ fontWeight: "bold" }}>
 							{selectedTaskProp.title}
 						</Typography>
