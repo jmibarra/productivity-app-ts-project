@@ -9,6 +9,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { CompletedText, TaskContainer } from "./styles/TasksStyles";
 import Priority from "../common/Priority/Priority";
 import { Box } from "@mui/material";
+import DueDateComponent from "../common/DueDate/DueDateComponent";
 
 interface Props {
 	task: Task;
@@ -38,6 +39,9 @@ const TaskComponent = ({
 				<ListItem
 					secondaryAction={
 						<Box display="flex" alignItems="center" gap={2}>
+							{task.dueDate && (
+								<DueDateComponent dueDate={task.dueDate} />
+							)}
 							<Priority
 								priority={task.priority}
 								taskId={task._id}
@@ -88,7 +92,6 @@ const TaskComponent = ({
 							}
 						/>
 					</ListItemButton>
-					{task.dueDate}
 				</ListItem>
 			</TaskContainer>
 		</>
