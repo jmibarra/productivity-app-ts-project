@@ -23,12 +23,14 @@ import TaskQuickInputComponent from "./TaskQuickInput";
 import Cookies from "js-cookie";
 import {
 	Box,
+	CircularProgress,
 	IconButton,
 	Menu,
 	MenuItem,
 	Switch,
 	Tooltip,
 } from "@mui/material";
+import { ItemLoading } from "../notes/styles/NotesStyles";
 
 interface HeadersInit {
 	headers: Headers;
@@ -36,6 +38,7 @@ interface HeadersInit {
 }
 
 const Tasks = () => {
+	const [loading, setLoading] = useState(false);
 	const [state, dispatch] = useReducer(tasksReducer, initialState);
 	const [taskFormModalOpen, settaskFormModalOpen] = useState(false);
 	const [page, setPage] = useState(1);
@@ -83,6 +86,7 @@ const Tasks = () => {
 	const fetchAllTasks = useCallback(
 		async (page: number, limit: number) => {
 			try {
+				setLoading(true);
 				const headers = new Headers() as HeadersInit["headers"];
 				headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 
@@ -108,6 +112,7 @@ const Tasks = () => {
 								Math.trunc(responseJson.count / limit) + 1
 							);
 						}
+						setLoading(false);
 					});
 			} catch (response) {
 				console.log("Error", response);
@@ -334,13 +339,19 @@ const Tasks = () => {
 					</Menu>
 				</Box>
 				<TaskQuickInputComponent addTask={addTask} />
-				<TaskList
-					tasks={state.tasks}
-					deleteTask={deleteTask}
-					toogleTask={toogleTask}
-					updateLabels={updateLabels}
-					updatePriority={updatePriority}
-				/>
+				{loading ? (
+					<ItemLoading>
+						<CircularProgress />
+					</ItemLoading>
+				) : (
+					<TaskList
+						tasks={state.tasks}
+						deleteTask={deleteTask}
+						toogleTask={toogleTask}
+						updateLabels={updateLabels}
+						updatePriority={updatePriority}
+					/>
+				)}
 			</Content>
 			<Footer>
 				<Pagination
