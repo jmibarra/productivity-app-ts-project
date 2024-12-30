@@ -54,6 +54,12 @@ export const ItemFooter = styled(Paper)(({ theme }) => ({
 export const CompletedText = styled(Typography)(({ theme }) => ({
     textDecoration: "line-through",
     color: theme.palette.grey[500],
+    width: "70%",
+}));
+
+export const DescriptionText = styled(Typography)(({ theme }) => ({
+    color: "#555",
+    width: "70%",
 }));
 
 export const Container = styled("div")({

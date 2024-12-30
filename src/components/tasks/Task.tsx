@@ -6,7 +6,11 @@ import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CompletedText, TaskContainer } from "./styles/TasksStyles";
+import {
+	CompletedText,
+	TaskContainer,
+	DescriptionText,
+} from "./styles/TasksStyles";
 import Priority from "../common/Priority/Priority";
 import { Box } from "@mui/material";
 import DueDateComponent from "../common/DueDate/DueDateComponent";
@@ -90,7 +94,7 @@ const TaskComponent = ({
 							secondaryTypographyProps={
 								task.completed
 									? { component: CompletedText }
-									: { style: { color: "#555" } }
+									: { component: DescriptionText }
 							}
 						/>
 					</ListItemButton>
