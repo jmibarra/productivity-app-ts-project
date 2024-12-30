@@ -21,7 +21,14 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import TaskQuickInputComponent from "./TaskQuickInput";
 import Cookies from "js-cookie";
-import { Box, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
+import {
+	Box,
+	IconButton,
+	Menu,
+	MenuItem,
+	Switch,
+	Tooltip,
+} from "@mui/material";
 
 interface HeadersInit {
 	headers: Headers;
@@ -39,6 +46,7 @@ const Tasks = () => {
 	const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
 		null
 	);
+	const [showCompleted, setShowCompleted] = useState(true);
 
 	const handleFilterClick = (event: React.MouseEvent<HTMLElement>) => {
 		setFilterMenuAnchor(event.currentTarget);
@@ -58,7 +66,6 @@ const Tasks = () => {
 
 	const applyFilter = (filterType: string) => {
 		console.log(`Applying filter: ${filterType}`);
-		handleFilterClose();
 	};
 
 	const applySort = (sortType: string) => {
@@ -251,6 +258,17 @@ const Tasks = () => {
 		fetchAllTasks(page, 10);
 	}, [fetchAllTasks, page]);
 
+	const handleChangeShowCompleted = (
+		event: React.ChangeEvent<HTMLInputElement>
+	) => {
+		setShowCompleted(event.target.checked);
+		if (event.target.checked) {
+			applyFilter("completed");
+		} else {
+			applyFilter("pending");
+		}
+	};
+
 	return (
 		<Container>
 			<Header>
@@ -277,8 +295,13 @@ const Tasks = () => {
 						open={Boolean(filterMenuAnchor)}
 						onClose={handleFilterClose}
 					>
-						<MenuItem onClick={() => applyFilter("completed")}>
-							Completadas
+						<MenuItem>
+							Mostrar completadas
+							<Switch
+								checked={showCompleted}
+								onChange={handleChangeShowCompleted}
+								inputProps={{ "aria-label": "controlled" }}
+							/>
 						</MenuItem>
 						<MenuItem onClick={() => applyFilter("pending")}>
 							Pendientes
