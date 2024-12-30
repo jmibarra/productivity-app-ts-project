@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import {
 	Button,
 	Dialog,
@@ -16,6 +17,12 @@ import * as Yup from "yup";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
 import { Item } from "./TaskFormStyles";
 import { useState } from "react";
+
+import { DatePicker } from "@mui/x-date-pickers";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { time } from "console";
 
 interface Props {
 	addTask: (task: Task) => void;
@@ -37,6 +44,7 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 	});
 
 	const createTask = (object: any) => {
+		console.log(object);
 		let task: Task = {
 			...object,
 			id: shortid.generate(),
@@ -111,6 +119,22 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 								formik.errors.description
 							}
 						/>
+						<LocalizationProvider dateAdapter={AdapterDayjs}>
+							<DateTimePicker
+								label="Fecha de vencimiento"
+								value={
+									formik.values.dueDate
+										? dayjs(formik.values.dueDate)
+										: null
+								}
+								onChange={(newValue) => {
+									formik.setFieldValue(
+										"dueDate",
+										newValue?.toISOString() || null
+									);
+								}}
+							/>
+						</LocalizationProvider>
 					</Box>
 					<Item>
 						<LabelsComponent

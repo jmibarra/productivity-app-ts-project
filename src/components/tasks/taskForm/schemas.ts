@@ -3,6 +3,7 @@ import * as Yup from "yup";
 export const initialValues = {
     title: "",
     description: "",
+    dueDate: new Date(),
 };
 
 export const validationSchema = {
