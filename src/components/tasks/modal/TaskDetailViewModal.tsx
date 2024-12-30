@@ -1,4 +1,6 @@
+import { useState } from "react";
 import {
+	Box,
 	Button,
 	Checkbox,
 	Dialog,
@@ -13,7 +15,10 @@ import StatusChipComponent from "../../common/StatusChipComponent";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
 import { Task } from "../../../interfaces/tasks/interfaces";
 import Priority from "../../common/Priority/Priority";
-import { useEffect, useState } from "react";
+
+import HorizontalDivider from "../../common/HorizontalDivider";
+import DueDateComponent from "../../common/DueDate/DueDateComponent";
+import EmptyDateComponent from "../../common/DueDate/EmptyDateComponent";
 
 interface Props {
 	handleClose: () => void;
@@ -59,19 +64,27 @@ export default function TaskDetailViewModal({
 			>
 				{selectedTaskProp && (
 					<>
-						<Checkbox
-							edge="start"
-							checked={localCompleted}
-							tabIndex={-1}
-							disableRipple
-							onClick={handleToggle(
-								selectedTaskProp._id,
-								selectedTaskProp.completed
+						<Box display="flex" alignItems="center">
+							<Checkbox
+								edge="start"
+								checked={localCompleted}
+								tabIndex={-1}
+								disableRipple
+								onClick={handleToggle(
+									selectedTaskProp._id,
+									selectedTaskProp.completed
+								)}
+							/>
+							<HorizontalDivider />
+							{/* Si existe selectedTaskProp muestro el componente sino muestro el componente emptyDate */}
+							{selectedTaskProp.dueDate ? (
+								<DueDateComponent
+									dueDate={selectedTaskProp.dueDate}
+								/>
+							) : (
+								<EmptyDateComponent />
 							)}
-						/>
-						<Typography variant="h6" style={{ fontWeight: "bold" }}>
-							{selectedTaskProp.title}
-						</Typography>
+						</Box>
 						<Priority
 							priority={selectedTaskProp.priority}
 							taskId={selectedTaskProp._id}
@@ -83,6 +96,14 @@ export default function TaskDetailViewModal({
 			<DialogContent dividers>
 				{selectedTaskProp && (
 					<Grid container spacing={4}>
+						<Grid item xs={12} md={8}>
+							<Typography
+								variant="h6"
+								style={{ fontWeight: "bold" }}
+							>
+								{selectedTaskProp.title}
+							</Typography>
+						</Grid>
 						<Grid item xs={12} md={8}>
 							<ItemLarge>
 								<Typography

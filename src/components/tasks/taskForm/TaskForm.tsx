@@ -18,11 +18,9 @@ import LabelsComponent from "../../common/Labels/LabelsComponent";
 import { Item } from "./TaskFormStyles";
 import { useState } from "react";
 
-import { DatePicker } from "@mui/x-date-pickers";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { time } from "console";
 
 interface Props {
 	addTask: (task: Task) => void;
