@@ -88,6 +88,7 @@ const TaskComponent = ({
 							}
 						/>
 					</ListItemButton>
+					{task.dueDate}
 				</ListItem>
 			</TaskContainer>
 		</>

@@ -101,7 +101,6 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 					<Box mb={2}>
 						<TextField
 							fullWidth
-							variant="outlined"
 							name="description"
 							label="Descripción"
 							placeholder="Ingresa una descripción para la tarea"
@@ -119,6 +118,8 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 								formik.errors.description
 							}
 						/>
+					</Box>
+					<Box mb={2}>
 						<LocalizationProvider dateAdapter={AdapterDayjs}>
 							<DateTimePicker
 								label="Fecha de vencimiento"
@@ -127,6 +128,7 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 										? dayjs(formik.values.dueDate)
 										: null
 								}
+								format="DD/MM/YYYY HH:mm"
 								onChange={(newValue) => {
 									formik.setFieldValue(
 										"dueDate",
