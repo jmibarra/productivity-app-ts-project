@@ -35,6 +35,7 @@ const Tasks = () => {
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
 	const [sessionToken, setSessionToken] = useState<string | null>(null);
+	const [showCompleted, setShowCompleted] = useState(true);
 
 	const handlePageChange = (
 		event: React.ChangeEvent<unknown>,
@@ -210,6 +211,24 @@ const Tasks = () => {
 		}
 	};
 
+	const getFilteredAndSortedTasks = () => {
+		let filteredTasks = state.tasks;
+
+		// Filtrar tareas según los criterios
+		if (!showCompleted) {
+			filteredTasks = filteredTasks.filter((task) => !task.completed);
+		}
+
+		// // Ordenar tareas según la opción seleccionada
+		// if (sortOption === "priority") {
+		//     filteredTasks = filteredTasks.sort((a, b) => a.priority - b.priority);
+		// } else if (sortOption === "date") {
+		//     filteredTasks = filteredTasks.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+		// }
+
+		return filteredTasks;
+	};
+
 	useEffect(() => {
 		const token = Cookies.get("PROD-APP-AUTH");
 
@@ -226,7 +245,10 @@ const Tasks = () => {
 				</h1>
 			</Header>
 			<Content>
-				<FilterAndSortComponent />
+				<FilterAndSortComponent
+					showCompleted={showCompleted}
+					setShowCompleted={setShowCompleted}
+				/>
 				<TaskQuickInputComponent addTask={addTask} />
 				{loading ? (
 					<ItemLoading>
@@ -234,7 +256,7 @@ const Tasks = () => {
 					</ItemLoading>
 				) : (
 					<TaskList
-						tasks={state.tasks}
+						tasks={getFilteredAndSortedTasks()}
 						deleteTask={deleteTask}
 						toogleTask={toogleTask}
 						updateLabels={updateLabels}

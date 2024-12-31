@@ -10,14 +10,20 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { useState } from "react";
 
-const FilterAndSortComponent = () => {
+interface FilterAndSortComponentProps {
+	showCompleted: boolean;
+	setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const FilterAndSortComponent = ({
+	showCompleted,
+	setShowCompleted,
+}: FilterAndSortComponentProps) => {
 	const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
 		null
 	);
 	const [filterMenuAnchor, setFilterMenuAnchor] =
 		useState<null | HTMLElement>(null);
-
-	const [showCompleted, setShowCompleted] = useState(true);
 
 	const handleChangeShowCompleted = (
 		event: React.ChangeEvent<HTMLInputElement>
