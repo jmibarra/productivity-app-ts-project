@@ -52,7 +52,7 @@ const Tasks = () => {
 				const headers = new Headers() as HeadersInit["headers"];
 				headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 
-				const url = `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortby=${sortBy}`;
+				const url = `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortBy=${sortBy}`;
 
 				fetch(url, {
 					headers,

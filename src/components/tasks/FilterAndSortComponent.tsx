@@ -109,7 +109,7 @@ const FilterAndSortComponent = ({
 				open={Boolean(sortMenuAnchor)}
 				onClose={handleSortClose}
 			>
-				<MenuItem onClick={() => applySort("name")}>Nombre</MenuItem>
+				<MenuItem onClick={() => applySort("title")}>Nombre</MenuItem>
 				<MenuItem onClick={() => applySort("dueDate")}>
 					Fecha de vencimiento
 				</MenuItem>
