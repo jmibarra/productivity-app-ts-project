@@ -35,7 +35,8 @@ const Tasks = () => {
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
 	const [sessionToken, setSessionToken] = useState<string | null>(null);
-	const [showCompleted, setShowCompleted] = useState(true);
+	const [showCompleted, setShowCompleted] = useState(false);
+	const [sortOption, setSortOption] = useState("");
 
 	const handlePageChange = (
 		event: React.ChangeEvent<unknown>,
@@ -45,13 +46,13 @@ const Tasks = () => {
 	};
 
 	const fetchAllTasks = useCallback(
-		async (page: number, limit: number, filter: string) => {
+		async (page: number, limit: number, sortBy: string) => {
 			try {
 				setLoading(true);
 				const headers = new Headers() as HeadersInit["headers"];
 				headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 
-				const url = `${properties.api_url}/tasks?page=${page}&limit=${limit}`;
+				const url = `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortby=${sortBy}`;
 
 				fetch(url, {
 					headers,
@@ -219,13 +220,6 @@ const Tasks = () => {
 			filteredTasks = filteredTasks.filter((task) => !task.completed);
 		}
 
-		// // Ordenar tareas según la opción seleccionada
-		// if (sortOption === "priority") {
-		//     filteredTasks = filteredTasks.sort((a, b) => a.priority - b.priority);
-		// } else if (sortOption === "date") {
-		//     filteredTasks = filteredTasks.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-		// }
-
 		return filteredTasks;
 	};
 
@@ -234,8 +228,8 @@ const Tasks = () => {
 
 		if (token) setSessionToken(token);
 
-		fetchAllTasks(page, 10, "");
-	}, [fetchAllTasks, page]);
+		fetchAllTasks(page, 10, sortOption);
+	}, [fetchAllTasks, page, sortOption]);
 
 	return (
 		<Container>
@@ -248,6 +242,7 @@ const Tasks = () => {
 				<FilterAndSortComponent
 					showCompleted={showCompleted}
 					setShowCompleted={setShowCompleted}
+					setSortOption={setSortOption}
 				/>
 				<TaskQuickInputComponent addTask={addTask} />
 				{loading ? (

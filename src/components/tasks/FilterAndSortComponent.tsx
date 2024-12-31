@@ -13,11 +13,13 @@ import { useState } from "react";
 interface FilterAndSortComponentProps {
 	showCompleted: boolean;
 	setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
+	setSortOption: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FilterAndSortComponent = ({
 	showCompleted,
 	setShowCompleted,
+	setSortOption,
 }: FilterAndSortComponentProps) => {
 	const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
 		null
@@ -42,6 +44,7 @@ const FilterAndSortComponent = ({
 
 	const applySort = (sortType: string) => {
 		console.log(`Applying sort: ${sortType}`);
+		setSortOption(sortType);
 		handleSortClose();
 	};
 
@@ -107,7 +110,9 @@ const FilterAndSortComponent = ({
 				onClose={handleSortClose}
 			>
 				<MenuItem onClick={() => applySort("name")}>Nombre</MenuItem>
-				<MenuItem onClick={() => applySort("date")}>Fecha</MenuItem>
+				<MenuItem onClick={() => applySort("dueDate")}>
+					Fecha de vencimiento
+				</MenuItem>
 				<MenuItem onClick={() => applySort("priority")}>
 					Prioridad
 				</MenuItem>
