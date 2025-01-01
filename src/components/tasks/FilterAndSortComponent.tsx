@@ -13,6 +13,11 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import { useState } from "react";
 
+import TextFormatIcon from "@mui/icons-material/TextFormat";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import AlarmIcon from "@mui/icons-material/Alarm";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+
 interface FilterAndSortComponentProps {
 	showCompleted: boolean;
 	setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
@@ -123,12 +128,17 @@ const FilterAndSortComponent = ({
 				open={Boolean(sortMenuAnchor)}
 				onClose={handleSortClose}
 			>
-				<MenuItem onClick={() => applySort("title")}>Nombre</MenuItem>
+				<MenuItem onClick={() => applySort("title")}>
+					<TextFormatIcon /> Nombre
+				</MenuItem>
+				<MenuItem onClick={() => applySort("createdAt")}>
+					<CalendarMonthIcon /> Fecha de creación
+				</MenuItem>
 				<MenuItem onClick={() => applySort("dueDate")}>
-					Fecha de vencimiento
+					<AlarmIcon /> Fecha de vencimiento
 				</MenuItem>
 				<MenuItem onClick={() => applySort("priority")}>
-					Prioridad
+					<PriorityHighIcon /> Prioridad
 				</MenuItem>
 				<Divider />
 				<Box sx={{ display: "flex", justifyContent: "center" }}>
