@@ -1,9 +1,12 @@
 import {
 	Box,
+	Divider,
 	IconButton,
 	Menu,
 	MenuItem,
 	Switch,
+	ToggleButton,
+	ToggleButtonGroup,
 	Tooltip,
 } from "@mui/material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
@@ -14,12 +17,16 @@ interface FilterAndSortComponentProps {
 	showCompleted: boolean;
 	setShowCompleted: React.Dispatch<React.SetStateAction<boolean>>;
 	setSortOption: React.Dispatch<React.SetStateAction<string>>;
+	sortDirection: string;
+	setSortDirection: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FilterAndSortComponent = ({
 	showCompleted,
 	setShowCompleted,
 	setSortOption,
+	sortDirection,
+	setSortDirection,
 }: FilterAndSortComponentProps) => {
 	const [sortMenuAnchor, setSortMenuAnchor] = useState<null | HTMLElement>(
 		null
@@ -62,6 +69,13 @@ const FilterAndSortComponent = ({
 
 	const handleFilterClick = (event: React.MouseEvent<HTMLElement>) => {
 		setFilterMenuAnchor(event.currentTarget);
+	};
+
+	const handleChangeOrderDirection = (
+		event: React.MouseEvent<HTMLElement>,
+		newAlignment: string
+	) => {
+		setSortDirection(newAlignment);
 	};
 
 	return (
@@ -116,6 +130,19 @@ const FilterAndSortComponent = ({
 				<MenuItem onClick={() => applySort("priority")}>
 					Prioridad
 				</MenuItem>
+				<Divider />
+				<Box sx={{ display: "flex", justifyContent: "center" }}>
+					<ToggleButtonGroup
+						color="primary"
+						value={sortDirection}
+						exclusive
+						onChange={handleChangeOrderDirection}
+						aria-label="Platform"
+					>
+						<ToggleButton value="asc">Asc</ToggleButton>
+						<ToggleButton value="desc">Desc</ToggleButton>
+					</ToggleButtonGroup>
+				</Box>
 			</Menu>
 		</Box>
 	);

@@ -37,6 +37,7 @@ const Tasks = () => {
 	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [showCompleted, setShowCompleted] = useState(false);
 	const [sortOption, setSortOption] = useState("");
+	const [sortDirection, setSortDirection] = useState("asc");
 
 	const handlePageChange = (
 		event: React.ChangeEvent<unknown>,
@@ -46,13 +47,18 @@ const Tasks = () => {
 	};
 
 	const fetchAllTasks = useCallback(
-		async (page: number, limit: number, sortBy: string) => {
+		async (
+			page: number,
+			limit: number,
+			sortBy: string,
+			sortDirection: string
+		) => {
 			try {
 				setLoading(true);
 				const headers = new Headers() as HeadersInit["headers"];
 				headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 
-				const url = `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortBy=${sortBy}`;
+				const url = `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`;
 
 				fetch(url, {
 					headers,
@@ -228,8 +234,8 @@ const Tasks = () => {
 
 		if (token) setSessionToken(token);
 
-		fetchAllTasks(page, 10, sortOption);
-	}, [fetchAllTasks, page, sortOption]);
+		fetchAllTasks(page, 10, sortOption, sortDirection);
+	}, [fetchAllTasks, page, sortOption, sortDirection]);
 
 	return (
 		<Container>
@@ -243,6 +249,8 @@ const Tasks = () => {
 					showCompleted={showCompleted}
 					setShowCompleted={setShowCompleted}
 					setSortOption={setSortOption}
+					sortDirection={sortDirection}
+					setSortDirection={setSortDirection}
 				/>
 				<TaskQuickInputComponent addTask={addTask} />
 				{loading ? (
