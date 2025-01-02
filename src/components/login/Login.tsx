@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
 	TextField,
 	Button,
@@ -28,6 +29,8 @@ const Login = ({ isLoggedIn, setIsLoggedIn }: Props) => {
 	const [errorMessage, setErrorMessage] = useState("");
 	const [success, setSuccess] = useState(false);
 
+	const navigate = useNavigate();
+
 	const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setEmail(event.target.value);
 	};
@@ -55,6 +58,9 @@ const Login = ({ isLoggedIn, setIsLoggedIn }: Props) => {
 			Cookies.set("PROD-APP-AUTH", data.authentication.sessionToken);
 			setIsLoggedIn(true);
 			setSuccess(true);
+			setTimeout(() => {
+				navigate("/");
+			}, 1000);
 		} else {
 			setError(true);
 			setErrorMessage(
@@ -119,6 +125,18 @@ const Login = ({ isLoggedIn, setIsLoggedIn }: Props) => {
 						}}
 					>
 						Login
+					</Button>
+					<Typography variant="overline" align="center" gutterBottom>
+						¿No tienes cuenta?
+					</Typography>
+
+					<Button
+						variant="text"
+						onClick={() => {
+							navigate("/register");
+						}}
+					>
+						Registrarse
 					</Button>
 				</Stack>
 

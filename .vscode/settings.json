@@ -1,0 +1,50 @@
+{
+"terminal.integrated.tabs.enabled": true,
+"terminal.integrated.profiles.osx": {
+
+    "bash": {
+        "path": "bash",
+        "args": [
+            "-l"
+        ],
+        "icon": "terminal-bash"
+    },
+    "zsh": {
+        "path": "zsh",
+        "args": [
+            "-l"
+        ]
+    },
+    "Frontend": {
+        "path": "zsh",
+        "args": [
+            "-l"
+        ],
+        "icon": "vm",
+        "color": "terminal.ansiYellow",
+        "title": "Frontend",
+        "overrideName": true
+    },
+    "Backend": {
+        "path": "zsh",
+        "args": [
+            "-l"
+        ],
+        "icon": "server-environment",
+        "color": "terminal.ansiRed",
+        "title": "Server",
+        "overrideName": true
+    },
+    "GIT": {
+        "path": "zsh",
+        "args": [
+            "-l"
+        ],
+        "icon": "github",
+        "color": "terminal.ansiBlue",
+        "title": "GIT",
+        "overrideName": true
+    }
+},
+"terminal.integrated.defaultProfile.osx": "Frontend"
+}

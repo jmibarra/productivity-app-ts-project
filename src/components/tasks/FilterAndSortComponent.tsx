@@ -148,6 +148,7 @@ const FilterAndSortComponent = ({
 						exclusive
 						onChange={handleChangeOrderDirection}
 						aria-label="Platform"
+						size="small"
 					>
 						<ToggleButton value="asc">Asc</ToggleButton>
 						<ToggleButton value="desc">Desc</ToggleButton>
