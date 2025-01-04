@@ -1,6 +1,8 @@
-import { AccountCircle } from "@mui/icons-material";
-import { Avatar, Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
+import { AccountCircle } from "@mui/icons-material";
+import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
 
 const AvatarButtonComponent = () => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -36,8 +38,23 @@ const AvatarButtonComponent = () => {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			>
+				<MenuItem disabled>Juan Manuel Ibarra</MenuItem>
+				<Divider />
 				<MenuItem onClick={handleClose}>Profile</MenuItem>
 				<MenuItem onClick={handleClose}>My account</MenuItem>
+				<Divider />
+				<MenuItem onClick={handleClose}>
+					<ListItemIcon>
+						<Settings fontSize="small" />
+					</ListItemIcon>
+					Configuración
+				</MenuItem>
+				<MenuItem onClick={handleClose}>
+					<ListItemIcon>
+						<Logout fontSize="small" />
+					</ListItemIcon>
+					Logout
+				</MenuItem>
 			</Menu>
 		</>
 	);
