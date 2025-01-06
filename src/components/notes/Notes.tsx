@@ -20,8 +20,8 @@ import {
 	deleteNoteById,
 	fetchNotes,
 	patchNote,
-} from "./services/notesServices";
-import { Note } from "../../interfaces/tasks/interfaces";
+} from "../../services/notesServices";
+import { Note } from "../../interfaces/interfaces";
 
 const Notes = () => {
 	const [state, dispatch] = useReducer(notesReducer, initialState);

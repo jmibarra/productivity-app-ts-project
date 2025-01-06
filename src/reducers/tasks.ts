@@ -1,6 +1,6 @@
 import { Reducer } from "react";
 import { ReducerActionType } from "../actions/tasks"
-import { TasksState,Task } from "../interfaces/tasks/interfaces";
+import { TasksState,Task } from "../interfaces/interfaces";
 
 export type ReducerAction = {
     type: ReducerActionType;

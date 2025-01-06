@@ -1,6 +1,6 @@
 // /services/notesService.ts
-import { Note } from "../../../interfaces/tasks/interfaces";
-import { properties } from "../../../properties";
+import { Note } from "../interfaces/interfaces";
+import { properties } from "../properties";
 
 const getHeaders = (sessionToken: string | null) => {
 	const headers = new Headers();

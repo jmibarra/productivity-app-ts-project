@@ -1,4 +1,4 @@
-import { Task } from "../../interfaces/tasks/interfaces";
+import { Task } from "../../interfaces/interfaces";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";

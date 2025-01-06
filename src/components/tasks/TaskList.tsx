@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Task } from "../../interfaces/tasks/interfaces";
+import { Task } from "../../interfaces/interfaces";
 
 import TaskComponent from "./Task";
 import TaskDetailViewModal from "./modal/TaskDetailViewModal";

@@ -13,7 +13,7 @@ import {
 import { Item, ItemLarge } from "./styles/TaskDetailViewModalStyles";
 import StatusChipComponent from "../../common/StatusChipComponent";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
-import { Task } from "../../../interfaces/tasks/interfaces";
+import { Task } from "../../../interfaces/interfaces";
 import Priority from "../../common/Priority/Priority";
 
 import HorizontalDivider from "../../common/HorizontalDivider";

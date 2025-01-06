@@ -10,7 +10,7 @@ import {
 	Box,
 } from "@mui/material";
 import shortid from "shortid";
-import { Task } from "../../../interfaces/tasks/interfaces";
+import { Task } from "../../../interfaces/interfaces";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./schemas";
 import * as Yup from "yup";

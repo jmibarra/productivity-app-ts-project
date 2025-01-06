@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { format, isValid } from "date-fns";
 
-import { Note } from "../../interfaces/tasks/interfaces";
+import { Note } from "../../interfaces/interfaces";
 
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer, initialState } from "../../reducers/tasks";
-import { Task } from "../../interfaces/tasks/interfaces";
+import { Task } from "../../interfaces/interfaces";
 import { properties } from "../../properties";
 import TaskForm from "./taskForm/TaskForm";
 import TaskList from "./TaskList";
@@ -22,6 +22,7 @@ import Cookies from "js-cookie";
 import { CircularProgress } from "@mui/material";
 import { ItemLoading } from "../notes/styles/NotesStyles";
 import FilterAndSortComponent from "./FilterAndSortComponent";
+import { fetchTasks } from "../../services/tasksServices";
 
 interface HeadersInit {
 	headers: Headers;
@@ -50,35 +51,29 @@ const Tasks = () => {
 		async (
 			page: number,
 			limit: number,
-			sortBy: string,
+			sortOption: string,
 			sortDirection: string
 		) => {
+			setLoading(true);
 			try {
-				setLoading(true);
-				const headers = new Headers() as HeadersInit["headers"];
-				headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
-
-				const url = `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`;
-
-				fetch(url, {
-					headers,
-					credentials: "include",
-				})
-					.then((response) => response.json())
-					.then((responseJson) => {
-						dispatch({
-							type: ReducerActionType.GET_ALL_TASKS,
-							payload: responseJson.tasks,
-						});
-						if (responseJson.count > 0) {
-							setTotalPages(
-								Math.trunc(responseJson.count / limit) + 1
-							);
-						}
-						setLoading(false);
-					});
-			} catch (response) {
-				console.log("Error", response);
+				const responseJson = await fetchTasks(
+					page,
+					limit,
+					sortOption,
+					sortDirection,
+					sessionToken
+				);
+				dispatch({
+					type: ReducerActionType.GET_ALL_TASKS,
+					payload: responseJson.tasks,
+				});
+				if (responseJson.count > 0) {
+					setTotalPages(Math.ceil(responseJson.count / limit));
+				}
+			} catch (error) {
+				console.error("Error fetching tasks", error);
+			} finally {
+				setLoading(false);
 			}
 		},
 		[sessionToken]
