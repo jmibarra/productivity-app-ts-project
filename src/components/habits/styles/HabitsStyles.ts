@@ -8,12 +8,11 @@ export const Container = styled("div")({
 });
 
 export const Header = styled("header")({
-  textAlign: "center",
-  backgroundColor: "#f5f5f5",
-  borderRadius: "14px",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-  marginTop: "20px",
-  padding: "16px",
+	textAlign: "center",
+	backgroundColor: "#f5f5f5",
+	borderRadius: "14px",
+	boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    marginTop: "50px",
 });
 
 export const Content = styled("div")({
