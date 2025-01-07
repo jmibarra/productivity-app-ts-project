@@ -13,37 +13,91 @@ import {
 	MonthlyCalendar,
 } from "./styles/HabitsStyles";
 import { CircularProgress } from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
+import HabitsList from "./HabitsList";
+import { Habit } from "../../interfaces";
 
-const mockHabits = [
+/*
+Interfaz de los habitos
+
+export interface Habit {
+    _id?: string;
+    user_id: string; // ID del usuario
+    name: string; // Nombre del hábito
+    description?: string; // Descripción opcional
+    icon?: string; // Identificador del icono
+    goal: {
+      type: "daily" | "quantity"; // Tipo de objetivo
+      target: number; // Objetivo (e.g., 1 para cumplido o cantidad específica)
+    };
+    frequency: {
+      type: "daily" | "weekly" | "interval"; // Tipo de frecuencia
+      details: {
+        days_of_week?: string[]; // Días específicos para 'daily'
+        weekly_target?: number; // Número de días por semana para 'weekly'
+        interval_days?: number; // Días entre repeticiones para 'interval'
+      };
+    };
+    streak: number; // Días consecutivos cumplidos
+    created_at?: Date;
+    updated_at?: Date;
+}
+
+/*/
+
+const mockHabits: Habit[] = [
 	{
-		id: 1,
+		_id: "1",
+		user_id: "123",
 		name: "Journaling / Objetivos del día",
 		icon: "📔",
+		goal: {
+			type: "daily",
+			target: 1,
+		},
+		frequency: {
+			type: "daily",
+			details: {
+				days_of_week: [
+					"monday",
+					"tuesday",
+					"wednesday",
+					"thursday",
+					"friday",
+					"saturday",
+					"sunday",
+				],
+			},
+		},
 		streak: 250,
-		daysChecked: [true, true, false, true, false, false, false],
+		created_at: new Date(),
+		updated_at: new Date(),
 	},
 	{
-		id: 2,
-		name: "Comer sano",
-		icon: "🥗",
-		streak: 483,
-		daysChecked: [true, false, false, false, true, false, false],
-	},
-	{
-		id: 3,
-		name: "Hacer ejercicio",
-		icon: "🏋️",
-		streak: 571,
-		daysChecked: [true, true, false, true, false, false, false],
-	},
-	{
-		id: 4,
-		name: "Tomar 2L de agua",
-		icon: "💧",
-		streak: 857,
-		daysChecked: [true, true, false, true, true, false, false],
+		_id: "2",
+		user_id: "123",
+		name: "Meditación",
+		icon: "🧘",
+		goal: {
+			type: "daily",
+			target: 1,
+		},
+		frequency: {
+			type: "daily",
+			details: {
+				days_of_week: [
+					"monday",
+					"tuesday",
+					"wednesday",
+					"thursday",
+					"friday",
+					"saturday",
+					"sunday",
+				],
+			},
+		},
+		streak: 250,
+		created_at: new Date(),
+		updated_at: new Date(),
 	},
 ];
 
@@ -61,44 +115,7 @@ const Habits = () => {
 			{!loading && (
 				<Content>
 					{/* Columna izquierda: Lista de hábitos */}
-					<HabitList>
-						{mockHabits.map((habit) => (
-							<HabitItem key={habit.id}>
-								<HabitInfo>
-									<span>{habit.icon}</span>
-									<div>
-										<h3>{habit.name}</h3>
-										<p>{habit.streak} días</p>
-									</div>
-								</HabitInfo>
-								<Calendar>
-									{habit.daysChecked.map((checked, index) => (
-										<div
-											key={index}
-											className={
-												checked
-													? "checked"
-													: "unchecked"
-											}
-										>
-											{checked ? (
-												<CheckIcon
-													fontSize="small"
-													color="inherit"
-												/>
-											) : (
-												<CloseIcon
-													fontSize="small"
-													color="inherit"
-												/>
-											)}
-										</div>
-									))}
-								</Calendar>
-							</HabitItem>
-						))}
-					</HabitList>
-
+					<HabitsList habits={mockHabits} />
 					{/* Columna derecha: Estadísticas y calendario mensual */}
 					<HabitStats>
 						<StatsGrid>

@@ -16,6 +16,7 @@ export interface Habit {
         interval_days?: number; // Días entre repeticiones para 'interval'
       };
     };
+    streak: number; // Días consecutivos cumplidos
     created_at?: Date;
     updated_at?: Date;
 }
