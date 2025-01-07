@@ -20,7 +20,7 @@ export interface Habit {
     updated_at?: Date;
 }
 
-export interface HabitState {
+export interface HabitsState {
     habits: Habit[];
     selectedHabit?: Habit;
     loading: boolean;
