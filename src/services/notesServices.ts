@@ -1,5 +1,5 @@
 // /services/notesService.ts
-import { Note } from "../interfaces/interfaces";
+import { Note } from "../interfaces/notes";
 import { properties } from "../properties";
 
 const getHeaders = (sessionToken: string | null) => {

@@ -21,7 +21,7 @@ import {
 	fetchNotes,
 	patchNote,
 } from "../../services/notesServices";
-import { Note } from "../../interfaces/interfaces";
+import { Note } from "../../interfaces/notes";
 
 const Notes = () => {
 	const [state, dispatch] = useReducer(notesReducer, initialState);

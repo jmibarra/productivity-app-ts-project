@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { ReducerActionType } from "../../actions/tasks";
 import { tasksReducer, initialState } from "../../reducers/tasks";
-import { Task } from "../../interfaces/interfaces";
-import { properties } from "../../properties";
+import { Task } from "../../interfaces";
 import TaskForm from "./taskForm/TaskForm";
 import TaskList from "./TaskList";
 import Pagination from "@mui/material/Pagination";
@@ -22,7 +21,12 @@ import Cookies from "js-cookie";
 import { CircularProgress } from "@mui/material";
 import { ItemLoading } from "../notes/styles/NotesStyles";
 import FilterAndSortComponent from "./FilterAndSortComponent";
-import { fetchTasks } from "../../services/tasksServices";
+import {
+	createTask,
+	deleteTaskById,
+	fetchTasks,
+	patchTask,
+} from "../../services/tasksServices";
 
 interface HeadersInit {
 	headers: Headers;
@@ -37,8 +41,8 @@ const Tasks = () => {
 	const [totalPages, setTotalPages] = useState(0);
 	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [showCompleted, setShowCompleted] = useState(false);
-	const [sortOption, setSortOption] = useState("");
-	const [sortDirection, setSortDirection] = useState("asc");
+	const [sortOption, setSortOption] = useState("createdAt");
+	const [sortDirection, setSortDirection] = useState("desc");
 
 	const handlePageChange = (
 		event: React.ChangeEvent<unknown>,
@@ -81,25 +85,7 @@ const Tasks = () => {
 
 	const addTask = async (task: Task): Promise<void> => {
 		try {
-			const headers = new Headers() as HeadersInit["headers"];
-			headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
-			headers.append("Content-Type", "application/json");
-
-			const response = await fetch(properties.api_url + "/tasks", {
-				method: "POST",
-				headers,
-				credentials: "include",
-				body: JSON.stringify(task),
-			});
-
-			if (!response.ok) {
-				console.log("Error", response);
-				return;
-			}
-
-			const responseJson = await response.json();
-			const createdTask: Task = responseJson;
-
+			const createdTask = await createTask(task, sessionToken);
 			dispatch({
 				type: ReducerActionType.SET_TASK,
 				payload: createdTask,
@@ -109,55 +95,20 @@ const Tasks = () => {
 		}
 	};
 
-	const deleteTask = (id: string): void => {
+	const deleteTask = async (id: string) => {
 		try {
-			const headers = new Headers() as HeadersInit["headers"];
-			headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
-			headers.append("Content-Type", "application/json");
-
-			fetch(properties.api_url + "/tasks/" + id, {
-				method: "DELETE",
-				headers,
-				credentials: "include",
-			}).then((response) => {
-				if (!response.ok) {
-					console.log("Error", response);
-				} else {
-					dispatch({
-						type: ReducerActionType.DELETE_TASK,
-						payload: id,
-					});
-				}
-			});
-		} catch (response) {
-			console.log("Error", response);
+			await deleteTaskById(id, sessionToken);
+			dispatch({ type: ReducerActionType.DELETE_TASK, payload: id });
+		} catch (error) {
+			console.error("Error deleting note", error);
 		}
 	};
 
 	const toogleTask = (id: string, completed: boolean): void => {
 		try {
-			const headers = new Headers() as HeadersInit["headers"];
-			headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
-			headers.append("Content-Type", "application/json");
-
 			dispatch({ type: ReducerActionType.COMPLETE_TASK, payload: id });
-
 			const data = { completed: !completed };
-
-			fetch(properties.api_url + "/tasks/" + id, {
-				method: "PATCH",
-				headers,
-				credentials: "include",
-				body: JSON.stringify(data),
-			}).then((response) => {
-				if (!response.ok) {
-					dispatch({
-						type: ReducerActionType.COMPLETE_TASK,
-						payload: id,
-					});
-					console.log("Error", response);
-				}
-			});
+			patchTask(id, data, sessionToken);
 		} catch (response) {
 			console.log("Error", response);
 		}
@@ -165,49 +116,25 @@ const Tasks = () => {
 
 	const updateLabels = (id: string, labels: string[]): void => {
 		try {
-			const headers = new Headers() as HeadersInit["headers"];
-			headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
-			headers.append("Content-Type", "application/json");
-
-			const data = { labels: labels };
-			fetch(properties.api_url + "/tasks/" + id, {
-				method: "PATCH",
-				headers,
-				credentials: "include",
-				body: JSON.stringify(data),
-			}).then((response) => {
-				if (response.ok) {
-					dispatch({
-						type: ReducerActionType.UPDATE_TASK_LABELS,
-						payload: { labels: labels, id: id },
-					});
-				}
+			dispatch({
+				type: ReducerActionType.UPDATE_TASK_LABELS,
+				payload: { labels: labels, id: id },
 			});
+			const data = { labels: labels };
+			patchTask(id, data, sessionToken);
 		} catch (response) {
 			console.log("Error", response);
 		}
 	};
 
-	const updatePriority = (id: String, priority: Number): void => {
+	const updatePriority = (id: string, priority: Number): void => {
 		try {
-			const headers = new Headers() as HeadersInit["headers"];
-			headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
-			headers.append("Content-Type", "application/json");
-
-			const data = { priority: priority };
-			fetch(properties.api_url + "/tasks/" + id, {
-				method: "PATCH",
-				headers,
-				credentials: "include",
-				body: JSON.stringify(data),
-			}).then((response) => {
-				if (response.ok) {
-					dispatch({
-						type: ReducerActionType.UPDATE_TASK_PRIORITY,
-						payload: { priority: priority, id: id },
-					});
-				}
+			dispatch({
+				type: ReducerActionType.UPDATE_TASK_PRIORITY,
+				payload: { priority: priority, id: id },
 			});
+			const data = { priority: priority };
+			patchTask(id, data, sessionToken);
 		} catch (response) {
 			console.log("Error", response);
 		}
@@ -218,7 +145,9 @@ const Tasks = () => {
 
 		// Filtrar tareas según los criterios
 		if (!showCompleted) {
-			filteredTasks = filteredTasks.filter((task) => !task.completed);
+			filteredTasks = filteredTasks.filter(
+				(task: Task) => !task.completed
+			);
 		}
 
 		return filteredTasks;
@@ -226,9 +155,7 @@ const Tasks = () => {
 
 	useEffect(() => {
 		const token = Cookies.get("PROD-APP-AUTH");
-
 		if (token) setSessionToken(token);
-
 		fetchAllTasks(page, 10, sortOption, sortDirection);
 	}, [fetchAllTasks, page, sortOption, sortDirection]);
 

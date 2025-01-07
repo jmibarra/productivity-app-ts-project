@@ -3,7 +3,7 @@ import AddTaskIcon from "@mui/icons-material/AddTask";
 import { Divider } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
-import { Task } from "../../interfaces/interfaces";
+import { Task } from "../../interfaces";
 import { useState } from "react";
 
 interface Props {

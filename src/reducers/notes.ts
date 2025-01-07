@@ -1,6 +1,6 @@
 import { Reducer } from "react";
 import { ReducerActionType } from "../actions/notes"
-import { Note, NotesState } from "../interfaces/interfaces";
+import { Note, NotesState } from "../interfaces/notes";
 
 export type ReducerAction = {
     type: ReducerActionType;

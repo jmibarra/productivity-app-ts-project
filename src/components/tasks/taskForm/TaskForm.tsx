@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import { useState } from "react";
 import {
 	Button,
 	Dialog,
@@ -10,14 +10,14 @@ import {
 	Box,
 } from "@mui/material";
 import shortid from "shortid";
-import { Task } from "../../../interfaces/interfaces";
+import { Task } from "../../../interfaces";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./schemas";
 import * as Yup from "yup";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
 import { Item } from "./TaskFormStyles";
-import { useState } from "react";
 
+import dayjs from "dayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";

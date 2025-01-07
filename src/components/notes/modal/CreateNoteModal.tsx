@@ -18,7 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useFormik } from "formik";
 import { initialValues, validationSchema } from "./shemas";
 
-import { Note } from "../../../interfaces/interfaces";
+import { Note } from "../../../interfaces/notes";
 import LabelsComponent from "../../common/Labels/LabelsComponent";
 import ColorPickerComponent from "../../common/ColorPicker/ColorPickerComponent";
 

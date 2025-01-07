@@ -1,4 +1,4 @@
-import { Note } from "../../interfaces/interfaces";
+import { Note } from "../../interfaces/notes";
 
 import Grid from "@mui/material/Grid";
 import NoteComponent from "./Note";
