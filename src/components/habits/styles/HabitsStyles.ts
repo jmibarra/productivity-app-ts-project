@@ -74,7 +74,7 @@ export const Calendar = styled("div")({
   },
 });
 
-export const HabitStats = styled("div")({
+export const HabitStatsContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   gap: "16px",

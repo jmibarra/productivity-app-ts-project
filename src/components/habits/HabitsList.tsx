@@ -11,12 +11,16 @@ import { Habit } from "../../interfaces";
 
 interface props {
 	habits: Habit[];
+	setSelectedHabit: React.Dispatch<React.SetStateAction<Habit | undefined>>;
 }
-const HabitsList = ({ habits }: props) => {
+const HabitsList = ({ habits, setSelectedHabit }: props) => {
 	return (
 		<HabitList>
 			{habits.map((habit) => (
-				<HabitItem key={habit._id}>
+				<HabitItem
+					key={habit._id}
+					onClick={() => setSelectedHabit(habit)}
+				>
 					<HabitInfo>
 						<span>{habit.icon}</span>
 						<div>

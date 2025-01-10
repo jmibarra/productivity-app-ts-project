@@ -1,20 +1,9 @@
 import { useState } from "react";
-import {
-	Container,
-	Header,
-	Content,
-	HabitList,
-	HabitItem,
-	HabitInfo,
-	Calendar,
-	HabitStats,
-	StatsGrid,
-	StatsBox,
-	MonthlyCalendar,
-} from "./styles/HabitsStyles";
+import { Container, Header, Content } from "./styles/HabitsStyles";
 import { CircularProgress } from "@mui/material";
 import HabitsList from "./HabitsList";
 import { Habit } from "../../interfaces";
+import HabitStats from "./HabitStats";
 
 /*
 Interfaz de los habitos
@@ -103,6 +92,7 @@ const mockHabits: Habit[] = [
 
 const Habits = () => {
 	const [loading, setLoading] = useState(false);
+	const [selectedHabit, setSelectedHabit] = useState<Habit | undefined>();
 
 	return (
 		<Container>
@@ -115,49 +105,12 @@ const Habits = () => {
 			{!loading && (
 				<Content>
 					{/* Columna izquierda: Lista de hábitos */}
-					<HabitsList habits={mockHabits} />
+					<HabitsList
+						habits={mockHabits}
+						setSelectedHabit={setSelectedHabit}
+					/>
 					{/* Columna derecha: Estadísticas y calendario mensual */}
-					<HabitStats>
-						<StatsGrid>
-							<StatsBox>
-								<h3>Hábitos completados</h3>
-								<p>95%</p>
-							</StatsBox>
-							<StatsBox>
-								<h3>Días consecutivos</h3>
-								<p>150</p>
-							</StatsBox>
-							<StatsBox>
-								<h3>Hábitos activos</h3>
-								<p>4</p>
-							</StatsBox>
-							<StatsBox>
-								<h3>Mejor racha</h3>
-								<p>857 días</p>
-							</StatsBox>
-						</StatsGrid>
-						<MonthlyCalendar>
-							<h3>Vista mensual</h3>
-							<div className="calendar-grid">
-								{/* Renderizamos 30 días como ejemplo */}
-								{Array.from({ length: 30 }).map((_, index) => (
-									<div
-										key={index}
-										className={
-											index % 2 === 0
-												? "day checked"
-												: "day unchecked"
-										}
-										onClick={() =>
-											console.log(`Día ${index + 1}`)
-										}
-									>
-										{index + 1}
-									</div>
-								))}
-							</div>
-						</MonthlyCalendar>
-					</HabitStats>
+					<HabitStats selectedHabit={selectedHabit} />
 				</Content>
 			)}
 		</Container>
