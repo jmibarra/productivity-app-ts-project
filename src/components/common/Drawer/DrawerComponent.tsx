@@ -11,7 +11,6 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import NotesIcon from "@mui/icons-material/Notes";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
@@ -22,9 +21,10 @@ import { ListItemButton } from "@mui/material";
 import { DrawerHeader, Main, StyledDrawer } from "./DrawerComponentStyles";
 import Logout from "../../login/Logout";
 import NavBar from "./AppBar/NavBar";
+import TaskListSelectorComponent from "./subSections/TaskListSelectorComponent";
 
 const mainActions = [
-	{ icon: <TaskAltIcon />, name: "Tareas", route: "/todos" },
+	{ customComponent: <TaskListSelectorComponent /> },
 	{ icon: <NotesIcon />, name: "Notas", route: "/notes" },
 	{ icon: <DirectionsRunIcon />, name: "Hábitos", route: "/habits" },
 	{ icon: <BarChartIcon />, name: "Métricas", route: "/metrics" },
@@ -87,17 +87,23 @@ export default function PersistentDrawerLeft({
 				{isLoggedIn && (
 					<>
 						<List>
-							{mainActions.map((action, index) => (
-								<ListItemButton
-									key={action.name}
-									onClick={() =>
-										handleRouteClick(action.route)
-									}
-								>
-									<ListItemIcon>{action.icon}</ListItemIcon>
-									<ListItemText primary={action.name} />
-								</ListItemButton>
-							))}
+							{mainActions.map((action, index) =>
+								action.customComponent ? (
+									action.customComponent
+								) : (
+									<ListItemButton
+										key={action.name}
+										onClick={() =>
+											handleRouteClick(action.route)
+										}
+									>
+										<ListItemIcon>
+											{action.icon}
+										</ListItemIcon>
+										<ListItemText primary={action.name} />
+									</ListItemButton>
+								)
+							)}
 						</List>
 						<Divider />
 						<List>
