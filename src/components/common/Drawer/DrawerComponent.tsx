@@ -86,7 +86,7 @@ export default function PersistentDrawerLeft({
 				<Divider />
 				{isLoggedIn && (
 					<>
-						<List>
+						<List key="main-drawer">
 							{mainActions.map((action, index) =>
 								action.customComponent ? (
 									action.customComponent
@@ -97,24 +97,32 @@ export default function PersistentDrawerLeft({
 											handleRouteClick(action.route)
 										}
 									>
-										<ListItemIcon>
+										<ListItemIcon
+											key={"icon" + action.name}
+										>
 											{action.icon}
 										</ListItemIcon>
-										<ListItemText primary={action.name} />
+										<ListItemText
+											primary={action.name}
+											key={"txt" + action.name}
+										/>
 									</ListItemButton>
 								)
 							)}
 						</List>
 						<Divider />
-						<List>
+						<List key="app-drawer">
 							{appActions.map((action, index) => (
 								<ListItemButton key={action.name}>
-									<ListItemIcon>{action.icon}</ListItemIcon>
+									<ListItemIcon key={"icon" + action.name}>
+										{action.icon}
+									</ListItemIcon>
 									<ListItemText
 										primary={action.name}
 										onClick={() =>
 											handleRouteClick(action.route)
 										}
+										key={"txt" + action.name}
 									/>
 								</ListItemButton>
 							))}

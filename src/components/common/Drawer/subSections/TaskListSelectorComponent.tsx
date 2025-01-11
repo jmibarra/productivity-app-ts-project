@@ -82,7 +82,7 @@ const TaskListSelectorComponent = () => {
 
 	return (
 		<>
-			<ListItemButton onClick={handleClick}>
+			<ListItemButton onClick={handleClick} key="task-list-selector">
 				<ListItemIcon>
 					<TaskAlt />
 				</ListItemIcon>

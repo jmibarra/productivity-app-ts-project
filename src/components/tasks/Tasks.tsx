@@ -27,11 +27,7 @@ import {
 	fetchTasks,
 	patchTask,
 } from "../../services/tasksServices";
-
-interface HeadersInit {
-	headers: Headers;
-	credentials: RequestCredentials;
-}
+import { useSearchParams } from "react-router-dom";
 
 const Tasks = () => {
 	const [loading, setLoading] = useState(false);
@@ -43,6 +39,11 @@ const Tasks = () => {
 	const [showCompleted, setShowCompleted] = useState(false);
 	const [sortOption, setSortOption] = useState("createdAt");
 	const [sortDirection, setSortDirection] = useState("desc");
+
+	const [searchParams] = useSearchParams(); // Hook para manejar query strings
+	const listIdFromUrl = searchParams.get("listId"); // Obtén el valor de 'listId'
+
+	const [listId, setListId] = useState<string | null>(listIdFromUrl || ""); // Estado para guardar listId
 
 	const handlePageChange = (
 		event: React.ChangeEvent<unknown>,
@@ -56,7 +57,8 @@ const Tasks = () => {
 			page: number,
 			limit: number,
 			sortOption: string,
-			sortDirection: string
+			sortDirection: string,
+			listId: string | null
 		) => {
 			setLoading(true);
 			try {
@@ -65,7 +67,8 @@ const Tasks = () => {
 					limit,
 					sortOption,
 					sortDirection,
-					sessionToken
+					sessionToken,
+					listId
 				);
 				dispatch({
 					type: ReducerActionType.GET_ALL_TASKS,
@@ -153,11 +156,20 @@ const Tasks = () => {
 		return filteredTasks;
 	};
 
+	// Actualizar listId cuando el parámetro de la URL cambie
+	useEffect(() => {
+		if (listIdFromUrl) {
+			setListId(listIdFromUrl);
+		}
+	}, [listIdFromUrl]);
+
 	useEffect(() => {
 		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) setSessionToken(token);
-		fetchAllTasks(page, 10, sortOption, sortDirection);
-	}, [fetchAllTasks, page, sortOption, sortDirection]);
+		if (token) {
+			setSessionToken(token);
+			fetchAllTasks(page, 10, sortOption, sortDirection, listId);
+		}
+	}, [fetchAllTasks, page, sortOption, sortDirection, listId]);
 
 	return (
 		<Container>

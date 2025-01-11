@@ -13,11 +13,12 @@ export const fetchTasks = async (
     limit: number,
     sortBy: string,
     sortDirection: string,
-    sessionToken: string | null
+    sessionToken: string | null,
+    listId: string | null
 ) => {
     const headers = getHeaders(sessionToken);
     const response = await fetch(
-        `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`,
+        `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}&listId=${listId}`,
         { headers, credentials: "include" }
     );
     return response.json();
