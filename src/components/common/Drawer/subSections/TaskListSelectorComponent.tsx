@@ -7,8 +7,14 @@ import {
 	ListItemIcon,
 	ListItemText,
 } from "@mui/material";
-import TaskAltIcon from "@mui/icons-material/TaskAlt";
-import { ExpandLess, ExpandMore, StarBorder } from "@mui/icons-material";
+import {
+	ExpandLess,
+	ExpandMore,
+	StarBorder,
+	AllInclusive,
+	TaskAlt,
+	BusinessCenter,
+} from "@mui/icons-material";
 
 const TaskListSelectorComponent = () => {
 	const [openSubsection, setOpenSubsection] = React.useState(false);
@@ -21,27 +27,48 @@ const TaskListSelectorComponent = () => {
 	const handleRouteClick = (route: string) => {
 		navigate(route);
 	};
+
+	//TODO: Aca debo traer todas las listas que haya y armar un mapa para que se desplieguen con la accion y el ícono que corresponda
+	const availableLists = [
+		{
+			id: 1,
+			name: "Todas",
+			icon: <AllInclusive />,
+		},
+		{
+			id: 2,
+			name: "Favoritas",
+			icon: <StarBorder />,
+		},
+		{
+			id: 3,
+			name: "Trabajo",
+			icon: <BusinessCenter />,
+		},
+	];
 	return (
 		<>
 			<ListItemButton onClick={handleClick}>
 				<ListItemIcon>
-					<TaskAltIcon />
+					<TaskAlt />
 				</ListItemIcon>
 				<ListItemText primary="Tareas" />
 				{openSubsection ? <ExpandLess /> : <ExpandMore />}
 			</ListItemButton>
 			<Collapse in={openSubsection} timeout="auto" unmountOnExit>
 				<List component="div" disablePadding>
-					<ListItemButton
-						sx={{ pl: 4 }}
-						key="all-tasks-list"
-						onClick={() => handleRouteClick("/todos")}
-					>
-						<ListItemIcon>
-							<StarBorder />
-						</ListItemIcon>
-						<ListItemText primary="Todas" />
-					</ListItemButton>
+					{availableLists.map((list) => (
+						<ListItemButton
+							key={list.id}
+							sx={{ pl: 4 }}
+							onClick={() =>
+								handleRouteClick("/todos?listId=" + list.id)
+							}
+						>
+							<ListItemIcon>{list.icon}</ListItemIcon>
+							<ListItemText primary={list.name} />
+						</ListItemButton>
+					))}
 				</List>
 			</Collapse>
 		</>
