@@ -17,8 +17,9 @@ export const fetchTasks = async (
     listId: string | null
 ) => {
     const headers = getHeaders(sessionToken);
+    const url = buildFetchTaskUrl(page, limit, sortBy, sortDirection, listId)
     const response = await fetch(
-        `${properties.api_url}/tasks?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}&listId=${listId}`,
+        url,
         { headers, credentials: "include" }
     );
     return response.json();
@@ -55,4 +56,14 @@ export const patchTask = async (
         credentials: "include",
         body: JSON.stringify(data),
     });
+};
+
+const buildFetchTaskUrl = ( page: number, limit: number, sortBy: string, sortDirection: string, listId: string | null) => {
+    let api_url = `properties.api_url/tasks`;
+    if(listId && listId !== "all-tasks")
+        api_url += `?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`
+    else
+        api_url += `/list/${listId}?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`
+
+    return api_url
 };
