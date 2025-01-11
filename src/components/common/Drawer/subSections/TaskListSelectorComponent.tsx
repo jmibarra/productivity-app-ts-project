@@ -14,10 +14,12 @@ import {
 	ExpandLess,
 	ExpandMore,
 	StarBorder,
-	AllInclusive,
+	Inbox,
 	TaskAlt,
 	BusinessCenter,
 	Add,
+	Person,
+	AllInclusive,
 } from "@mui/icons-material";
 
 const TaskListSelectorComponent = () => {
@@ -36,24 +38,48 @@ const TaskListSelectorComponent = () => {
 		alert("Creo la nueva lista");
 	};
 
-	//TODO: Aca debo traer todas las listas que haya y armar un mapa para que se desplieguen con la accion y el ícono que corresponda
+	//Listas default para todos los usuarios, no se pueden eliminar o reordenar.
+	const defaultLists = [
+		{
+			id: "main-drawer",
+			name: "Buzón de entrada",
+			icon: <Inbox />,
+			order: 0,
+		},
+		{
+			id: "all-tasks",
+			name: "Todas",
+			icon: <AllInclusive />,
+			order: 1000,
+		},
+	];
+	//TODO: Traer estas listas desde la API
 	const availableLists = [
 		{
 			id: 1,
-			name: "Todas",
-			icon: <AllInclusive />,
+			name: "Personal",
+			icon: <Person />,
+			order: 1,
 		},
 		{
 			id: 2,
 			name: "Favoritas",
 			icon: <StarBorder />,
+			order: 2,
 		},
 		{
 			id: 3,
 			name: "Trabajo",
 			icon: <BusinessCenter />,
+			order: 3,
 		},
 	];
+
+	//Concateno las dos listas y las ordeno por el atributo orden
+	const allLists = [...defaultLists, ...availableLists].sort(
+		(a, b) => a.order - b.order
+	);
+
 	return (
 		<>
 			<ListItemButton onClick={handleClick}>
@@ -81,7 +107,7 @@ const TaskListSelectorComponent = () => {
 					</Box>
 				</ListSubheader>
 				<List component="div" disablePadding>
-					{availableLists.map((list) => (
+					{allLists.map((list) => (
 						<ListItemButton
 							key={list.id}
 							sx={{ pl: 4 }}
