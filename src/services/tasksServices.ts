@@ -59,11 +59,12 @@ export const patchTask = async (
 };
 
 const buildFetchTaskUrl = ( page: number, limit: number, sortBy: string, sortDirection: string, listId: string | null) => {
-    let api_url = `properties.api_url/tasks`;
+    let api_url = `${properties.api_url}/tasks`;
     if(listId && listId !== "all-tasks")
         api_url += `?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`
     else
-        api_url += `/list/${listId}?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`
+        api_url += `?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`
+        //api_url += `/list/${listId}?page=${page}&limit=${limit}&sortBy=${sortBy}&sortDirection=${sortDirection}`
 
     return api_url
 };

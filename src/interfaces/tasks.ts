@@ -16,3 +16,11 @@ export interface TasksState {
     selectedTask?: Task;
     loading: boolean;
 }
+
+export interface TaskList {
+    _id: string;
+    name: string;
+    icon?: string | any;
+    color?: string;
+    order?: number;
+}
