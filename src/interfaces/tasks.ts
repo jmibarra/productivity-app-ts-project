@@ -24,3 +24,9 @@ export interface TaskList {
     color?: string;
     order?: number;
 }
+
+export interface TaskListsState {
+    taskLists: TaskList[];
+    selectedTaskList?: TaskList;
+    loading: boolean;
+}
