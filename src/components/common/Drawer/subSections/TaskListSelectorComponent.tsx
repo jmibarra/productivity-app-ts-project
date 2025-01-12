@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
 	Box,
@@ -27,12 +27,13 @@ import {
 	fetchUserLists,
 } from "../../../../services/taskListsServices";
 import { TaskList } from "../../../../interfaces";
+import { initialState, taskListsReducer } from "../../../../reducers/taksLists";
+import { ReducerActionType } from "../../../../actions/tasksLists";
 
 const TaskListSelectorComponent = () => {
 	const [openSubsection, setOpenSubsection] = useState(false);
 	const [sessionToken, setSessionToken] = useState<string | null>(null);
-	const [lists, setLists] = useState<TaskList[]>([]);
-
+	const [state, dispatch] = useReducer(taskListsReducer, initialState);
 	const navigate = useNavigate();
 
 	const handleRouteClick = (route: string) => {
@@ -41,13 +42,11 @@ const TaskListSelectorComponent = () => {
 
 	const addList = async (taskList: TaskList): Promise<void> => {
 		try {
-			const sessionToken = Cookies.get("session_token");
-			console.log("Llego aca");
-			console.log(sessionToken);
-			if (!sessionToken) return;
-			console.log("Llego aca2");
 			const createdList = await createTaskList(taskList, sessionToken);
-			setLists([...lists, createdList]);
+			dispatch({
+				type: ReducerActionType.CREATE_LIST,
+				payload: createdList,
+			});
 		} catch (response) {
 			console.log("Error", response);
 		}
@@ -61,7 +60,6 @@ const TaskListSelectorComponent = () => {
 		const newList: TaskList = {
 			_id: "",
 			name: "Nueva lista desde el boton",
-			icon: <Add />,
 		};
 
 		addList(newList);
@@ -104,17 +102,15 @@ const TaskListSelectorComponent = () => {
 		},
 	];
 
-	console.log(lists);
 	//Concateno las dos listas y las ordeno por el atributo orden
-	const allLists = [...defaultLists, ...availableLists].sort(
-		(a, b) => (a.order ? a.order : 999) - (b.order ? b.order : 999)
-	);
 
-	const fetchLists = useCallback(async () => {
+	const fetchAllLists = useCallback(async () => {
 		try {
 			const responseJson = await fetchUserLists(sessionToken);
-			console.log(responseJson);
-			setLists(responseJson.lists);
+			dispatch({
+				type: ReducerActionType.GET_USER_LISTS,
+				payload: responseJson,
+			});
 		} catch (error) {
 			console.error("Error fetching lists", error);
 		}
@@ -124,9 +120,15 @@ const TaskListSelectorComponent = () => {
 		const token = Cookies.get("PROD-APP-AUTH");
 		if (token) {
 			setSessionToken(token);
-			fetchLists();
+			fetchAllLists();
 		}
-	}, [fetchLists]);
+	}, [fetchAllLists]);
+
+	const allLists = [
+		...defaultLists,
+		...availableLists,
+		...state.taskLists,
+	].sort((a, b) => (a.order ? a.order : 999) - (b.order ? b.order : 999));
 
 	return (
 		<>
