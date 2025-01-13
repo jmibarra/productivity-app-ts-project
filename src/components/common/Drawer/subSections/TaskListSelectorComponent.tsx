@@ -5,6 +5,7 @@ import {
 	Collapse,
 	IconButton,
 	List,
+	ListItem,
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
@@ -20,8 +21,10 @@ import {
 	Add,
 	Person,
 	AllInclusive,
-	ListAlt,
+	Delete,
+	Close,
 } from "@mui/icons-material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Cookies from "js-cookie";
 import {
 	createTaskList,
@@ -31,11 +34,14 @@ import { TaskList } from "../../../../interfaces";
 import { initialState, taskListsReducer } from "../../../../reducers/taksLists";
 import { ReducerActionType } from "../../../../actions/tasksLists";
 import ListCustomIconComponent from "./ListCustomIconComponent";
+import { set } from "date-fns";
 
 const TaskListSelectorComponent = () => {
 	const [openSubsection, setOpenSubsection] = useState(false);
 	const [sessionToken, setSessionToken] = useState<string | null>(null);
+	const [showDeleteIcons, setShowDeleteIcons] = useState(false);
 	const [state, dispatch] = useReducer(taskListsReducer, initialState);
+
 	const navigate = useNavigate();
 
 	const handleRouteClick = (route: string) => {
@@ -67,6 +73,10 @@ const TaskListSelectorComponent = () => {
 		addList(newList);
 	};
 
+	const handleDeleteListsClick = () => {
+		setShowDeleteIcons(!showDeleteIcons);
+	};
+
 	//Listas default para todos los usuarios, no se pueden eliminar o reordenar.
 	const defaultLists: TaskList[] = [
 		{
@@ -82,7 +92,7 @@ const TaskListSelectorComponent = () => {
 			order: 1000,
 		},
 	];
-	//TODO: Traer estas listas desde la API
+
 	const availableLists: TaskList[] = [
 		{
 			_id: "1",
@@ -149,34 +159,72 @@ const TaskListSelectorComponent = () => {
 						justifyContent="space-between"
 					>
 						Mis listas
-						<IconButton
-							aria-label="delete"
-							size="small"
-							onClick={handleNewListClick}
-						>
-							<Add fontSize="inherit" />
-						</IconButton>
+						<Box justifyContent="flex-end">
+							<IconButton
+								aria-label="create"
+								size="small"
+								onClick={handleNewListClick}
+							>
+								<Add fontSize="inherit" />
+							</IconButton>
+							{showDeleteIcons ? (
+								<IconButton
+									aria-label="delete"
+									size="small"
+									onClick={handleDeleteListsClick}
+								>
+									<Close fontSize="inherit" />
+								</IconButton>
+							) : (
+								<IconButton
+									aria-label="delete"
+									size="small"
+									onClick={handleDeleteListsClick}
+								>
+									<Delete fontSize="inherit" />
+								</IconButton>
+							)}
+						</Box>
 					</Box>
 				</ListSubheader>
 				<List component="div" disablePadding>
 					{allLists.map((list) => (
-						<ListItemButton
+						<ListItem
 							key={list._id}
-							sx={{ pl: 4 }}
-							onClick={() =>
-								handleRouteClick("/todos?listId=" + list._id)
+							secondaryAction={
+								showDeleteIcons ? (
+									<IconButton
+										aria-label="create"
+										size="small"
+										onClick={handleNewListClick}
+									>
+										<Delete
+											fontSize="small"
+											color="error"
+										/>
+									</IconButton>
+								) : null
 							}
 						>
-							<ListCustomIconComponent list={list} />
-							<ListItemText
-								primary={list.name}
-								primaryTypographyProps={{
-									color: "primary",
-									fontWeight: "medium",
-									variant: "body2",
-								}}
-							/>
-						</ListItemButton>
+							<ListItemButton
+								key={list._id}
+								onClick={() =>
+									handleRouteClick(
+										"/todos?listId=" + list._id
+									)
+								}
+							>
+								<ListCustomIconComponent list={list} />
+								<ListItemText
+									primary={list.name}
+									primaryTypographyProps={{
+										color: "primary",
+										fontWeight: "medium",
+										variant: "body2",
+									}}
+								/>
+							</ListItemButton>
+						</ListItem>
 					))}
 				</List>
 			</Collapse>
