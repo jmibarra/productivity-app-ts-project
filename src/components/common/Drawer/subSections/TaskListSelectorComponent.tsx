@@ -30,6 +30,7 @@ import {
 import { TaskList } from "../../../../interfaces";
 import { initialState, taskListsReducer } from "../../../../reducers/taksLists";
 import { ReducerActionType } from "../../../../actions/tasksLists";
+import ListCustomIconComponent from "./ListCustomIconComponent";
 
 const TaskListSelectorComponent = () => {
 	const [openSubsection, setOpenSubsection] = useState(false);
@@ -166,13 +167,7 @@ const TaskListSelectorComponent = () => {
 								handleRouteClick("/todos?listId=" + list._id)
 							}
 						>
-							{list.icon ? (
-								<ListItemIcon>{list.icon}</ListItemIcon>
-							) : (
-								<ListItemIcon>
-									<ListAlt fontSize="small" color="primary" />
-								</ListItemIcon>
-							)}
+							<ListCustomIconComponent list={list} />
 							<ListItemText
 								primary={list.name}
 								primaryTypographyProps={{
