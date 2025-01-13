@@ -73,6 +73,10 @@ const TaskListSelectorComponent = () => {
 		addList(newList);
 	};
 
+	const handleDeleteList = (id: string) => {
+		alert("Eliminamos la lista " + id);
+	};
+
 	const handleDeleteListsClick = () => {
 		setShowDeleteIcons(!showDeleteIcons);
 	};
@@ -201,6 +205,9 @@ const TaskListSelectorComponent = () => {
 										<Delete
 											fontSize="small"
 											color="error"
+											onClick={() =>
+												handleDeleteList(list._id)
+											}
 										/>
 									</IconButton>
 								) : null

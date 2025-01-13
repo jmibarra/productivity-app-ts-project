@@ -29,3 +29,12 @@ export const createTaskList = async (taskList: TaskList, sessionToken: string | 
         body: JSON.stringify(taskList),
     }).then((res) => res.json());
 };
+
+export const deleteTaskList = async (id: string, sessionToken: string | null) => {
+    const headers = getHeaders(sessionToken);
+    return fetch(`${properties.api_url}/lists/${id}`, {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+    });
+};
