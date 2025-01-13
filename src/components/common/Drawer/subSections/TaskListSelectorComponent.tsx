@@ -14,17 +14,13 @@ import {
 import {
 	ExpandLess,
 	ExpandMore,
-	StarBorder,
 	Inbox,
 	TaskAlt,
-	BusinessCenter,
 	Add,
-	Person,
 	AllInclusive,
 	Delete,
 	Close,
 } from "@mui/icons-material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import Cookies from "js-cookie";
 import {
 	createTaskList,
@@ -196,7 +192,7 @@ const TaskListSelectorComponent = () => {
 									)
 								}
 							>
-								<ListCustomIconComponent list={list} />
+								<ListCustomIconComponent listIcon={list.icon} />
 								<ListItemText
 									primary={list.name}
 									primaryTypographyProps={{
