@@ -28,13 +28,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Cookies from "js-cookie";
 import {
 	createTaskList,
+	deleteTaskList,
 	fetchUserLists,
 } from "../../../../services/taskListsServices";
 import { TaskList } from "../../../../interfaces";
 import { initialState, taskListsReducer } from "../../../../reducers/taksLists";
 import { ReducerActionType } from "../../../../actions/tasksLists";
 import ListCustomIconComponent from "./ListCustomIconComponent";
-import { set } from "date-fns";
 
 const TaskListSelectorComponent = () => {
 	const [openSubsection, setOpenSubsection] = useState(false);
@@ -67,14 +67,19 @@ const TaskListSelectorComponent = () => {
 	const handleNewListClick = () => {
 		const newList: TaskList = {
 			_id: "",
-			name: "Nueva lista desde el boton",
+			name: "Nueva lista desde el boton con orden nuevo",
 		};
 
 		addList(newList);
 	};
 
-	const handleDeleteList = (id: string) => {
-		alert("Eliminamos la lista " + id);
+	const handleDeleteList = async (id: string) => {
+		try {
+			await deleteTaskList(id, sessionToken);
+			dispatch({ type: ReducerActionType.DELETE_LIST, payload: id });
+		} catch (error) {
+			console.error("Error deleting list", error);
+		}
 	};
 
 	const handleDeleteListsClick = () => {
@@ -97,29 +102,6 @@ const TaskListSelectorComponent = () => {
 		},
 	];
 
-	const availableLists: TaskList[] = [
-		{
-			_id: "1",
-			name: "Personal",
-			icon: <Person fontSize="small" color="primary" />,
-			order: 1,
-		},
-		{
-			_id: "2",
-			name: "Favoritos",
-			icon: <StarBorder fontSize="small" color="primary" />,
-			order: 2,
-		},
-		{
-			_id: "3",
-			name: "Trabajo",
-			icon: <BusinessCenter fontSize="small" color="primary" />,
-			order: 3,
-		},
-	];
-
-	//Concateno las dos listas y las ordeno por el atributo orden
-
 	const fetchAllLists = useCallback(async () => {
 		try {
 			const responseJson = await fetchUserLists(sessionToken);
@@ -139,12 +121,6 @@ const TaskListSelectorComponent = () => {
 			fetchAllLists();
 		}
 	}, [fetchAllLists]);
-
-	const allLists = [
-		...defaultLists,
-		...availableLists,
-		...state.taskLists,
-	].sort((a, b) => (a.order ? a.order : 999) - (b.order ? b.order : 999));
 
 	return (
 		<>
@@ -192,22 +168,21 @@ const TaskListSelectorComponent = () => {
 					</Box>
 				</ListSubheader>
 				<List component="div" disablePadding>
-					{allLists.map((list) => (
+					{state.taskLists.map((list) => (
 						<ListItem
 							key={list._id}
 							secondaryAction={
 								showDeleteIcons ? (
 									<IconButton
-										aria-label="create"
+										aria-label="delete-list"
 										size="small"
-										onClick={handleNewListClick}
+										onClick={() =>
+											handleDeleteList(list._id)
+										}
 									>
 										<Delete
 											fontSize="small"
 											color="error"
-											onClick={() =>
-												handleDeleteList(list._id)
-											}
 										/>
 									</IconButton>
 								) : null
