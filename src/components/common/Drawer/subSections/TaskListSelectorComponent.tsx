@@ -20,6 +20,7 @@ import {
 	Add,
 	Person,
 	AllInclusive,
+	ListAlt,
 } from "@mui/icons-material";
 import Cookies from "js-cookie";
 import {
@@ -70,13 +71,13 @@ const TaskListSelectorComponent = () => {
 		{
 			_id: "0",
 			name: "Buzón de entrada",
-			icon: <Inbox />,
-			order: 0,
+			icon: <Inbox fontSize="small" color="primary" />,
+			order: 1,
 		},
 		{
 			_id: "all-tasks",
 			name: "Todas",
-			icon: <AllInclusive />,
+			icon: <AllInclusive fontSize="small" color="primary" />,
 			order: 1000,
 		},
 	];
@@ -85,19 +86,19 @@ const TaskListSelectorComponent = () => {
 		{
 			_id: "1",
 			name: "Personal",
-			icon: <Person />,
+			icon: <Person fontSize="small" color="primary" />,
 			order: 1,
 		},
 		{
 			_id: "2",
-			name: "Favoritas",
-			icon: <StarBorder />,
+			name: "Favoritos",
+			icon: <StarBorder fontSize="small" color="primary" />,
 			order: 2,
 		},
 		{
 			_id: "3",
 			name: "Trabajo",
-			icon: <BusinessCenter />,
+			icon: <BusinessCenter fontSize="small" color="primary" />,
 			order: 3,
 		},
 	];
@@ -165,10 +166,21 @@ const TaskListSelectorComponent = () => {
 								handleRouteClick("/todos?listId=" + list._id)
 							}
 						>
-							{list.icon && (
+							{list.icon ? (
 								<ListItemIcon>{list.icon}</ListItemIcon>
+							) : (
+								<ListItemIcon>
+									<ListAlt fontSize="small" color="primary" />
+								</ListItemIcon>
 							)}
-							<ListItemText primary={list.name} />
+							<ListItemText
+								primary={list.name}
+								primaryTypographyProps={{
+									color: "primary",
+									fontWeight: "medium",
+									variant: "body2",
+								}}
+							/>
 						</ListItemButton>
 					))}
 				</List>
