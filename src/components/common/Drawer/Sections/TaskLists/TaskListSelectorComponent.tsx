@@ -1,23 +1,13 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-	Box,
 	Collapse,
-	IconButton,
 	List,
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
-	ListSubheader,
 } from "@mui/material";
-import {
-	ExpandLess,
-	ExpandMore,
-	TaskAlt,
-	Add,
-	Delete,
-	Close,
-} from "@mui/icons-material";
+import { ExpandLess, ExpandMore, TaskAlt } from "@mui/icons-material";
 import Cookies from "js-cookie";
 import {
 	createTaskList,
@@ -31,12 +21,15 @@ import {
 } from "../../../../../reducers/taksLists";
 import { ReducerActionType } from "../../../../../actions/tasksLists";
 import TaskListItem from "./TaskListItem";
+import ListAdministrationBarComponent from "./ListAdministrationBarComponent";
+import NewListPopup from "./NewListPopupComponent";
 
 const TaskListSelectorComponent = () => {
 	const [openSubsection, setOpenSubsection] = useState(false);
 	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [showDeleteIcons, setShowDeleteIcons] = useState(false);
 	const [state, dispatch] = useReducer(taskListsReducer, initialState);
+	const [isPopupOpen, setIsPopupOpen] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -61,12 +54,11 @@ const TaskListSelectorComponent = () => {
 	};
 
 	const handleNewListClick = () => {
-		const newList: TaskList = {
-			_id: "",
-			name: "Nueva lista desde el boton con orden nuevo",
-		};
+		setIsPopupOpen(true);
+	};
 
-		addList(newList);
+	const handleClosePopup = () => {
+		setIsPopupOpen(false);
 	};
 
 	const handleDeleteList = async (id: string) => {
@@ -122,41 +114,11 @@ const TaskListSelectorComponent = () => {
 				{openSubsection ? <ExpandLess /> : <ExpandMore />}
 			</ListItemButton>
 			<Collapse in={openSubsection} timeout="auto" unmountOnExit>
-				<ListSubheader>
-					<Box
-						display="flex"
-						alignItems="center"
-						justifyContent="space-between"
-					>
-						Mis listas
-						<Box justifyContent="flex-end">
-							<IconButton
-								aria-label="create"
-								size="small"
-								onClick={handleNewListClick}
-							>
-								<Add fontSize="inherit" />
-							</IconButton>
-							{showDeleteIcons ? (
-								<IconButton
-									aria-label="delete"
-									size="small"
-									onClick={handleDeleteListsClick}
-								>
-									<Close fontSize="inherit" />
-								</IconButton>
-							) : (
-								<IconButton
-									aria-label="delete"
-									size="small"
-									onClick={handleDeleteListsClick}
-								>
-									<Delete fontSize="inherit" />
-								</IconButton>
-							)}
-						</Box>
-					</Box>
-				</ListSubheader>
+				<ListAdministrationBarComponent
+					showDeleteIcons={showDeleteIcons}
+					handleNewListClick={handleNewListClick}
+					handleDeleteListsClick={handleDeleteListsClick}
+				/>
 				<List component="div" disablePadding>
 					{state.taskLists.map((list) => (
 						<TaskListItem
@@ -176,6 +138,11 @@ const TaskListSelectorComponent = () => {
 					/>
 				</List>
 			</Collapse>
+			<NewListPopup
+				open={isPopupOpen}
+				onClose={handleClosePopup}
+				onAddList={addList}
+			/>
 		</>
 	);
 };

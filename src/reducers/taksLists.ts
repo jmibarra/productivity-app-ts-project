@@ -22,7 +22,7 @@ export const taskListsReducer: Reducer<TaskListsState, ReducerAction> = (state =
         case ReducerActionType.CREATE_LIST:
             return {
                 ...state,
-                taskLists: [action.payload,...state.taskLists]
+                taskLists: [...state.taskLists, action.payload]
             };
         case ReducerActionType.DELETE_LIST: {
             const newTaskLists = state.taskLists.filter(
