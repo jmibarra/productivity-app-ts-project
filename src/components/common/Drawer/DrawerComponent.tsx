@@ -14,7 +14,6 @@ import ListItemText from "@mui/material/ListItemText";
 import NotesIcon from "@mui/icons-material/Notes";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
-import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
 
 import { ListItemButton } from "@mui/material";
 
@@ -26,6 +25,7 @@ import {
 import Logout from "../../login/Logout";
 import NavBar from "./Sections/AppBar/NavBar";
 import TaskListSelectorComponent from "./Sections/TaskLists/TaskListSelectorComponent";
+import { Settings } from "@mui/icons-material";
 
 const mainActions = [
 	{ customComponent: <TaskListSelectorComponent /> },
@@ -36,7 +36,7 @@ const mainActions = [
 
 const appActions = [
 	{
-		icon: <KeyboardCommandKeyIcon />,
+		icon: <Settings />,
 		name: "Configuración",
 		route: "/config",
 	},
