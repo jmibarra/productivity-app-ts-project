@@ -18,10 +18,14 @@ import KeyboardCommandKeyIcon from "@mui/icons-material/KeyboardCommandKey";
 
 import { ListItemButton } from "@mui/material";
 
-import { DrawerHeader, Main, StyledDrawer } from "./DrawerComponentStyles";
+import {
+	DrawerHeader,
+	Main,
+	StyledDrawer,
+} from "./styles/DrawerComponentStyles";
 import Logout from "../../login/Logout";
-import NavBar from "./AppBar/NavBar";
-import TaskListSelectorComponent from "./subSections/TaskListSelectorComponent";
+import NavBar from "./Sections/AppBar/NavBar";
+import TaskListSelectorComponent from "./Sections/TaskLists/TaskListSelectorComponent";
 
 const mainActions = [
 	{ customComponent: <TaskListSelectorComponent /> },

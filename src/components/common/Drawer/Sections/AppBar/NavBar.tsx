@@ -1,8 +1,8 @@
-import { AppBar } from "../DrawerComponentStyles";
+import { AppBar } from "../../styles/DrawerComponentStyles";
 import { Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
-import AvatarButtonComponent from "./AvatarButton/AvatarButtonComponent";
+import AvatarButtonComponent from "../AvatarButton/AvatarButtonComponent";
 
 interface NavBarProps {
 	open: boolean;

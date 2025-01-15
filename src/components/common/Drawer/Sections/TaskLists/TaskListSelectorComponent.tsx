@@ -5,7 +5,6 @@ import {
 	Collapse,
 	IconButton,
 	List,
-	ListItem,
 	ListItemButton,
 	ListItemIcon,
 	ListItemText,
@@ -14,10 +13,8 @@ import {
 import {
 	ExpandLess,
 	ExpandMore,
-	Inbox,
 	TaskAlt,
 	Add,
-	AllInclusive,
 	Delete,
 	Close,
 } from "@mui/icons-material";
@@ -26,11 +23,14 @@ import {
 	createTaskList,
 	deleteTaskList,
 	fetchUserLists,
-} from "../../../../services/taskListsServices";
-import { TaskList } from "../../../../interfaces";
-import { initialState, taskListsReducer } from "../../../../reducers/taksLists";
-import { ReducerActionType } from "../../../../actions/tasksLists";
-import ListCustomIconComponent from "./ListCustomIconComponent";
+} from "../../../../../services/taskListsServices";
+import { TaskList } from "../../../../../interfaces";
+import {
+	initialState,
+	taskListsReducer,
+} from "../../../../../reducers/taksLists";
+import { ReducerActionType } from "../../../../../actions/tasksLists";
+import TaskListItem from "./TaskListItem";
 
 const TaskListSelectorComponent = () => {
 	const [openSubsection, setOpenSubsection] = useState(false);
@@ -85,16 +85,10 @@ const TaskListSelectorComponent = () => {
 	//Listas default para todos los usuarios, no se pueden eliminar o reordenar.
 	const defaultLists: TaskList[] = [
 		{
-			_id: "0",
-			name: "Buzón de entrada",
-			icon: <Inbox fontSize="small" color="primary" />,
-			order: 1,
-		},
-		{
 			_id: "all-tasks",
 			name: "Todas",
-			icon: <AllInclusive fontSize="small" color="primary" />,
-			order: 1000,
+			icon: "All",
+			order: 99999,
 		},
 	];
 
@@ -165,45 +159,21 @@ const TaskListSelectorComponent = () => {
 				</ListSubheader>
 				<List component="div" disablePadding>
 					{state.taskLists.map((list) => (
-						<ListItem
+						<TaskListItem
+							list={list}
 							key={list._id}
-							secondaryAction={
-								showDeleteIcons ? (
-									<IconButton
-										aria-label="delete-list"
-										size="small"
-										onClick={() =>
-											handleDeleteList(list._id)
-										}
-									>
-										<Delete
-											fontSize="small"
-											color="error"
-										/>
-									</IconButton>
-								) : null
-							}
-						>
-							<ListItemButton
-								key={list._id}
-								onClick={() =>
-									handleRouteClick(
-										"/todos?listId=" + list._id
-									)
-								}
-							>
-								<ListCustomIconComponent listIcon={list.icon} />
-								<ListItemText
-									primary={list.name}
-									primaryTypographyProps={{
-										color: "primary",
-										fontWeight: "medium",
-										variant: "body2",
-									}}
-								/>
-							</ListItemButton>
-						</ListItem>
+							showDeleteIcons={showDeleteIcons}
+							handleRouteClick={handleRouteClick}
+							handleDeleteList={handleDeleteList}
+						/>
 					))}
+					<TaskListItem
+						list={defaultLists[0]}
+						key={defaultLists[0]._id}
+						showDeleteIcons={false}
+						handleRouteClick={handleRouteClick}
+						handleDeleteList={handleDeleteList}
+					/>
 				</List>
 			</Collapse>
 		</>
