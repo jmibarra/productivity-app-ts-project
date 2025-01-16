@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AccountCircle } from "@mui/icons-material";
 import { Avatar, Divider, ListItemIcon, Menu, MenuItem } from "@mui/material";
 import Settings from "@mui/icons-material/Settings";
@@ -7,12 +8,19 @@ import Logout from "@mui/icons-material/Logout";
 const AvatarButtonComponent = () => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
+	const navigate = useNavigate();
+
 	const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
 
 	const handleClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleRouteClick = (route: string) => {
+		navigate(route);
+		handleClose();
 	};
 	return (
 		<>
@@ -43,7 +51,7 @@ const AvatarButtonComponent = () => {
 				<MenuItem onClick={handleClose}>Profile</MenuItem>
 				<MenuItem onClick={handleClose}>My account</MenuItem>
 				<Divider />
-				<MenuItem onClick={handleClose}>
+				<MenuItem onClick={() => handleRouteClick("/config")}>
 					<ListItemIcon>
 						<Settings fontSize="small" />
 					</ListItemIcon>
