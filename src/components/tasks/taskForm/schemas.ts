@@ -4,9 +4,11 @@ export const initialValues = {
     title: "",
     description: "",
     dueDate: new Date(),
+    list: ""
 };
 
 export const validationSchema = {
     title: Yup.string().required("El título de la tarea es obligatorio"),
-    description: Yup.string()
+    description: Yup.string(),
+    list: Yup.string().required("Dede seleccionar una lista para la tarea"),
 }
