@@ -1,50 +1,87 @@
-# Getting Started with Create React App
+# Aplicación de Tareas y Productividad
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+¡Bienvenido a nuestra **Aplicación de Tareas y Productividad**! 🎉  
+Este proyecto busca ayudar a las personas a organizarse mejor, mantener el foco y alcanzar sus metas con eficiencia. 🚀
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## Características
 
-### `npm start`
+- **Gestión de tareas**: Crea, edita y elimina tareas fácilmente.  
+- **Notas**: Toma tus notas en tu misma aplicación.  
+- **Seguimiento de progreso y hábitos**: Monitorea el avance de tus metas.    
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+---
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Instalación
 
-### `npm test`
+1. Clona el repositorio:  
+   `git clone https://github.com/tu-usuario/aplicacion-tareas-productividad.git`
+   
+2. Instala las dependencias:  
+   `npm install`
+   
+3. Ejecuta el proyecto en modo desarrollo:  
+   `npm run dev`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### API
+Este proyecto utiliza una API que hace de interfaz con una base de datos MongoDB
+Podes acceder al proyecto de la API [aquí](https://github.com/jmibarra/productivity-app-ts-api-project).
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Contribuye con Nosotros
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+¡Este proyecto está abierto a la comunidad! Cualquier mejora, corrección de errores o nuevas ideas son bienvenidas. 🎉
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Cómo Contribuir:
 
-### `npm run eject`
+1. **Haz un fork del repositorio**  
+   Haz clic en el botón **Fork** en la esquina superior derecha de esta página.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2. **Clona tu fork localmente**  
+   `git clone https://github.com/tu-usuario/aplicacion-tareas-productividad.git`
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. **Crea una rama para tu contribución**  
+   `git checkout -b nombre-de-tu-rama`
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+4. **Realiza tus cambios y confirma tus commits**  
+   Asegúrate de que tus commits sean claros y concisos.  
+   Ejemplo:  
+   `git commit -m "Agrega funcionalidad de búsqueda en tareas"`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+5. **Sube tu rama a tu fork**  
+   `git push origin nombre-de-tu-rama`
 
-## Learn More
+6. **Crea un Pull Request**  
+   Ve a la página principal de este repositorio y haz clic en **Compare & pull request**.  
+   Describe los cambios realizados y su propósito. ¡Gracias por tu contribución!
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+---
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Reporta un Problema
 
-# API
-This project connects to an API that interfaces with our MongoDB database.  
-You can access the API project [here](https://github.com/jmibarra/productivity-app-ts-api-project).
+Si encuentras algún error o tienes una idea para mejorar la aplicación, abre un **Issue** en nuestro [tablero de Issues](https://github.com/tu-usuario/aplicacion-tareas-productividad/issues). Por favor, incluye detalles claros y pasos para reproducir el problema si corresponde.
+
+---
+
+## Comunícate
+
+Si tienes dudas o necesitas orientación, no dudes en contactarnos a través de los Issues o directamente a nuestro correo: [jmibarra86@gmail.com](mailto:jmibarra86@gmail.com).
+
+---
+
+## Licencia
+
+Este proyecto está bajo la licencia [MIT](LICENSE). Siéntete libre de usar, modificar y distribuir este software con los términos especificados.
+
+---
+
+**¡Gracias por contribuir a mejorar esta aplicación!** 🌟  
+Juntos podemos construir una herramienta increíble para la productividad. 🙌
+
+Tu colaboración también nos ayuda a seguir trabajando en construir nuestra aplicación
+
+[![Invitame un café en cafecito.app](https://cdn.cafecito.app/imgs/buttons/button_1.svg)](https://cafecito.app/jmibarradev)
+
+
