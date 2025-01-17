@@ -48,8 +48,9 @@ const AvatarButtonComponent = () => {
 			>
 				<MenuItem disabled>Juan Manuel Ibarra</MenuItem>
 				<Divider />
-				<MenuItem onClick={handleClose}>Profile</MenuItem>
-				<MenuItem onClick={handleClose}>My account</MenuItem>
+				<MenuItem onClick={() => handleRouteClick("/profile")}>
+					Profile
+				</MenuItem>
 				<Divider />
 				<MenuItem onClick={() => handleRouteClick("/config")}>
 					<ListItemIcon>

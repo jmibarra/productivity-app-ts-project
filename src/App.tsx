@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import Register from "./components/register/Register";
 import ProtectedRoute from "./components/login/ProtectedRoute";
 import ConfigurationPageComponent from "./components/configuration/ConfigurationPageComponent";
+import UserProfileComponent from "./components/userProfile/UserProfileComponent";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(
@@ -73,6 +74,14 @@ function App() {
 								element={
 									<ProtectedRoute isLoggedIn={isLoggedIn}>
 										<ConfigurationPageComponent />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path="/profile"
+								element={
+									<ProtectedRoute isLoggedIn={isLoggedIn}>
+										<UserProfileComponent />
 									</ProtectedRoute>
 								}
 							/>
