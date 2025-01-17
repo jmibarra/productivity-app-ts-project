@@ -61,7 +61,7 @@ Podes acceder al proyecto de la API [aquí](https://github.com/jmibarra/producti
 
 ## Reporta un Problema
 
-Si encuentras algún error o tienes una idea para mejorar la aplicación, abre un **Issue** en nuestro [tablero de Issues](https://github.com/tu-usuario/aplicacion-tareas-productividad/issues). Por favor, incluye detalles claros y pasos para reproducir el problema si corresponde.
+Si encuentras algún error o tienes una idea para mejorar la aplicación, abre un **Issue** en nuestro [tablero de Issues](https://github.com/jmibarra/productivity-app-ts-project/issues). Por favor, incluye detalles claros y pasos para reproducir el problema si corresponde.
 
 ---
 
