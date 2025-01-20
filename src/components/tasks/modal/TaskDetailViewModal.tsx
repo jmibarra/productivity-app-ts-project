@@ -27,6 +27,7 @@ interface Props {
 	updateLabels: (id: string, labels: string[]) => void;
 	updatePriority: (id: string, newPriority: number) => void;
 	toogleTask: (id: string, completed: boolean) => void;
+	updateDueDate: (id: string, dueDate: String) => void;
 }
 
 export default function TaskDetailViewModal({
@@ -36,6 +37,7 @@ export default function TaskDetailViewModal({
 	updateLabels,
 	updatePriority,
 	toogleTask,
+	updateDueDate,
 }: Props) {
 	const [localCompleted, setLocalCompleted] = useState(
 		selectedTaskProp.completed
@@ -82,7 +84,9 @@ export default function TaskDetailViewModal({
 									dueDate={selectedTaskProp.dueDate}
 								/>
 							) : (
-								<EmptyDateComponent />
+								<EmptyDateComponent
+									updateDueDate={updateDueDate}
+								/>
 							)}
 						</Box>
 						<Priority

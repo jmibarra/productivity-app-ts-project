@@ -15,6 +15,7 @@ import Priority from "../common/Priority/Priority";
 import { Box } from "@mui/material";
 import DueDateComponent from "../common/DueDate/DueDateComponent";
 import HorizontalDivider from "../common/HorizontalDivider";
+import EmptyDateComponent from "../common/DueDate/EmptyDateComponent";
 
 interface Props {
 	task: Task;
@@ -23,6 +24,7 @@ interface Props {
 	toogleTask: (id: string, completed: boolean) => void;
 	handleSelectTask: (selectedTask: Task) => void;
 	updatePriority: (id: string, newPriority: number) => void;
+	updateDueDate: (id: string, dueDate: String) => void;
 }
 
 const TaskComponent = ({
@@ -31,6 +33,7 @@ const TaskComponent = ({
 	toogleTask,
 	handleSelectTask,
 	updatePriority,
+	updateDueDate,
 }: Props) => {
 	const labelId = `checkbox-list-label-${task._id}`;
 
@@ -44,8 +47,12 @@ const TaskComponent = ({
 				<ListItem
 					secondaryAction={
 						<Box display="flex" alignItems="center" gap={1}>
-							{task.dueDate && (
+							{task.dueDate ? (
 								<DueDateComponent dueDate={task.dueDate} />
+							) : (
+								<EmptyDateComponent
+									updateDueDate={updateDueDate}
+								/>
 							)}
 							<HorizontalDivider />
 							<Priority

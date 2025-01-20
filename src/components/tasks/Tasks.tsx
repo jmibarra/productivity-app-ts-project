@@ -143,6 +143,19 @@ const Tasks = () => {
 		}
 	};
 
+	const updateDueDate = (id: string, dueDate: String): void => {
+		try {
+			dispatch({
+				type: ReducerActionType.UPDATE_TASK_PRIORITY,
+				payload: { dueDate: dueDate, id: id },
+			});
+			const data = { dueDate: dueDate };
+			patchTask(id, data, sessionToken);
+		} catch (response) {
+			console.log("Error", response);
+		}
+	};
+
 	const getFilteredAndSortedTasks = () => {
 		let filteredTasks = state.tasks;
 
@@ -198,6 +211,7 @@ const Tasks = () => {
 						toogleTask={toogleTask}
 						updateLabels={updateLabels}
 						updatePriority={updatePriority}
+						updateDueDate={updateDueDate}
 					/>
 				)}
 			</Content>

@@ -98,6 +98,24 @@ export const tasksReducer: Reducer<TasksState, ReducerAction> = (state = initial
                 tasks: updatedTasks
              };
         }
+        case ReducerActionType.UPDATE_TASK_DUE_DATE: {
+
+            const clonedTasks = [...state.tasks]
+            const selectedTask = state.tasks.find(
+                (task:Task) => task._id === action.payload.id
+            );
+            
+            const newTask = {...selectedTask}
+
+            newTask.dueDate = action.payload.dueDate
+
+            const updatedTasks = clonedTasks.map(task => task._id === newTask._id ? newTask : task);
+
+            return {
+                ...state, 
+                tasks: updatedTasks
+             };
+        }
         default:
             return state
     }

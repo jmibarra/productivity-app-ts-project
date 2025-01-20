@@ -11,6 +11,7 @@ interface Props {
 	toogleTask: (id: string, completed: boolean) => void;
 	updateLabels: (id: string, labels: string[]) => void;
 	updatePriority: (id: string, newPriority: number) => void;
+	updateDueDate: (id: string, dueDate: String) => void;
 }
 
 const TaskList = ({
@@ -19,6 +20,7 @@ const TaskList = ({
 	toogleTask,
 	updateLabels,
 	updatePriority,
+	updateDueDate,
 }: Props) => {
 	const [taskModalOpen, setTaskModalOpen] = useState(false);
 	const [selectedTask, setSelectedTask] = useState<Task>();
@@ -45,6 +47,7 @@ const TaskList = ({
 							handleSelectTask={handleSelectTask}
 							key={task._id}
 							updatePriority={updatePriority}
+							updateDueDate={updateDueDate}
 						/>
 					);
 				})}
@@ -57,6 +60,7 @@ const TaskList = ({
 					updateLabels={updateLabels}
 					updatePriority={updatePriority}
 					toogleTask={toogleTask}
+					updateDueDate={updateDueDate}
 				/>
 			)}
 		</>
