@@ -86,6 +86,8 @@ export default function TaskDetailViewModal({
 							) : (
 								<EmptyDateComponent
 									updateDueDate={updateDueDate}
+									taskId={selectedTaskProp._id}
+									dueDate={selectedTaskProp.dueDate}
 								/>
 							)}
 						</Box>

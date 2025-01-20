@@ -51,7 +51,9 @@ const TaskComponent = ({
 								<DueDateComponent dueDate={task.dueDate} />
 							) : (
 								<EmptyDateComponent
+									dueDate={task.dueDate}
 									updateDueDate={updateDueDate}
+									taskId={task._id}
 								/>
 							)}
 							<HorizontalDivider />
