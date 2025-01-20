@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	Box,
 	Button,
@@ -43,6 +43,14 @@ export default function TaskDetailViewModal({
 		selectedTaskProp.completed
 	);
 
+	const [currentDueDate, setCurrentDueDate] = useState<string | undefined>(
+		selectedTaskProp.dueDate
+	);
+
+	useEffect(() => {
+		setCurrentDueDate(selectedTaskProp.dueDate);
+	}, [selectedTaskProp.dueDate]);
+
 	const handleToggle = (id: string, completed: boolean) => () => {
 		setLocalCompleted(!localCompleted);
 		toogleTask(id, completed);
@@ -78,17 +86,20 @@ export default function TaskDetailViewModal({
 								)}
 							/>
 							<HorizontalDivider />
-							{/* Si existe selectedTaskProp muestro el componente sino muestro el componente emptyDate */}
-							{/* {selectedTaskProp.dueDate ? (
+							{currentDueDate ? (
 								<DueDateComponent
-									dueDate={selectedTaskProp.dueDate}
+									dueDate={currentDueDate}
+									updateDueDate={updateDueDate}
+									taskId={selectedTaskProp._id}
+									setCurrentDueDate={setCurrentDueDate}
 								/>
 							) : (
 								<EmptyDateComponent
 									updateDueDate={updateDueDate}
 									taskId={selectedTaskProp._id}
+									setCurrentDueDate={setCurrentDueDate}
 								/>
-							)} */}
+							)}
 						</Box>
 						<Priority
 							priority={selectedTaskProp.priority}

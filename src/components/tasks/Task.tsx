@@ -57,7 +57,12 @@ const TaskComponent = ({
 					secondaryAction={
 						<Box display="flex" alignItems="center" gap={1}>
 							{currentDueDate ? (
-								<DueDateComponent dueDate={currentDueDate} />
+								<DueDateComponent
+									dueDate={currentDueDate}
+									updateDueDate={updateDueDate}
+									taskId={task._id}
+									setCurrentDueDate={setCurrentDueDate}
+								/>
 							) : (
 								<EmptyDateComponent
 									updateDueDate={updateDueDate}
