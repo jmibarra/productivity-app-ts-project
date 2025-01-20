@@ -2,6 +2,7 @@ import AccessAlarmIcon from "@mui/icons-material/AccessAlarm";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
+import { useEffect, useState } from "react";
 
 // Extender dayjs con los plugins necesarios
 dayjs.extend(utc);
@@ -12,8 +13,16 @@ interface Props {
 }
 
 const DueDateComponent = ({ dueDate }: Props) => {
+	const [currentDueDate, setCurrentDueDate] = useState<string | undefined>(
+		dueDate
+	);
+
+	useEffect(() => {
+		// Sincronizar el estado interno con la prop cuando esta cambie
+		setCurrentDueDate(dueDate);
+	}, [dueDate]);
 	// Obtener la fecha local a partir de la fecha UTC
-	const localDueDate = dayjs.utc(dueDate).local();
+	const localDueDate = dayjs.utc(currentDueDate).local();
 
 	// Formatear la fecha en el formato deseado
 	const formattedDate = localDueDate.format("DD/MM/YYYY HH:mm:ss");

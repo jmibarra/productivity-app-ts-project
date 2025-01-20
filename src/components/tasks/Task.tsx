@@ -16,6 +16,7 @@ import { Box } from "@mui/material";
 import DueDateComponent from "../common/DueDate/DueDateComponent";
 import HorizontalDivider from "../common/HorizontalDivider";
 import EmptyDateComponent from "../common/DueDate/EmptyDateComponent";
+import { useEffect, useState } from "react";
 
 interface Props {
 	task: Task;
@@ -41,19 +42,27 @@ const TaskComponent = ({
 		toogleTask(id, completed);
 	};
 
+	const [currentDueDate, setCurrentDueDate] = useState<string | undefined>(
+		task.dueDate
+	);
+
+	useEffect(() => {
+		setCurrentDueDate(task.dueDate);
+	}, [task.dueDate]);
+
 	return (
 		<>
 			<TaskContainer>
 				<ListItem
 					secondaryAction={
 						<Box display="flex" alignItems="center" gap={1}>
-							{task.dueDate ? (
-								<DueDateComponent dueDate={task.dueDate} />
+							{currentDueDate ? (
+								<DueDateComponent dueDate={currentDueDate} />
 							) : (
 								<EmptyDateComponent
-									dueDate={task.dueDate}
 									updateDueDate={updateDueDate}
 									taskId={task._id}
+									setCurrentDueDate={setCurrentDueDate}
 								/>
 							)}
 							<HorizontalDivider />

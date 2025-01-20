@@ -79,7 +79,7 @@ export default function TaskDetailViewModal({
 							/>
 							<HorizontalDivider />
 							{/* Si existe selectedTaskProp muestro el componente sino muestro el componente emptyDate */}
-							{selectedTaskProp.dueDate ? (
+							{/* {selectedTaskProp.dueDate ? (
 								<DueDateComponent
 									dueDate={selectedTaskProp.dueDate}
 								/>
@@ -87,9 +87,8 @@ export default function TaskDetailViewModal({
 								<EmptyDateComponent
 									updateDueDate={updateDueDate}
 									taskId={selectedTaskProp._id}
-									dueDate={selectedTaskProp.dueDate}
 								/>
-							)}
+							)} */}
 						</Box>
 						<Priority
 							priority={selectedTaskProp.priority}
