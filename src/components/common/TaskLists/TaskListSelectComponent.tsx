@@ -6,29 +6,36 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { initialState, taskListsReducer } from "../../../reducers/taksLists";
 import { fetchUserLists } from "../../../services/taskListsServices";
-import { ReducerActionType } from "../../../actions/tasksLists";
 import Cookies from "js-cookie";
+import { patchTask } from "../../../services/tasksServices";
+import { ReducerTaskListActionType } from "../../../actions/tasksLists";
+import { ReducerActionType } from "../../../actions/tasks";
+import {
+	tasksReducer,
+	initialState as initialTaskState,
+} from "../../../reducers/tasks";
+import { Task } from "../../../interfaces";
 
 interface Props {
-	currentList: number | undefined;
-	setCurrentList: (list: number) => void;
+	task: Task;
 }
 
-export default function TaskListSelectComponent({
-	currentList,
-	setCurrentList,
-}: Props) {
+export default function TaskListSelectComponent({ task }: Props) {
 	const [selectedList, setSelectedList] = React.useState<string | "">(
-		currentList?.toString() || ""
+		task.list || ""
 	);
 	const [sessionToken, setSessionToken] = React.useState<string | null>(null);
 	const [state, dispatch] = React.useReducer(taskListsReducer, initialState);
+	const [taskState, taskDispatch] = React.useReducer(
+		tasksReducer,
+		initialTaskState
+	);
 
 	const fetchAllLists = React.useCallback(async () => {
 		try {
 			const responseJson = await fetchUserLists(sessionToken);
 			dispatch({
-				type: ReducerActionType.GET_USER_LISTS,
+				type: ReducerTaskListActionType.GET_USER_LISTS,
 				payload: responseJson,
 			});
 		} catch (error) {
@@ -46,16 +53,31 @@ export default function TaskListSelectComponent({
 
 	// Sincroniza el estado del selector con la prop `currentList`
 	React.useEffect(() => {
-		if (currentList !== undefined) {
-			setSelectedList(currentList.toString());
+		if (task.list !== undefined) {
+			setSelectedList(task.list);
 		}
-	}, [currentList]);
+	}, [task.list]);
 
 	const handleChange = (event: SelectChangeEvent) => {
 		const newValue = event.target.value;
+		console.log("handleChange", newValue);
 		setSelectedList(newValue);
-		setCurrentList(parseInt(newValue, 10));
-		//Aquí debería llamar al reducer que setea la lista para la task
+		updateList(task._id, newValue);
+	};
+
+	const updateList = (id: string, list: string): void => {
+		console.log("updateList", list);
+		try {
+			taskDispatch({
+				type: ReducerActionType.UPDATE_TASK_LIST,
+				payload: { list: list, id: id },
+			});
+			const data = { list: list };
+			console.log(data);
+			patchTask(id, data, sessionToken);
+		} catch (response) {
+			console.log("Error", response);
+		}
 	};
 
 	return (

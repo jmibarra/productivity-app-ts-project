@@ -19,7 +19,7 @@ import {
 	initialState,
 	taskListsReducer,
 } from "../../../../../reducers/taksLists";
-import { ReducerActionType } from "../../../../../actions/tasksLists";
+import { ReducerTaskListActionType } from "../../../../../actions/tasksLists";
 import TaskListItem from "./TaskListItem";
 import ListAdministrationBarComponent from "./ListAdministrationBarComponent";
 import NewListPopup from "./NewListPopupComponent";
@@ -41,7 +41,7 @@ const TaskListSelectorComponent = () => {
 		try {
 			const createdList = await createTaskList(taskList, sessionToken);
 			dispatch({
-				type: ReducerActionType.CREATE_LIST,
+				type: ReducerTaskListActionType.CREATE_LIST,
 				payload: createdList,
 			});
 		} catch (response) {
@@ -64,7 +64,10 @@ const TaskListSelectorComponent = () => {
 	const handleDeleteList = async (id: string) => {
 		try {
 			await deleteTaskList(id, sessionToken);
-			dispatch({ type: ReducerActionType.DELETE_LIST, payload: id });
+			dispatch({
+				type: ReducerTaskListActionType.DELETE_LIST,
+				payload: id,
+			});
 		} catch (error) {
 			console.error("Error deleting list", error);
 		}
@@ -88,7 +91,7 @@ const TaskListSelectorComponent = () => {
 		try {
 			const responseJson = await fetchUserLists(sessionToken);
 			dispatch({
-				type: ReducerActionType.GET_USER_LISTS,
+				type: ReducerTaskListActionType.GET_USER_LISTS,
 				payload: responseJson,
 			});
 		} catch (error) {

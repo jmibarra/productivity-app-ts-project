@@ -25,7 +25,7 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { fetchUserLists } from "../../../services/taskListsServices";
-import { ReducerActionType } from "../../../actions/tasksLists";
+import { ReducerTaskListActionType } from "../../../actions/tasksLists";
 import Cookies from "js-cookie";
 import { initialState, taskListsReducer } from "../../../reducers/taksLists";
 
@@ -44,7 +44,7 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 		try {
 			const responseJson = await fetchUserLists(sessionToken);
 			dispatch({
-				type: ReducerActionType.GET_USER_LISTS,
+				type: ReducerTaskListActionType.GET_USER_LISTS,
 				payload: responseJson,
 			});
 		} catch (error) {

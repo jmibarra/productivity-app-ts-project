@@ -22,7 +22,7 @@ const TaskQuickInputComponent = ({ addTask }: Props) => {
 			_id: "",
 			title: taskTile,
 			completed: false,
-			list: 1,
+			list: "", //Aqui deberia ir el id de lista que tome de la url o vacio
 			priority: 4,
 		} as Task;
 		addTask(newTask);

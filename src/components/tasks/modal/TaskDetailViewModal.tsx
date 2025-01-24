@@ -57,10 +57,6 @@ export default function TaskDetailViewModal({
 		toogleTask(id, completed);
 	};
 
-	const setCurrentList = (list: number) => {
-		console.log(list);
-	};
-
 	return (
 		<Dialog
 			open={taskModalOpen}
@@ -164,10 +160,7 @@ export default function TaskDetailViewModal({
 			</DialogContent>
 			<DialogActions>
 				<Box display="flex" justifyContent="space-between" width="100%">
-					<TaskListSelectComponent
-						currentList={selectedTaskProp.list}
-						setCurrentList={setCurrentList}
-					/>
+					<TaskListSelectComponent task={selectedTaskProp} />
 					<Button onClick={handleClose} color="secondary">
 						Cerrar
 					</Button>

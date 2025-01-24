@@ -1,9 +1,9 @@
 import { Reducer } from "react";
-import { ReducerActionType } from "../actions/tasksLists";
+import { ReducerTaskListActionType } from "../actions/tasksLists";
 import { TaskList, TaskListsState } from "../interfaces";
 
 export type ReducerAction = {
-    type: ReducerActionType;
+    type: ReducerTaskListActionType;
     payload?: any;
 };
 
@@ -14,17 +14,17 @@ export const initialState:TaskListsState = {
 
 export const taskListsReducer: Reducer<TaskListsState, ReducerAction> = (state = initialState, action) => {
     switch(action.type){
-        case ReducerActionType.GET_USER_LISTS:
+        case ReducerTaskListActionType.GET_USER_LISTS:
             return{
                 ...state,
                 taskLists: action.payload,
             };
-        case ReducerActionType.CREATE_LIST:
+        case ReducerTaskListActionType.CREATE_LIST:
             return {
                 ...state,
                 taskLists: [...state.taskLists, action.payload]
             };
-        case ReducerActionType.DELETE_LIST: {
+        case ReducerTaskListActionType.DELETE_LIST: {
             const newTaskLists = state.taskLists.filter(
                 (taskList:TaskList) => taskList._id !== action.payload
             ) as TaskList[];

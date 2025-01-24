@@ -1,4 +1,4 @@
-export enum ReducerActionType {
+export enum ReducerTaskListActionType {
     GET_USER_LISTS,
     CREATE_LIST,
     DELETE_LIST,
