@@ -19,6 +19,7 @@ import HorizontalDivider from "../../common/HorizontalDivider";
 import DueDateComponent from "../../common/DueDate/DueDateComponent";
 import EmptyDateComponent from "../../common/DueDate/EmptyDateComponent";
 import { Task } from "../../../interfaces";
+import TaskListSelectComponent from "../../common/TaskLists/TaskListSelectComponent";
 
 interface Props {
 	handleClose: () => void;
@@ -54,6 +55,10 @@ export default function TaskDetailViewModal({
 	const handleToggle = (id: string, completed: boolean) => () => {
 		setLocalCompleted(!localCompleted);
 		toogleTask(id, completed);
+	};
+
+	const setCurrentList = (list: number) => {
+		console.log(list);
 	};
 
 	return (
@@ -158,13 +163,15 @@ export default function TaskDetailViewModal({
 				)}
 			</DialogContent>
 			<DialogActions>
-				<Button
-					onClick={handleClose}
-					variant="contained"
-					color="secondary"
-				>
-					Cerrar
-				</Button>
+				<Box display="flex" justifyContent="space-between" width="100%">
+					<TaskListSelectComponent
+						currentList={selectedTaskProp.list}
+						setCurrentList={setCurrentList}
+					/>
+					<Button onClick={handleClose} color="secondary">
+						Cerrar
+					</Button>
+				</Box>
 			</DialogActions>
 		</Dialog>
 	);

@@ -7,5 +7,6 @@ export enum ReducerActionType {
     GET_TASK,
     UPDATE_TASK_LABELS,
     UPDATE_TASK_PRIORITY,
-    UPDATE_TASK_DUE_DATE
+    UPDATE_TASK_DUE_DATE,
+    UPDATE_TASK_LIST
 }
