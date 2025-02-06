@@ -11,6 +11,7 @@ import Register from "./components/register/Register";
 import ProtectedRoute from "./components/login/ProtectedRoute";
 import ConfigurationPageComponent from "./components/configuration/ConfigurationPageComponent";
 import UserProfileComponent from "./components/userProfile/UserProfileComponent";
+import MetricsBoardComponent from "./components/metrics/MetricsBoardComponent";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(
@@ -66,6 +67,14 @@ function App() {
 								element={
 									<ProtectedRoute isLoggedIn={isLoggedIn}>
 										<Habits />
+									</ProtectedRoute>
+								}
+							/>
+							<Route
+								path="/metrics"
+								element={
+									<ProtectedRoute isLoggedIn={isLoggedIn}>
+										<MetricsBoardComponent />
 									</ProtectedRoute>
 								}
 							/>
