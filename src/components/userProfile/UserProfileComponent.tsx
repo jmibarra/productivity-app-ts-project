@@ -1,4 +1,3 @@
-import React from "react";
 import {
 	Container,
 	Content,
@@ -10,6 +9,20 @@ import {
 import { Avatar, Button, Input } from "@mui/material";
 
 const UserProfileComponent = () => {
+	const handleResetPassword = () => {
+		// Lógica para resetear la contraseña
+		alert("Reset Password");
+	};
+
+	const handleDeleteAccount = () => {
+		// Lógica para eliminar la cuenta
+		alert("Delete Account");
+	};
+
+	const updateUserInfo = () => {
+		// Lógica para actualizar la información del usuario
+		alert("Update User Info");
+	};
 	return (
 		<Container>
 			<Header fullWidth>
@@ -27,19 +40,33 @@ const UserProfileComponent = () => {
 				<Section>
 					<h2>Edit Name</h2>
 					<Input placeholder="Full Name" fullWidth />
-					<Button>Save</Button>
+					<Button
+						variant="outlined"
+						color="primary"
+						onClick={updateUserInfo}
+					>
+						Save
+					</Button>
 				</Section>
 
 				<Section>
 					<h2>Change Password</h2>
-					<Button variant="contained" color="warning">
+					<Button
+						variant="contained"
+						color="warning"
+						onClick={handleResetPassword}
+					>
 						Reset Password
 					</Button>
 				</Section>
 
 				<DangerSection>
 					<h2>Danger Zone</h2>
-					<Button variant="contained" color="error">
+					<Button
+						variant="contained"
+						color="error"
+						onClick={handleDeleteAccount}
+					>
 						Delete Account
 					</Button>
 				</DangerSection>
