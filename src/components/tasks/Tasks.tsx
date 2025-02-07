@@ -18,7 +18,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import TaskQuickInputComponent from "./TaskQuickInput";
 import Cookies from "js-cookie";
-import { CircularProgress } from "@mui/material";
+import { Box, CircularProgress, ListItemText, TextField } from "@mui/material";
 import { ItemLoading } from "../notes/styles/NotesStyles";
 import FilterAndSortComponent from "./FilterAndSortComponent";
 import {
@@ -28,6 +28,7 @@ import {
 	patchTask,
 } from "../../services/tasksServices";
 import { useSearchParams } from "react-router-dom";
+import ListCustomIconComponent from "../common/Drawer/Sections/TaskLists/ListCustomIconComponent";
 
 const Tasks = () => {
 	const [loading, setLoading] = useState(false);
@@ -192,13 +193,41 @@ const Tasks = () => {
 				</h1>
 			</Header>
 			<Content>
-				<FilterAndSortComponent
-					showCompleted={showCompleted}
-					setShowCompleted={setShowCompleted}
-					setSortOption={setSortOption}
-					sortDirection={sortDirection}
-					setSortDirection={setSortDirection}
-				/>
+				<Box
+					display="flex"
+					justifyContent="flex-end"
+					alignItems="center"
+					gap={1}
+				>
+					<Box
+						display="flex"
+						justifyContent="space-between"
+						width="100%"
+					>
+						<Box
+							display="flex"
+							alignItems="center"
+							justifyContent={"center"}
+						>
+							<ListCustomIconComponent listIcon="Inbox" />
+							<ListItemText
+								primary="Lista"
+								primaryTypographyProps={{
+									color: "primary",
+									fontWeight: "medium",
+									variant: "body2",
+								}}
+							/>
+						</Box>
+					</Box>
+					<FilterAndSortComponent
+						showCompleted={showCompleted}
+						setShowCompleted={setShowCompleted}
+						setSortOption={setSortOption}
+						sortDirection={sortDirection}
+						setSortDirection={setSortDirection}
+					/>
+				</Box>
 				<TaskQuickInputComponent addTask={addTask} />
 				{loading ? (
 					<ItemLoading>

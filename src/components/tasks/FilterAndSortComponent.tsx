@@ -84,12 +84,7 @@ const FilterAndSortComponent = ({
 	};
 
 	return (
-		<Box
-			display="flex"
-			justifyContent="flex-end"
-			alignItems="center"
-			gap={1}
-		>
+		<>
 			{/* Filter Button */}
 			<Tooltip title="Filtrar tareas">
 				<IconButton color="primary" onClick={handleFilterClick}>
@@ -155,7 +150,7 @@ const FilterAndSortComponent = ({
 					</ToggleButtonGroup>
 				</Box>
 			</Menu>
-		</Box>
+		</>
 	);
 };
 

@@ -26,14 +26,14 @@ export const ListCustomIconComponent: React.FC<{
 }> = ({ listIcon }) => {
 	if (!listIcon) {
 		return (
-			<ListItemIcon>
+			<ListItemIcon style={{ minWidth: "25px" }}>
 				<ListAlt fontSize="small" color="primary" />
 			</ListItemIcon>
 		);
 	}
 
 	return (
-		<ListItemIcon>
+		<ListItemIcon style={{ minWidth: "25px" }}>
 			{listIconsMap[listIcon] || (
 				<ListAlt fontSize="small" color="primary" />
 			)}

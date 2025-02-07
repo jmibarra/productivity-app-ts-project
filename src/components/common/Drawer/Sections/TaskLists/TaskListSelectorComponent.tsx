@@ -122,7 +122,7 @@ const TaskListSelectorComponent = () => {
 					handleNewListClick={handleNewListClick}
 					handleDeleteListsClick={handleDeleteListsClick}
 				/>
-				<List component="div" disablePadding>
+				<List component="div" disablePadding key="task-lists" dense>
 					{state.taskLists.map((list) => (
 						<TaskListItem
 							list={list}
