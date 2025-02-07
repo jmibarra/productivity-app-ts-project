@@ -13,12 +13,14 @@ interface TaskListItemsProps {
 	showDeleteIcons: boolean;
 	handleRouteClick: (route: string) => void;
 	handleDeleteList: (id: string) => void;
+	selectdListId: string | null;
 }
 const TaskListItem = ({
 	list,
 	showDeleteIcons,
 	handleRouteClick,
 	handleDeleteList,
+	selectdListId,
 }: TaskListItemsProps) => {
 	return (
 		<ListItem
@@ -34,6 +36,7 @@ const TaskListItem = ({
 					</IconButton>
 				) : null
 			}
+			selected={list._id === selectdListId}
 		>
 			<ListItemButton
 				key={list._id}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
 	Collapse,
 	List,
@@ -25,6 +25,10 @@ import ListAdministrationBarComponent from "./ListAdministrationBarComponent";
 import NewListPopup from "./NewListPopupComponent";
 
 const TaskListSelectorComponent = () => {
+	const [searchParams] = useSearchParams(); // Hook para manejar query strings
+	const listIdFromUrl = searchParams.get("listId"); // Obtén el valor de 'listId'
+
+	const [listId, setListId] = useState<string | null>(listIdFromUrl || ""); // Estado para guardar listId
 	const [openSubsection, setOpenSubsection] = useState(false);
 	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [showDeleteIcons, setShowDeleteIcons] = useState(false);
@@ -36,6 +40,13 @@ const TaskListSelectorComponent = () => {
 	const handleRouteClick = (route: string) => {
 		navigate(route);
 	};
+
+	// Actualizar listId cuando el parámetro de la URL cambie
+	useEffect(() => {
+		if (listIdFromUrl) {
+			setListId(listIdFromUrl);
+		}
+	}, [listIdFromUrl]);
 
 	const addList = async (taskList: TaskList): Promise<void> => {
 		try {
@@ -130,6 +141,7 @@ const TaskListSelectorComponent = () => {
 							showDeleteIcons={showDeleteIcons}
 							handleRouteClick={handleRouteClick}
 							handleDeleteList={handleDeleteList}
+							selectdListId={listId}
 						/>
 					))}
 					<TaskListItem
@@ -138,6 +150,7 @@ const TaskListSelectorComponent = () => {
 						showDeleteIcons={false}
 						handleRouteClick={handleRouteClick}
 						handleDeleteList={handleDeleteList}
+						selectdListId={listId}
 					/>
 				</List>
 			</Collapse>
