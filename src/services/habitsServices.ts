@@ -9,8 +9,8 @@ const getHeaders = (sessionToken: string | null) => {
 };
 
 export const fetchHabits = async (
-    page: number,
-    limit: number,
+    page: number = 1,
+    limit: number = 10,
     sessionToken: string | null
 ) => {
     const headers = getHeaders(sessionToken);
