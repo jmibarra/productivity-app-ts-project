@@ -51,7 +51,7 @@ const TaskList = ({
 								updatePriority={updatePriority}
 								updateDueDate={updateDueDate}
 							/>
-							<Divider />
+							<Divider variant="inset" />
 						</>
 					);
 				})}
