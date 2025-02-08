@@ -10,21 +10,6 @@ export const Item = styled(Paper)(({ theme }) => ({
   marginTop: '10px',
 }));
 
-export const TaskContainer = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(2),
-    margin: theme.spacing(1, 0),
-    background: theme.palette.mode === "dark" 
-        ? "linear-gradient(90deg, #1a2027 0%, #282c34 100%)" 
-        : "linear-gradient(90deg, #ffffff 0%, #f8f8f8 100%)",
-    boxShadow: theme.palette.mode === "dark"
-        ? "0px 4px 10px rgba(0, 0, 0, 0.3)"
-        : "0px 4px 10px rgba(0, 0, 0, 0.1)",
-    borderRadius: theme.shape.borderRadius,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-}));
-
 export const ItemHeader = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,

@@ -6,11 +6,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {
-	CompletedText,
-	TaskContainer,
-	DescriptionText,
-} from "./styles/TasksStyles";
+import { CompletedText, DescriptionText } from "./styles/TasksStyles";
 import Priority from "../common/Priority/Priority";
 import { Box } from "@mui/material";
 import DueDateComponent from "../common/DueDate/DueDateComponent";
@@ -51,79 +47,75 @@ const TaskComponent = ({
 	}, [task.dueDate]);
 
 	return (
-		<>
-			<TaskContainer>
-				<ListItem
-					secondaryAction={
-						<Box display="flex" alignItems="center" gap={1}>
-							{currentDueDate ? (
-								<DueDateComponent
-									dueDate={currentDueDate}
-									updateDueDate={updateDueDate}
-									taskId={task._id}
-									setCurrentDueDate={setCurrentDueDate}
-								/>
-							) : (
-								<EmptyDateComponent
-									updateDueDate={updateDueDate}
-									taskId={task._id}
-									setCurrentDueDate={setCurrentDueDate}
-								/>
-							)}
-							<HorizontalDivider />
-							<Priority
-								priority={task.priority}
-								taskId={task._id}
-								updatePriority={updatePriority}
-							/>
-							<IconButton
-								edge="end"
-								aria-label="delete-action"
-								onClick={() => deleteTask(task._id)}
-							>
-								<DeleteIcon />
-							</IconButton>
-						</Box>
-					}
-					disablePadding
-					alignItems="flex-start"
-				>
-					<ListItemButton role={undefined} dense>
-						<ListItemIcon>
-							<Checkbox
-								edge="start"
-								checked={task.completed}
-								tabIndex={-1}
-								disableRipple
-								inputProps={{ "aria-labelledby": labelId }}
-								onClick={handleToggle(task._id, task.completed)}
-							/>
-						</ListItemIcon>
-						<ListItemText
-							id={labelId}
-							primary={task.title}
-							secondary={task.description}
-							onClick={() => handleSelectTask(task)}
-							primaryTypographyProps={
-								task.completed
-									? { component: CompletedText }
-									: {
-											style: {
-												fontWeight: "bold",
-												color: "#333",
-											},
-									  }
-							}
-							secondaryTypographyProps={
-								task.completed
-									? { component: CompletedText }
-									: { component: DescriptionText }
-							}
+		<ListItem
+			secondaryAction={
+				<Box display="flex" alignItems="center" gap={1}>
+					{currentDueDate ? (
+						<DueDateComponent
+							dueDate={currentDueDate}
+							updateDueDate={updateDueDate}
+							taskId={task._id}
+							setCurrentDueDate={setCurrentDueDate}
 						/>
-					</ListItemButton>
-				</ListItem>
-			</TaskContainer>
-		</>
+					) : (
+						<EmptyDateComponent
+							updateDueDate={updateDueDate}
+							taskId={task._id}
+							setCurrentDueDate={setCurrentDueDate}
+						/>
+					)}
+					<HorizontalDivider />
+					<Priority
+						priority={task.priority}
+						taskId={task._id}
+						updatePriority={updatePriority}
+					/>
+					<IconButton
+						edge="end"
+						aria-label="delete-action"
+						onClick={() => deleteTask(task._id)}
+					>
+						<DeleteIcon />
+					</IconButton>
+				</Box>
+			}
+			disablePadding
+			alignItems="flex-start"
+		>
+			<ListItemButton role={undefined} dense>
+				<ListItemIcon>
+					<Checkbox
+						edge="start"
+						checked={task.completed}
+						tabIndex={-1}
+						disableRipple
+						inputProps={{ "aria-labelledby": labelId }}
+						onClick={handleToggle(task._id, task.completed)}
+					/>
+				</ListItemIcon>
+				<ListItemText
+					id={labelId}
+					primary={task.title}
+					secondary={task.description}
+					onClick={() => handleSelectTask(task)}
+					primaryTypographyProps={
+						task.completed
+							? { component: CompletedText }
+							: {
+									style: {
+										fontWeight: "bold",
+										color: "#333",
+									},
+							  }
+					}
+					secondaryTypographyProps={
+						task.completed
+							? { component: CompletedText }
+							: { component: DescriptionText }
+					}
+				/>
+			</ListItemButton>
+		</ListItem>
 	);
 };
 
