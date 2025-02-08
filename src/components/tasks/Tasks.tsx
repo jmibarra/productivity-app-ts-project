@@ -210,7 +210,7 @@ const Tasks = () => {
 						setSortDirection={setSortDirection}
 					/>
 				</Box>
-				<TaskQuickInputComponent addTask={addTask} />
+				<TaskQuickInputComponent addTask={addTask} listId={listId} />
 				{loading ? (
 					<ItemLoading>
 						<CircularProgress />

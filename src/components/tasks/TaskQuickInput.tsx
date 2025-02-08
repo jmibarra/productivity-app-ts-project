@@ -1,6 +1,6 @@
 import IconButton from "@mui/material/IconButton";
 import AddTaskIcon from "@mui/icons-material/AddTask";
-import { Divider } from "@mui/material";
+import { CircularProgress, Divider } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import { Task } from "../../interfaces";
@@ -8,24 +8,29 @@ import { useState } from "react";
 
 interface Props {
 	addTask: (task: Task) => void;
+	listId: string | null;
 }
 
-const TaskQuickInputComponent = ({ addTask }: Props) => {
+const TaskQuickInputComponent = ({ addTask, listId }: Props) => {
 	const [taskTitle, setTaskTitle] = useState("");
+	const [loading, setLoading] = useState(false);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setTaskTitle(e.currentTarget.value);
 	};
 
 	const createNewTask = (taskTile: String): void => {
+		setLoading(true);
 		const newTask = {
 			_id: "",
 			title: taskTile,
 			completed: false,
-			list: "", //Aqui deberia ir el id de lista que tome de la url o vacio
+			list: listId ?? "",
 			priority: 4,
 		} as Task;
 		addTask(newTask);
+		setTaskTitle("");
+		setLoading(false);
 	};
 
 	return (
@@ -44,6 +49,7 @@ const TaskQuickInputComponent = ({ addTask }: Props) => {
 					placeholder="Nueva tarea"
 					inputProps={{ "aria-label": "search google maps" }}
 					onChange={handleChange}
+					value={taskTitle}
 				/>
 				<Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
 				<IconButton
@@ -51,8 +57,9 @@ const TaskQuickInputComponent = ({ addTask }: Props) => {
 					sx={{ p: "10px" }}
 					aria-label="directions"
 					onClick={() => createNewTask(taskTitle)}
+					disabled={loading}
 				>
-					<AddTaskIcon />
+					{loading ? <CircularProgress size={20} /> : <AddTaskIcon />}
 				</IconButton>
 			</Paper>
 		</>
