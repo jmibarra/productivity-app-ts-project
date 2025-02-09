@@ -1,4 +1,4 @@
-import { Box, ListItemText } from "@mui/material";
+import { Box, CircularProgress, ListItemText } from "@mui/material";
 import { useCallback, useEffect, useReducer, useState } from "react";
 import Cookies from "js-cookie";
 import ListCustomIconComponent from "../common/Drawer/Sections/TaskLists/ListCustomIconComponent";
@@ -52,7 +52,7 @@ const SelectedListDisplayComponent = ({
 		);
 	}, [state.taskLists, selectedListId]);
 
-	return (
+	return selectdList ? (
 		<Box display="flex" justifyContent="space-between" width="100%">
 			<Box display="flex" alignItems="center" justifyContent={"center"}>
 				<ListCustomIconComponent listIcon={selectdList?.icon} />
@@ -66,6 +66,8 @@ const SelectedListDisplayComponent = ({
 				/>
 			</Box>
 		</Box>
+	) : (
+		<CircularProgress />
 	);
 };
 
