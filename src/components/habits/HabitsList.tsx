@@ -25,7 +25,7 @@ const HabitsList = ({ habits, setSelectedHabit }: props) => {
 						<span>{habit.icon}</span>
 						<div>
 							<h3>{habit.name}</h3>
-							<p>{habit.streak} días</p>
+							<p>5 días</p>
 						</div>
 					</HabitInfo>
 					<Calendar>
