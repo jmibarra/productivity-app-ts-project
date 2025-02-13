@@ -54,3 +54,19 @@ export const patchHabit = async (
     });
 };
 
+/* Habits records */
+
+export const getHabitRecordsByPeriod = async (
+    habitId: string,
+    startDate: string,
+    endDate: string,
+    sessionToken: string | null
+) => {
+    const headers = getHeaders(sessionToken);
+    const response = await fetch(
+        `${properties.api_url}/habit/${habitId}/habit-records/range/${startDate}/${endDate}`,
+        { headers, credentials: "include" }
+    );
+    return response.json();
+}
+

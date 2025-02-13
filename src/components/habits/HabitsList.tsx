@@ -1,6 +1,4 @@
 import React from "react";
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
 import {
 	Calendar,
 	HabitInfo,
@@ -8,6 +6,7 @@ import {
 	HabitList,
 } from "./styles/HabitsStyles";
 import { Habit } from "../../interfaces";
+import HabitWeekRecords from "./records/HabitWeekRecords";
 
 interface props {
 	habits: Habit[];
@@ -29,24 +28,7 @@ const HabitsList = ({ habits, setSelectedHabit }: props) => {
 						</div>
 					</HabitInfo>
 					<Calendar>
-						{/* {habit.daysChecked.map((checked, index) => (
-							<div
-								key={index}
-								className={checked ? "checked" : "unchecked"}
-							>
-								{checked ? (
-									<CheckIcon
-										fontSize="small"
-										color="inherit"
-									/>
-								) : (
-									<CloseIcon
-										fontSize="small"
-										color="inherit"
-									/>
-								)}
-							</div>
-						))} */}
+						{habit._id && <HabitWeekRecords habitId={habit._id} />}
 					</Calendar>
 				</HabitItem>
 			))}

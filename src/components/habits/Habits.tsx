@@ -38,8 +38,6 @@ const Habits = () => {
 		}
 	}, [fetchAllHabits]);
 
-	console.log(state.habits);
-
 	return (
 		<Container>
 			<Header>
