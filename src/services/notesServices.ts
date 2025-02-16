@@ -4,7 +4,6 @@ import { properties } from "../properties";
 
 const getHeaders = (sessionToken: string | null) => {
 	const headers = new Headers();
-	headers.append("Cookie", `PROD-APP-AUTH=${sessionToken}`);
 	headers.append("Content-Type", "application/json");
 	return headers;
 };

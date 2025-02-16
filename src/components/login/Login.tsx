@@ -51,11 +51,11 @@ const Login = ({ isLoggedIn, setIsLoggedIn }: Props) => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({ email, password }),
+			credentials: "include",
 		});
 
 		if (response.ok) {
 			const data: LoginResponse = await response.json();
-			Cookies.set("PROD-APP-AUTH", data.authentication.sessionToken);
 			setIsLoggedIn(true);
 			setSuccess(true);
 			setTimeout(() => {
