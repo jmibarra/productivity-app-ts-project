@@ -67,7 +67,9 @@ const SelectedListDisplayComponent = ({
 			</Box>
 		</Box>
 	) : (
-		<CircularProgress />
+		<Box display="flex" justifyContent="space-between" width="100%">
+			<CircularProgress size={20} />
+		</Box>
 	);
 };
 
