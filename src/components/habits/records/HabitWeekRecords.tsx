@@ -52,6 +52,8 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 				const endDate = new Date();
 				endDate.setHours(23, 59, 59, 999);
 
+				const initialHabitRecords = getLast7Days();
+
 				const responseJson = await getHabitRecordsByPeriod(
 					habitId,
 					startDate.toISOString(),
@@ -59,24 +61,35 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 					sessionToken
 				);
 
-				console.log(responseJson);
-
 				// Crear un mapa fecha -> estado de completado
-				const recordsMap: { [date: string]: boolean } = {};
+				const recordsMap: { [date: string]: HabitRecord } = {};
 				responseJson.forEach((record: any) => {
 					const recordDate = new Date(record.date)
 						.toISOString()
 						.split("T")[0]; // YYYY-MM-DD
-					recordsMap[recordDate] = record.progress.completed;
+					recordsMap[recordDate] = record;
 				});
 
-				// Fusionar los registros obtenidos con la lista inicial
-				setHabitRecords((prevRecords) =>
-					prevRecords.map((record) => ({
-						...record,
-						completed: recordsMap[record.date] ?? false,
-					}))
+				// Recorro el resultado de la API y si no hay un registro para la fecha agrego el registro inicial, solo puede haber un registro por dia y siempre priorizo el de la API
+				const updatedHabitRecords = initialHabitRecords.map(
+					(record) => {
+						const recordDate = record.date;
+						const completed =
+							recordsMap[recordDate] !== undefined
+								? recordsMap[recordDate].progress.completed
+								: record.progress.completed;
+						return {
+							...record,
+							_id: recordsMap[recordDate]
+								? recordsMap[recordDate]._id
+								: "",
+							progress: { completed, amount: 0 },
+						};
+					}
 				);
+
+				console.log(updatedHabitRecords);
+				setHabitRecords(updatedHabitRecords);
 			} catch (error) {
 				console.error("Error fetching habits", error);
 			} finally {
@@ -86,9 +99,7 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 		[habitId]
 	);
 
-	/** Cargar el token y llamar a la API */
 	useEffect(() => {
-		setHabitRecords(getLast7Days()); // Inicializar con días vacíos
 		const token = Cookies.get("PROD-APP-AUTH");
 		if (token) fetchHabitRecordsForWeek(token);
 	}, [fetchHabitRecordsForWeek]);
