@@ -58,6 +58,7 @@ const Login = ({ isLoggedIn, setIsLoggedIn }: Props) => {
 			const data: LoginResponse = await response.json();
 			setIsLoggedIn(true);
 			setSuccess(true);
+			Cookies.set("PROD-APP-AUTH", data.authentication.sessionToken);
 			setTimeout(() => {
 				navigate("/");
 			}, 1000);

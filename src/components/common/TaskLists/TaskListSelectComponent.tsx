@@ -47,8 +47,8 @@ export default function TaskListSelectComponent({ task }: Props) {
 		const token = Cookies.get("PROD-APP-AUTH");
 		if (token) {
 			setSessionToken(token);
-			fetchAllLists();
 		}
+		fetchAllLists();
 	}, [fetchAllLists]);
 
 	// Sincroniza el estado del selector con la prop `currentList`
