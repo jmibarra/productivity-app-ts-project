@@ -70,7 +70,6 @@ export const Calendar = styled("div")({
   },
   "& .unchecked": {
     backgroundColor: "#f5f5f5",
-    color: "#fff",
   },
 });
 

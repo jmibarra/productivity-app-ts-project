@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import Cookies from "js-cookie";
 import { getHabitRecordsByPeriod } from "../../../services/habitsServices";
 import { CircularProgress } from "@mui/material";
-import { HabitStatsContainer } from "../styles/HabitsStyles";
 
 interface Props {
 	habitId: string;
@@ -27,9 +26,10 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	/** Obtener los últimos 7 días con valores predeterminados */
 	const getLast7Days = () => {
 		return Array.from({ length: 7 }).map((_, index) => {
+			//timezone en UTC
 			const date = new Date();
 			date.setDate(date.getDate() - (6 - index)); // Hace 6 días hasta hoy
-			const formattedDate = date.toISOString().split("T")[0]; // YYYY-MM-DD
+			const formattedDate = date.toString().split("T")[0]; // YYYY-MM-DD
 			return {
 				_id: "",
 				habit_id: habitId,
@@ -63,31 +63,27 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 
 				// Crear un mapa fecha -> estado de completado
 				const recordsMap: { [date: string]: HabitRecord } = {};
-				responseJson.forEach((record: any) => {
+				responseJson.forEach((record: HabitRecord) => {
 					const recordDate = new Date(record.date)
 						.toISOString()
-						.split("T")[0]; // YYYY-MM-DD
+						.split("T")[0];
 					recordsMap[recordDate] = record;
 				});
 
-				// Recorro el resultado de la API y si no hay un registro para la fecha agrego el registro inicial, solo puede haber un registro por dia y siempre priorizo el de la API
 				const updatedHabitRecords = initialHabitRecords.map(
 					(record) => {
 						const recordDate = record.date;
-						const completed =
-							recordsMap[recordDate] !== undefined
-								? recordsMap[recordDate].progress.completed
-								: record.progress.completed;
 						return {
 							...record,
 							_id: recordsMap[recordDate]
 								? recordsMap[recordDate]._id
 								: "",
-							progress: { completed, amount: 0 },
+							progress: recordsMap[recordDate]
+								? recordsMap[recordDate].progress
+								: record.progress,
 						};
 					}
 				);
-
 				console.log(updatedHabitRecords);
 				setHabitRecords(updatedHabitRecords);
 			} catch (error) {
@@ -107,25 +103,26 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	return (
 		<>
 			{loading && <CircularProgress size={20} />}
-			{habitRecords.map((HabitRecord) => {
-				const day = new Date(HabitRecord.date).getDate();
-				return (
-					<div
-						key={HabitRecord.date}
-						className={
-							HabitRecord.progress.completed
-								? "checked"
-								: "unchecked"
-						}
-					>
-						{HabitRecord.progress.completed ? (
-							<CheckIcon fontSize="small" />
-						) : (
-							day
-						)}
-					</div>
-				);
-			})}
+			{!loading &&
+				habitRecords.map((HabitRecord) => {
+					const day = new Date(HabitRecord.date).getDate();
+					return (
+						<div
+							key={HabitRecord.date}
+							className={
+								HabitRecord.progress.completed
+									? "checked"
+									: "unchecked"
+							}
+						>
+							{HabitRecord.progress.completed ? (
+								<CheckIcon fontSize="small" />
+							) : (
+								day
+							)}
+						</div>
+					);
+				})}
 		</>
 	);
 };
