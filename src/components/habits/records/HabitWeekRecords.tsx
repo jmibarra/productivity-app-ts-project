@@ -29,7 +29,7 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 			//timezone en UTC
 			const date = new Date();
 			date.setDate(date.getDate() - (6 - index)); // Hace 6 días hasta hoy
-			const formattedDate = date.toString().split("T")[0]; // YYYY-MM-DD
+			const formattedDate = date.toISOString().split("T")[0]; // YYYY-MM-DD
 			return {
 				_id: "",
 				habit_id: habitId,
@@ -95,6 +95,17 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 		[habitId]
 	);
 
+	const handleRecordClick = (record: HabitRecord) => {
+		if (record._id === "") {
+			console.log(
+				"El registro no tiene ID por lo que no existe y lo voy a crear"
+			);
+			return;
+		} else {
+			console.log("El registro ya existe y lo voy a actualizar");
+		}
+	};
+
 	useEffect(() => {
 		const token = Cookies.get("PROD-APP-AUTH");
 		if (token) fetchHabitRecordsForWeek(token);
@@ -108,12 +119,13 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 					const day = new Date(HabitRecord.date).getDate();
 					return (
 						<div
-							key={HabitRecord.date}
+							key={HabitRecord._id}
 							className={
 								HabitRecord.progress.completed
 									? "checked"
 									: "unchecked"
 							}
+							onClick={() => handleRecordClick(HabitRecord)}
 						>
 							{HabitRecord.progress.completed ? (
 								<CheckIcon fontSize="small" />
