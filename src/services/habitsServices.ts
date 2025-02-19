@@ -71,7 +71,7 @@ export const getHabitRecordsByPeriod = async (
 
 export const createHabitRecord = async ( habitRecord: HabitRecord, sessionToken: string | null) => {
     const headers = getHeaders(sessionToken);
-    return fetch(`${properties.api_url}/habit-records`, {
+    return fetch(`${properties.api_url}/habit/${habitRecord.habit_id}/habit-records`, {
         method: "POST",
         headers,
         credentials: "include",

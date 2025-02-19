@@ -90,8 +90,9 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	const handleRecordClick = async (record: HabitRecord) => {
 		if (record._id === "") {
 			record.progress.completed = !record.progress.completed;
+			console.log(record);
 			const updatedRecord = await createHabitRecord(record, null);
-
+			console.log(updatedRecord);
 			setHabitRecords((prevRecords) =>
 				prevRecords.map((prevRecord) =>
 					prevRecord.date === record.date ? updatedRecord : prevRecord
