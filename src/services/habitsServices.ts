@@ -1,4 +1,4 @@
-import { Habit } from "../interfaces";
+import { Habit, HabitRecord } from "../interfaces";
 import { properties } from "../properties";
 
 const getHeaders = (sessionToken: string | null) => {
@@ -67,5 +67,15 @@ export const getHabitRecordsByPeriod = async (
         { headers, credentials: "include" }
     );
     return response.json();
+}
+
+export const createHabitRecord = async ( habitRecord: HabitRecord, sessionToken: string | null) => {
+    const headers = getHeaders(sessionToken);
+    return fetch(`${properties.api_url}/habit-records`, {
+        method: "POST",
+        headers,
+        credentials: "include",
+        body: JSON.stringify(habitRecord),
+    }).then((res) => res.json());
 }
 

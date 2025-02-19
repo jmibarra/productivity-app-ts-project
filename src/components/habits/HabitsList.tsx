@@ -16,11 +16,8 @@ const HabitsList = ({ habits, setSelectedHabit }: props) => {
 	return (
 		<HabitList>
 			{habits.map((habit) => (
-				<HabitItem
-					key={habit._id}
-					onClick={() => setSelectedHabit(habit)}
-				>
-					<HabitInfo>
+				<HabitItem key={habit._id}>
+					<HabitInfo onClick={() => setSelectedHabit(habit)}>
 						<span>{habit.icon}</span>
 						<div>
 							<h3>{habit.name}</h3>

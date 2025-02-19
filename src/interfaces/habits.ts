@@ -21,6 +21,19 @@ export interface Habit {
     updated_at?: Date;
 }
 
+export interface HabitRecord {
+    _id?: string;
+    habit_id: string;
+    date: string;
+    progress: {
+        completed: boolean;
+        amount: number;
+    };
+    notes?: string;
+    created_at?: Date;
+    updated_at?: Date;
+}
+
 export interface HabitsState {
     habits: Habit[];
     selectedHabit?: Habit;

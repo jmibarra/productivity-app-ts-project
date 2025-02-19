@@ -1,22 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import Cookies from "js-cookie";
-import { getHabitRecordsByPeriod } from "../../../services/habitsServices";
+import {
+	createHabitRecord,
+	getHabitRecordsByPeriod,
+} from "../../../services/habitsServices";
 import { CircularProgress } from "@mui/material";
+import { HabitRecord } from "../../../interfaces";
 
 interface Props {
 	habitId: string;
-}
-
-interface HabitRecord {
-	_id: string;
-	habit_id: string;
-	date: string;
-	progress: {
-		completed: boolean;
-		amount: number;
-	};
-	notes?: string;
 }
 
 const HabitWeekRecords = ({ habitId }: Props) => {
@@ -60,7 +53,6 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 					endDate.toISOString(),
 					sessionToken
 				);
-
 				// Crear un mapa fecha -> estado de completado
 				const recordsMap: { [date: string]: HabitRecord } = {};
 				responseJson.forEach((record: HabitRecord) => {
@@ -95,14 +87,20 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 		[habitId]
 	);
 
-	const handleRecordClick = (record: HabitRecord) => {
+	const handleRecordClick = async (record: HabitRecord) => {
 		if (record._id === "") {
-			console.log(
-				"El registro no tiene ID por lo que no existe y lo voy a crear"
+			record.progress.completed = !record.progress.completed;
+			const updatedRecord = await createHabitRecord(record, null);
+
+			setHabitRecords((prevRecords) =>
+				prevRecords.map((prevRecord) =>
+					prevRecord.date === record.date ? updatedRecord : prevRecord
+				)
 			);
-			return;
 		} else {
-			console.log("El registro ya existe y lo voy a actualizar");
+			console.log(
+				"El registro tiene ID por lo que existe y lo voy a actualizar"
+			);
 		}
 	};
 
@@ -119,7 +117,7 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 					const day = new Date(HabitRecord.date).getDate();
 					return (
 						<div
-							key={HabitRecord._id}
+							key={HabitRecord._id + HabitRecord.date}
 							className={
 								HabitRecord.progress.completed
 									? "checked"
