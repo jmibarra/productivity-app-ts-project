@@ -8,7 +8,6 @@ import {
 	ListItemText,
 } from "@mui/material";
 import { ExpandLess, ExpandMore, TaskAlt } from "@mui/icons-material";
-import Cookies from "js-cookie";
 import {
 	createTaskList,
 	deleteTaskList,

@@ -14,7 +14,6 @@ import {
 import { ListFooterBox } from "../tasks/styles/TasksStyles";
 import { CircularProgress, Pagination } from "@mui/material";
 import NotesIcon from "@mui/icons-material/Notes";
-import Cookies from "js-cookie";
 import {
 	createNote,
 	deleteNoteById,
@@ -27,7 +26,6 @@ const Notes = () => {
 	const [state, dispatch] = useReducer(notesReducer, initialState);
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
-	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
 	const handlePageChange = (
@@ -35,34 +33,27 @@ const Notes = () => {
 		value: number
 	) => setPage(value);
 
-	const fetchAllNotes = useCallback(
-		async (page: number, limit: number) => {
-			setLoading(true);
-			try {
-				const responseJson = await fetchNotes(
-					page,
-					limit,
-					sessionToken
-				);
-				dispatch({
-					type: ReducerActionType.GET_ALL_NOTES,
-					payload: responseJson.notes,
-				});
-				if (responseJson.count > 0) {
-					setTotalPages(Math.ceil(responseJson.count / limit));
-				}
-			} catch (error) {
-				console.error("Error fetching notes", error);
-			} finally {
-				setLoading(false);
+	const fetchAllNotes = useCallback(async (page: number, limit: number) => {
+		setLoading(true);
+		try {
+			const responseJson = await fetchNotes(page, limit);
+			dispatch({
+				type: ReducerActionType.GET_ALL_NOTES,
+				payload: responseJson.notes,
+			});
+			if (responseJson.count > 0) {
+				setTotalPages(Math.ceil(responseJson.count / limit));
 			}
-		},
-		[sessionToken]
-	);
+		} catch (error) {
+			console.error("Error fetching notes", error);
+		} finally {
+			setLoading(false);
+		}
+	}, []);
 
 	const deleteNote = async (id: string) => {
 		try {
-			await deleteNoteById(id, sessionToken);
+			await deleteNoteById(id);
 			dispatch({ type: ReducerActionType.DELETE_NOTES, payload: id });
 		} catch (error) {
 			console.error("Error deleting note", error);
@@ -71,7 +62,7 @@ const Notes = () => {
 
 	const addNote = async (note: Note) => {
 		try {
-			const createdNote = await createNote(note, sessionToken);
+			const createdNote = await createNote(note);
 			dispatch({
 				type: ReducerActionType.ADD_NOTE,
 				payload: createdNote,
@@ -82,18 +73,16 @@ const Notes = () => {
 	};
 
 	const updateLabels = (id: string, labels: string[]) =>
-		patchNote(id, { labels }, sessionToken);
+		patchNote(id, { labels });
 
 	const updateFavorite = (id: string, favorite: boolean) => {
 		dispatch({ type: ReducerActionType.FAVORITE, payload: id });
-		patchNote(id, { favorite: !favorite }, sessionToken).catch(() => {
+		patchNote(id, { favorite: !favorite }).catch(() => {
 			dispatch({ type: ReducerActionType.FAVORITE, payload: id });
 		});
 	};
 
 	useEffect(() => {
-		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) setSessionToken(token);
 		fetchAllNotes(page, 9);
 	}, [fetchAllNotes, page]);
 

@@ -26,7 +26,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { fetchUserLists } from "../../../services/taskListsServices";
 import { ReducerTaskListActionType } from "../../../actions/tasksLists";
-import Cookies from "js-cookie";
 import { initialState, taskListsReducer } from "../../../reducers/taksLists";
 
 interface Props {
@@ -37,7 +36,6 @@ interface Props {
 
 const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 	const [labels, setLabels] = useState<string[]>([]);
-	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [state, dispatch] = useReducer(taskListsReducer, initialState);
 
 	const fetchAllLists = useCallback(async () => {
@@ -50,14 +48,10 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 		} catch (error) {
 			console.error("Error fetching lists", error);
 		}
-	}, [sessionToken]);
+	}, []);
 
 	useEffect(() => {
-		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) {
-			setSessionToken(token);
-			fetchAllLists();
-		}
+		fetchAllLists();
 	}, [fetchAllLists]);
 
 	const formik = useFormik({

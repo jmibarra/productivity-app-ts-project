@@ -8,14 +8,7 @@ import {
 	Alert,
 	Stack,
 } from "@mui/material";
-import Cookies from "js-cookie";
 import { properties } from "../../properties";
-
-interface LoginResponse {
-	authentication: {
-		sessionToken: string;
-	};
-}
 
 interface Props {
 	isLoggedIn: Boolean;
@@ -55,10 +48,13 @@ const Login = ({ isLoggedIn, setIsLoggedIn }: Props) => {
 		});
 
 		if (response.ok) {
-			const data: LoginResponse = await response.json();
+			const data = await response.json();
 			setIsLoggedIn(true);
 			setSuccess(true);
-			Cookies.set("PROD-APP-AUTH", data.authentication.sessionToken);
+			localStorage.setItem(
+				"PROD-APP-AUTH",
+				data.authentication.sessionToken
+			);
 			setTimeout(() => {
 				navigate("/");
 			}, 1000);

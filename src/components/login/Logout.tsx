@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Cookies from "js-cookie";
 
 interface Props {
 	setIsLoggedIn: Dispatch<SetStateAction<boolean>>;
@@ -29,7 +28,7 @@ const Logout = ({ setIsLoggedIn, setOpen }: Props) => {
 
 	const handleLogout = () => {
 		setDialogOpen(false);
-		Cookies.remove("PROD-APP-AUTH");
+		localStorage.removeItem("PROD-APP-AUTH");
 		setIsLoggedIn(false);
 		setOpen(false);
 	};

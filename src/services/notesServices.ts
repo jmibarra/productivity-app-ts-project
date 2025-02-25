@@ -2,7 +2,7 @@
 import { Note } from "../interfaces/notes";
 import { properties } from "../properties";
 
-const getHeaders = (sessionToken: string | null) => {
+const getHeaders = () => {
 	const headers = new Headers();
 	headers.append("Content-Type", "application/json");
 	return headers;
@@ -10,10 +10,9 @@ const getHeaders = (sessionToken: string | null) => {
 
 export const fetchNotes = async (
 	page: number,
-	limit: number,
-	sessionToken: string | null
+	limit: number
 ) => {
-	const headers = getHeaders(sessionToken);
+	const headers = getHeaders();
 	const response = await fetch(
 		`${properties.api_url}/notes?page=${page}&limit=${limit}`,
 		{ headers, credentials: "include" }
@@ -21,8 +20,8 @@ export const fetchNotes = async (
 	return response.json();
 };
 
-export const deleteNoteById = async (id: string, sessionToken: string | null) => {
-	const headers = getHeaders(sessionToken);
+export const deleteNoteById = async (id: string) => {
+	const headers = getHeaders();
 	return fetch(`${properties.api_url}/notes/${id}`, {
 		method: "DELETE",
 		headers,
@@ -30,8 +29,8 @@ export const deleteNoteById = async (id: string, sessionToken: string | null) =>
 	});
 };
 
-export const createNote = async (note: Note, sessionToken: string | null) => {
-	const headers = getHeaders(sessionToken);
+export const createNote = async (note: Note) => {
+	const headers = getHeaders();
 	return fetch(`${properties.api_url}/notes`, {
 		method: "POST",
 		headers,
@@ -42,10 +41,9 @@ export const createNote = async (note: Note, sessionToken: string | null) => {
 
 export const patchNote = async (
 	id: string,
-	data: Record<string, unknown>,
-	sessionToken: string | null
+	data: Record<string, unknown>
 ) => {
-	const headers = getHeaders(sessionToken);
+	const headers = getHeaders();
 	return fetch(`${properties.api_url}/notes/${id}`, {
 		method: "PATCH",
 		headers,

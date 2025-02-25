@@ -1,6 +1,5 @@
 import { Box, CircularProgress, ListItemText } from "@mui/material";
 import { useCallback, useEffect, useReducer, useState } from "react";
-import Cookies from "js-cookie";
 import ListCustomIconComponent from "../common/Drawer/Sections/TaskLists/ListCustomIconComponent";
 import { fetchUserLists } from "../../services/taskListsServices";
 import { ReducerTaskListActionType } from "../../actions/tasksLists";
@@ -16,7 +15,7 @@ const SelectedListDisplayComponent = ({
 	const [selectdList, setSelectedList] = useState<TaskList | undefined>(
 		undefined
 	);
-	const [sessionToken, setSessionToken] = useState<string | null>(null);
+
 	const [state, dispatch] = useReducer(taskListsReducer, initialState);
 
 	const fetchAllLists = useCallback(async () => {
@@ -29,14 +28,10 @@ const SelectedListDisplayComponent = ({
 		} catch (error) {
 			console.error("Error fetching lists", error);
 		}
-	}, [sessionToken]);
+	}, []);
 
 	useEffect(() => {
-		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) {
-			setSessionToken(token);
-			fetchAllLists();
-		}
+		fetchAllLists();
 		setSelectedList(
 			state.taskLists.find((list) => list._id === selectedListId)
 		);

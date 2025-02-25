@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
-import Cookies from "js-cookie";
 import {
 	createHabitRecord,
 	getHabitRecordsByPeriod,
@@ -33,59 +32,53 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	};
 
 	/** Obtener registros de hábitos */
-	const fetchHabitRecordsForWeek = useCallback(
-		async (sessionToken: string) => {
-			setLoading(true);
-			try {
-				const today = new Date();
-				const startDate = new Date();
-				startDate.setDate(today.getDate() - 6); // Hace 6 días hasta hoy
-				startDate.setHours(0, 0, 0, 0);
+	const fetchHabitRecordsForWeek = useCallback(async () => {
+		setLoading(true);
+		try {
+			const today = new Date();
+			const startDate = new Date();
+			startDate.setDate(today.getDate() - 6); // Hace 6 días hasta hoy
+			startDate.setHours(0, 0, 0, 0);
 
-				const endDate = new Date();
-				endDate.setHours(23, 59, 59, 999);
+			const endDate = new Date();
+			endDate.setHours(23, 59, 59, 999);
 
-				const initialHabitRecords = getLast7Days();
+			const initialHabitRecords = getLast7Days();
 
-				const responseJson = await getHabitRecordsByPeriod(
-					habitId,
-					startDate.toISOString(),
-					endDate.toISOString(),
-					sessionToken
-				);
-				// Crear un mapa fecha -> estado de completado
-				const recordsMap: { [date: string]: HabitRecord } = {};
-				responseJson.forEach((record: HabitRecord) => {
-					const recordDate = new Date(record.date)
-						.toISOString()
-						.split("T")[0];
-					recordsMap[recordDate] = record;
-				});
+			const responseJson = await getHabitRecordsByPeriod(
+				habitId,
+				startDate.toISOString(),
+				endDate.toISOString()
+			);
+			// Crear un mapa fecha -> estado de completado
+			const recordsMap: { [date: string]: HabitRecord } = {};
+			responseJson.forEach((record: HabitRecord) => {
+				const recordDate = new Date(record.date)
+					.toISOString()
+					.split("T")[0];
+				recordsMap[recordDate] = record;
+			});
 
-				const updatedHabitRecords = initialHabitRecords.map(
-					(record) => {
-						const recordDate = record.date;
-						return {
-							...record,
-							_id: recordsMap[recordDate]
-								? recordsMap[recordDate]._id
-								: "",
-							progress: recordsMap[recordDate]
-								? recordsMap[recordDate].progress
-								: record.progress,
-						};
-					}
-				);
-				console.log(updatedHabitRecords);
-				setHabitRecords(updatedHabitRecords);
-			} catch (error) {
-				console.error("Error fetching habits", error);
-			} finally {
-				setLoading(false);
-			}
-		},
-		[habitId]
-	);
+			const updatedHabitRecords = initialHabitRecords.map((record) => {
+				const recordDate = record.date;
+				return {
+					...record,
+					_id: recordsMap[recordDate]
+						? recordsMap[recordDate]._id
+						: "",
+					progress: recordsMap[recordDate]
+						? recordsMap[recordDate].progress
+						: record.progress,
+				};
+			});
+			console.log(updatedHabitRecords);
+			setHabitRecords(updatedHabitRecords);
+		} catch (error) {
+			console.error("Error fetching habits", error);
+		} finally {
+			setLoading(false);
+		}
+	}, [habitId]);
 
 	const handleRecordClick = async (record: HabitRecord) => {
 		if (record._id === "") {
@@ -106,8 +99,7 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	};
 
 	useEffect(() => {
-		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) fetchHabitRecordsForWeek(token);
+		fetchHabitRecordsForWeek();
 	}, [fetchHabitRecordsForWeek]);
 
 	return (

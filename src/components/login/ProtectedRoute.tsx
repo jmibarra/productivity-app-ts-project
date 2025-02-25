@@ -6,6 +6,7 @@ interface Props {
 }
 
 function ProtectedRoute({ isLoggedIn, children }: Props) {
+	console.log("isLoggedIn", isLoggedIn);
 	return isLoggedIn ? children : <Navigate to="/login" replace />;
 }
 

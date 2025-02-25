@@ -58,7 +58,6 @@ export const getHabitRecordsByPeriod = async (
     habitId: string,
     startDate: string,
     endDate: string,
-    sessionToken: string | null
 ) => {
     const headers = getHeaders();
     const response = await fetch(

@@ -1,12 +1,10 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { initialState, taskListsReducer } from "../../../reducers/taksLists";
 import { fetchUserLists } from "../../../services/taskListsServices";
-import Cookies from "js-cookie";
 import { patchTask } from "../../../services/tasksServices";
 import { ReducerTaskListActionType } from "../../../actions/tasksLists";
 import { ReducerActionType } from "../../../actions/tasks";
@@ -24,7 +22,7 @@ export default function TaskListSelectComponent({ task }: Props) {
 	const [selectedList, setSelectedList] = React.useState<string | "">(
 		task.list || ""
 	);
-	const [sessionToken, setSessionToken] = React.useState<string | null>(null);
+
 	const [state, dispatch] = React.useReducer(taskListsReducer, initialState);
 	const [taskState, taskDispatch] = React.useReducer(
 		tasksReducer,
@@ -41,13 +39,9 @@ export default function TaskListSelectComponent({ task }: Props) {
 		} catch (error) {
 			console.error("Error fetching lists", error);
 		}
-	}, [sessionToken]);
+	}, []);
 
 	React.useEffect(() => {
-		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) {
-			setSessionToken(token);
-		}
 		fetchAllLists();
 	}, [fetchAllLists]);
 

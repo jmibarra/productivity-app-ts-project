@@ -5,8 +5,7 @@ import DrawerComponent from "./components/common/Drawer/DrawerComponent";
 import Habits from "./components/habits/Habits";
 import Notes from "./components/notes/Notes";
 import Login from "./components/login/Login";
-import { useState } from "react";
-import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 import Register from "./components/register/Register";
 import ProtectedRoute from "./components/login/ProtectedRoute";
 import ConfigurationPageComponent from "./components/configuration/ConfigurationPageComponent";
@@ -15,7 +14,7 @@ import MetricsBoardComponent from "./components/metrics/MetricsBoardComponent";
 
 function App() {
 	const [isLoggedIn, setIsLoggedIn] = useState(
-		!!Cookies.get("PROD-APP-AUTH")
+		localStorage.getItem("PROD-APP-AUTH") ? true : false
 	);
 
 	return (
