@@ -4,21 +4,19 @@ import { CircularProgress } from "@mui/material";
 import HabitsList from "./HabitsList";
 import { Habit } from "../../interfaces";
 import HabitStats from "./HabitStats";
-import Cookies from "js-cookie";
 import { ReducerActionType as HabitsReducerActionType } from "../../actions/habits";
 import { habitsReducer, initialState } from "../../reducers/habits";
 import { fetchHabits } from "../../services/habitsServices";
 
 const Habits = () => {
 	const [state, dispatch] = useReducer(habitsReducer, initialState);
-	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [selectedHabit, setSelectedHabit] = useState<Habit | undefined>();
 
 	const fetchAllHabits = useCallback(async () => {
 		setLoading(true);
 		try {
-			const responseJson = await fetchHabits(1, 10, sessionToken);
+			const responseJson = await fetchHabits(1, 10);
 			dispatch({
 				type: HabitsReducerActionType.GET_ALL_HABITS,
 				payload: responseJson.habits,
@@ -28,14 +26,10 @@ const Habits = () => {
 		} finally {
 			setLoading(false);
 		}
-	}, [sessionToken]);
+	}, []);
 
 	useEffect(() => {
-		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) {
-			setSessionToken(token);
-			fetchAllHabits();
-		}
+		fetchAllHabits();
 	}, [fetchAllHabits]);
 
 	return (

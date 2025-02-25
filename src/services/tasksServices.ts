@@ -1,7 +1,7 @@
 import { Task } from "../interfaces";
 import { properties } from "../properties";
 
-const getHeaders = (sessionToken: string | null) => {
+const getHeaders = () => {
 	const headers = new Headers();
 	headers.append("Content-Type", "application/json");
 	return headers;
@@ -12,10 +12,9 @@ export const fetchTasks = async (
     limit: number,
     sortBy: string,
     sortDirection: string,
-    sessionToken: string | null,
     listId: string | null
 ) => {
-    const headers = getHeaders(sessionToken);
+    const headers = getHeaders();
     const url = buildFetchTaskUrl(page, limit, sortBy, sortDirection, listId)
     const response = await fetch(
         url,
@@ -24,8 +23,8 @@ export const fetchTasks = async (
     return response.json();
 };
 
-export const createTask = async (task: Task, sessionToken: string | null) => {
-    const headers = getHeaders(sessionToken);
+export const createTask = async (task: Task) => {
+    const headers = getHeaders();
     return fetch(`${properties.api_url}/tasks`, {
         method: "POST",
         headers,
@@ -34,8 +33,8 @@ export const createTask = async (task: Task, sessionToken: string | null) => {
     }).then((res) => res.json());
 };
 
-export const deleteTaskById = async (id: string, sessionToken: string | null) => {
-    const headers = getHeaders(sessionToken);
+export const deleteTaskById = async (id: string) => {
+    const headers = getHeaders();
     return fetch(`${properties.api_url}/tasks/${id}`, {
         method: "DELETE",
         headers,
@@ -46,9 +45,8 @@ export const deleteTaskById = async (id: string, sessionToken: string | null) =>
 export const patchTask = async (
     id: string,
     data: Record<string, unknown>,
-    sessionToken: string | null
 ) => {
-    const headers = getHeaders(sessionToken);
+    const headers = getHeaders();
     return fetch(`${properties.api_url}/tasks/${id}`, {
         method: "PATCH",
         headers,

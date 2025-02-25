@@ -74,7 +74,7 @@ const TaskListSelectorComponent = () => {
 
 	const handleDeleteList = async (id: string) => {
 		try {
-			await deleteTaskList(id, sessionToken);
+			await deleteTaskList(id);
 			dispatch({
 				type: ReducerTaskListActionType.DELETE_LIST,
 				payload: id,
@@ -108,14 +108,10 @@ const TaskListSelectorComponent = () => {
 		} catch (error) {
 			console.error("Error fetching lists", error);
 		}
-	}, [sessionToken]);
+	}, []);
 
 	useEffect(() => {
-		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) {
-			setSessionToken(token);
-			fetchAllLists();
-		}
+		fetchAllLists();
 	}, [fetchAllLists]);
 
 	return (

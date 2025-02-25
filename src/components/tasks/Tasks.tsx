@@ -17,7 +17,6 @@ import {
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import TaskQuickInputComponent from "./TaskQuickInput";
-import Cookies from "js-cookie";
 import { Box, CircularProgress } from "@mui/material";
 import { ItemLoading } from "../notes/styles/NotesStyles";
 import FilterAndSortComponent from "./FilterAndSortComponent";
@@ -36,7 +35,6 @@ const Tasks = () => {
 	const [taskFormModalOpen, settaskFormModalOpen] = useState(false);
 	const [page, setPage] = useState(1);
 	const [totalPages, setTotalPages] = useState(0);
-	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [showCompleted, setShowCompleted] = useState(false);
 	const [sortOption, setSortOption] = useState("createdAt");
 	const [sortDirection, setSortDirection] = useState("desc");
@@ -68,7 +66,6 @@ const Tasks = () => {
 					limit,
 					sortOption,
 					sortDirection,
-					sessionToken,
 					listId
 				);
 				dispatch({
@@ -84,12 +81,12 @@ const Tasks = () => {
 				setLoading(false);
 			}
 		},
-		[sessionToken]
+		[]
 	);
 
 	const addTask = async (task: Task): Promise<void> => {
 		try {
-			const createdTask = await createTask(task, sessionToken);
+			const createdTask = await createTask(task);
 			dispatch({
 				type: ReducerActionType.SET_TASK,
 				payload: createdTask,
@@ -101,7 +98,7 @@ const Tasks = () => {
 
 	const deleteTask = async (id: string) => {
 		try {
-			await deleteTaskById(id, sessionToken);
+			await deleteTaskById(id);
 			dispatch({ type: ReducerActionType.DELETE_TASK, payload: id });
 		} catch (error) {
 			console.error("Error deleting note", error);
@@ -112,7 +109,7 @@ const Tasks = () => {
 		try {
 			dispatch({ type: ReducerActionType.COMPLETE_TASK, payload: id });
 			const data = { completed: !completed };
-			patchTask(id, data, sessionToken);
+			patchTask(id, data);
 		} catch (response) {
 			console.log("Error", response);
 		}
@@ -125,7 +122,7 @@ const Tasks = () => {
 				payload: { labels: labels, id: id },
 			});
 			const data = { labels: labels };
-			patchTask(id, data, sessionToken);
+			patchTask(id, data);
 		} catch (response) {
 			console.log("Error", response);
 		}
@@ -138,7 +135,7 @@ const Tasks = () => {
 				payload: { priority: priority, id: id },
 			});
 			const data = { priority: priority };
-			patchTask(id, data, sessionToken);
+			patchTask(id, data);
 		} catch (response) {
 			console.log("Error", response);
 		}
@@ -151,7 +148,7 @@ const Tasks = () => {
 				payload: { dueDate: dueDate, id: id },
 			});
 			const data = { dueDate: dueDate };
-			patchTask(id, data, sessionToken);
+			patchTask(id, data);
 		} catch (response) {
 			console.log("Error", response);
 		}
@@ -178,11 +175,7 @@ const Tasks = () => {
 	}, [listIdFromUrl]);
 
 	useEffect(() => {
-		const token = Cookies.get("PROD-APP-AUTH");
-		if (token) {
-			setSessionToken(token);
-			fetchAllTasks(page, 10, sortOption, sortDirection, listId);
-		}
+		fetchAllTasks(page, 10, sortOption, sortDirection, listId);
 	}, [fetchAllTasks, page, sortOption, sortDirection, listId]);
 
 	return (

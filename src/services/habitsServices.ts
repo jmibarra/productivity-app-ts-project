@@ -1,7 +1,7 @@
 import { Habit, HabitRecord } from "../interfaces";
 import { properties } from "../properties";
 
-const getHeaders = (sessionToken: string | null) => {
+const getHeaders = () => {
 	const headers = new Headers();
 	headers.append("Content-Type", "application/json");
 	return headers;
@@ -9,10 +9,9 @@ const getHeaders = (sessionToken: string | null) => {
 
 export const fetchHabits = async (
     page: number = 1,
-    limit: number = 10,
-    sessionToken: string | null
+    limit: number = 10
 ) => {
-    const headers = getHeaders(sessionToken);
+    const headers = getHeaders();
     const response = await fetch(
         `${properties.api_url}/habits?page=${page}&limit=${limit}`,
         { headers, credentials: "include" }
@@ -21,7 +20,7 @@ export const fetchHabits = async (
 };
 
 export const createHabit = async (habit: Habit, sessionToken: string | null) => {
-    const headers = getHeaders(sessionToken);
+    const headers = getHeaders();
     return fetch(`${properties.api_url}/tasks`, {
         method: "POST",
         headers,
@@ -31,7 +30,7 @@ export const createHabit = async (habit: Habit, sessionToken: string | null) => 
 };
 
 export const deleteHabitById = async (id: string, sessionToken: string | null) => {
-    const headers = getHeaders(sessionToken);
+    const headers = getHeaders();
     return fetch(`${properties.api_url}/habits/${id}`, {
         method: "DELETE",
         headers,
@@ -44,7 +43,7 @@ export const patchHabit = async (
     data: Record<string, unknown>,
     sessionToken: string | null
 ) => {
-    const headers = getHeaders(sessionToken);
+    const headers = getHeaders();
     return fetch(`${properties.api_url}/habits/${id}`, {
         method: "PATCH",
         headers,
@@ -61,7 +60,7 @@ export const getHabitRecordsByPeriod = async (
     endDate: string,
     sessionToken: string | null
 ) => {
-    const headers = getHeaders(sessionToken);
+    const headers = getHeaders();
     const response = await fetch(
         `${properties.api_url}/habit/${habitId}/habit-records/range/${startDate}/${endDate}`,
         { headers, credentials: "include" }
@@ -70,7 +69,7 @@ export const getHabitRecordsByPeriod = async (
 }
 
 export const createHabitRecord = async ( habitRecord: HabitRecord, sessionToken: string | null) => {
-    const headers = getHeaders(sessionToken);
+    const headers = getHeaders();
     return fetch(`${properties.api_url}/habit/${habitRecord.habit_id}/habit-records`, {
         method: "POST",
         headers,

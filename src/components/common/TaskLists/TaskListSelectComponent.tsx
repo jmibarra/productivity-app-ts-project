@@ -66,7 +66,6 @@ export default function TaskListSelectComponent({ task }: Props) {
 	};
 
 	const updateList = (id: string, list: string): void => {
-		console.log("updateList", list);
 		try {
 			taskDispatch({
 				type: ReducerActionType.UPDATE_TASK_LIST,
@@ -74,7 +73,7 @@ export default function TaskListSelectComponent({ task }: Props) {
 			});
 			const data = { list: list };
 			console.log(data);
-			patchTask(id, data, sessionToken);
+			patchTask(id, data);
 		} catch (response) {
 			console.log("Error", response);
 		}
