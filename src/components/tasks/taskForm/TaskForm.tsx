@@ -42,7 +42,7 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 
 	const fetchAllLists = useCallback(async () => {
 		try {
-			const responseJson = await fetchUserLists(sessionToken);
+			const responseJson = await fetchUserLists();
 			dispatch({
 				type: ReducerTaskListActionType.GET_USER_LISTS,
 				payload: responseJson,

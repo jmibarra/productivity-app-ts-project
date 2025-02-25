@@ -28,9 +28,8 @@ const TaskListSelectorComponent = () => {
 	const [searchParams] = useSearchParams(); // Hook para manejar query strings
 	const listIdFromUrl = searchParams.get("listId"); // Obtén el valor de 'listId'
 
-	const [listId, setListId] = useState<string | null>(listIdFromUrl || ""); // Estado para guardar listId
+	const [listId, setListId] = useState<string | null>(listIdFromUrl || "");
 	const [openSubsection, setOpenSubsection] = useState(false);
-	const [sessionToken, setSessionToken] = useState<string | null>(null);
 	const [showDeleteIcons, setShowDeleteIcons] = useState(false);
 	const [state, dispatch] = useReducer(taskListsReducer, initialState);
 	const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -50,7 +49,7 @@ const TaskListSelectorComponent = () => {
 
 	const addList = async (taskList: TaskList): Promise<void> => {
 		try {
-			const createdList = await createTaskList(taskList, sessionToken);
+			const createdList = await createTaskList(taskList);
 			dispatch({
 				type: ReducerTaskListActionType.CREATE_LIST,
 				payload: createdList,
@@ -100,7 +99,7 @@ const TaskListSelectorComponent = () => {
 
 	const fetchAllLists = useCallback(async () => {
 		try {
-			const responseJson = await fetchUserLists(sessionToken);
+			const responseJson = await fetchUserLists();
 			dispatch({
 				type: ReducerTaskListActionType.GET_USER_LISTS,
 				payload: responseJson,

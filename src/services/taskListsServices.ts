@@ -7,9 +7,7 @@ const getHeaders = () => {
 	return headers;
 };
 
-export const fetchUserLists = async (
-    sessionToken: string | null
-) => {
+export const fetchUserLists = async () => {
     const headers = getHeaders();
     const url = `${properties.api_url}/lists`;
     const response = await fetch(
@@ -19,7 +17,7 @@ export const fetchUserLists = async (
     return response.json();
 };
 
-export const createTaskList = async (taskList: TaskList, sessionToken: string | null) => {
+export const createTaskList = async (taskList: TaskList) => {
     const headers = getHeaders();
     return fetch(`${properties.api_url}/lists`, {
         method: "POST",
