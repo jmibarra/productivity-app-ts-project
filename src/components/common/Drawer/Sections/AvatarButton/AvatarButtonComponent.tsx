@@ -22,6 +22,13 @@ const AvatarButtonComponent = () => {
 		navigate(route);
 		handleClose();
 	};
+
+	const handleLogout = () => {
+		localStorage.removeItem("PROD-APP-AUTH");
+		navigate("/login");
+		handleClose();
+	};
+
 	return (
 		<>
 			<Avatar
@@ -61,7 +68,7 @@ const AvatarButtonComponent = () => {
 					</ListItemIcon>
 					Configuración
 				</MenuItem>
-				<MenuItem onClick={handleClose}>
+				<MenuItem onClick={handleLogout}>
 					<ListItemIcon>
 						<Logout fontSize="small" />
 					</ListItemIcon>

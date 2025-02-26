@@ -84,7 +84,7 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 		if (record._id === "") {
 			record.progress.completed = !record.progress.completed;
 			console.log(record);
-			const updatedRecord = await createHabitRecord(record, null);
+			const updatedRecord = await createHabitRecord(record);
 			console.log(updatedRecord);
 			setHabitRecords((prevRecords) =>
 				prevRecords.map((prevRecord) =>
