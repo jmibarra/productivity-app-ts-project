@@ -19,7 +19,7 @@ export const fetchHabits = async (
     return response.json();
 };
 
-export const createHabit = async (habit: Habit, sessionToken: string | null) => {
+export const createHabit = async (habit: Habit) => {
     const headers = getHeaders();
     return fetch(`${properties.api_url}/tasks`, {
         method: "POST",
@@ -29,7 +29,7 @@ export const createHabit = async (habit: Habit, sessionToken: string | null) => 
     }).then((res) => res.json());
 };
 
-export const deleteHabitById = async (id: string, sessionToken: string | null) => {
+export const deleteHabitById = async (id: string) => {
     const headers = getHeaders();
     return fetch(`${properties.api_url}/habits/${id}`, {
         method: "DELETE",
@@ -40,8 +40,7 @@ export const deleteHabitById = async (id: string, sessionToken: string | null) =
 
 export const patchHabit = async (
     id: string,
-    data: Record<string, unknown>,
-    sessionToken: string | null
+    data: Record<string, unknown>
 ) => {
     const headers = getHeaders();
     return fetch(`${properties.api_url}/habits/${id}`, {
@@ -67,7 +66,7 @@ export const getHabitRecordsByPeriod = async (
     return response.json();
 }
 
-export const createHabitRecord = async ( habitRecord: HabitRecord, sessionToken: string | null) => {
+export const createHabitRecord = async ( habitRecord: HabitRecord) => {
     const headers = getHeaders();
     return fetch(`${properties.api_url}/habit/${habitRecord.habit_id}/habit-records`, {
         method: "POST",
