@@ -3,6 +3,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import {
 	createHabitRecord,
 	getHabitRecordsByPeriod,
+	updateHabitRecord,
 } from "../../../services/habitsServices";
 import { CircularProgress } from "@mui/material";
 import { HabitRecord } from "../../../interfaces";
@@ -71,7 +72,6 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 						: record.progress,
 				};
 			});
-			console.log(updatedHabitRecords);
 			setHabitRecords(updatedHabitRecords);
 		} catch (error) {
 			console.error("Error fetching habits", error);
@@ -83,17 +83,22 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	const handleRecordClick = async (record: HabitRecord) => {
 		if (record._id === "") {
 			record.progress.completed = !record.progress.completed;
-			console.log(record);
 			const updatedRecord = await createHabitRecord(record);
-			console.log(updatedRecord);
 			setHabitRecords((prevRecords) =>
 				prevRecords.map((prevRecord) =>
 					prevRecord.date === record.date ? updatedRecord : prevRecord
 				)
 			);
 		} else {
-			console.log(
-				"El registro tiene ID por lo que existe y lo voy a actualizar"
+			record.progress.completed = !record.progress.completed;
+			console.log(record);
+			console.log("----------");
+			const updatedRecord = await updateHabitRecord(record);
+			console.log(updatedRecord);
+			setHabitRecords((prevRecords) =>
+				prevRecords.map((prevRecord) =>
+					prevRecord.date === record.date ? updatedRecord : prevRecord
+				)
 			);
 		}
 	};

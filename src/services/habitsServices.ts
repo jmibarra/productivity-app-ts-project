@@ -76,3 +76,13 @@ export const createHabitRecord = async ( habitRecord: HabitRecord) => {
     }).then((res) => res.json());
 }
 
+export const updateHabitRecord = async (habitRecord: HabitRecord) => {
+    const headers = getHeaders();
+    return fetch(`${properties.api_url}/habit/${habitRecord.habit_id}/habit-records/${habitRecord._id}`, {
+        method: "PATCH",
+        headers,
+        credentials: "include",
+        body: JSON.stringify(habitRecord),
+    }).then((res) => res.json());
+}
+

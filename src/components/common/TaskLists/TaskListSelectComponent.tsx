@@ -54,7 +54,6 @@ export default function TaskListSelectComponent({ task }: Props) {
 
 	const handleChange = (event: SelectChangeEvent) => {
 		const newValue = event.target.value;
-		console.log("handleChange", newValue);
 		setSelectedList(newValue);
 		updateList(task._id, newValue);
 	};
@@ -66,7 +65,6 @@ export default function TaskListSelectComponent({ task }: Props) {
 				payload: { list: list, id: id },
 			});
 			const data = { list: list };
-			console.log(data);
 			patchTask(id, data);
 		} catch (response) {
 			console.log("Error", response);
