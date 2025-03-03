@@ -81,25 +81,41 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	}, [habitId]);
 
 	const handleRecordClick = async (record: HabitRecord) => {
-		if (record._id === "") {
-			record.progress.completed = !record.progress.completed;
-			const updatedRecord = await createHabitRecord(record);
+		try {
+			// Crear una copia del registro con el progreso actualizado
+			const updatedRecordData = {
+				...record,
+				progress: {
+					...record.progress,
+					completed: !record.progress.completed,
+				},
+			};
+
+			// Actualiza el estado de inmediato para una mejor UX
 			setHabitRecords((prevRecords) =>
 				prevRecords.map((prevRecord) =>
-					prevRecord.date === record.date ? updatedRecord : prevRecord
+					prevRecord.date === updatedRecordData.date
+						? updatedRecordData
+						: prevRecord
 				)
 			);
-		} else {
-			record.progress.completed = !record.progress.completed;
-			console.log(record);
-			console.log("----------");
-			const updatedRecord = await updateHabitRecord(record);
-			console.log(updatedRecord);
+
+			// Decide si crear o actualizar en la API
+			const updatedRecord = record._id
+				? await updateHabitRecord(updatedRecordData)
+				: await createHabitRecord(updatedRecordData);
+
+			// Sincroniza el estado con la respuesta del backend (por si hay cambios en la API)
 			setHabitRecords((prevRecords) =>
 				prevRecords.map((prevRecord) =>
-					prevRecord.date === record.date ? updatedRecord : prevRecord
+					prevRecord.date === updatedRecord.date
+						? updatedRecord
+						: prevRecord
 				)
 			);
+		} catch (error) {
+			console.error("Error updating habit record:", error);
+			// Opcional: revertir estado en caso de error
 		}
 	};
 
