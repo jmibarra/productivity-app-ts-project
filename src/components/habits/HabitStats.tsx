@@ -6,6 +6,7 @@ import {
 	MonthlyCalendar,
 } from "./styles/HabitsStyles";
 import { Habit } from "../../interfaces";
+import HabitMonthRecords from "./records/HabitMonthRecors";
 
 interface habitStatsProps {
 	selectedHabit: Habit | undefined;
@@ -35,20 +36,9 @@ const HabitStats = ({ selectedHabit }: habitStatsProps) => {
 			<MonthlyCalendar>
 				<h3>Vista mensual {selectedHabit?.name}</h3>
 				<div className="calendar-grid">
-					{/* Renderizamos 30 días como ejemplo */}
-					{Array.from({ length: 30 }).map((_, index) => (
-						<div
-							key={index}
-							className={
-								index % 2 === 0
-									? "day checked"
-									: "day unchecked"
-							}
-							onClick={() => console.log(`Día ${index + 1}`)}
-						>
-							{index + 1}
-						</div>
-					))}
+					{selectedHabit?._id && (
+						<HabitMonthRecords habitId={selectedHabit?._id} />
+					)}
 				</div>
 			</MonthlyCalendar>
 		</HabitStatsContainer>

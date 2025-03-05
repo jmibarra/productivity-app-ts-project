@@ -12,13 +12,12 @@ interface Props {
 	habitId: string;
 }
 
-const HabitWeekRecords = ({ habitId }: Props) => {
+const HabitMonthRecords = ({ habitId }: Props) => {
 	const [habitRecords, setHabitRecords] = useState<HabitRecord[]>([]);
 	const [loading, setLoading] = useState(false);
 
-	/** Obtener los últimos 7 días con valores predeterminados */
 	const getLast7Days = () => {
-		return Array.from({ length: 7 }).map((_, index) => {
+		return Array.from({ length: 30 }).map((_, index) => {
 			//timezone en UTC
 			const date = new Date();
 			date.setDate(date.getDate() - (6 - index)); // Hace 6 días hasta hoy
@@ -141,8 +140,8 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 							key={HabitRecord._id + HabitRecord.date}
 							className={
 								HabitRecord.progress.completed
-									? "checked"
-									: "unchecked"
+									? "day checked"
+									: "day unchecked"
 							}
 							onClick={() => handleRecordClick(HabitRecord)}
 						>
@@ -158,4 +157,4 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	);
 };
 
-export default HabitWeekRecords;
+export default HabitMonthRecords;

@@ -49,9 +49,6 @@ const Habits = () => {
 					/>
 					{/* Columna derecha: Estadísticas y calendario mensual */}
 					<HabitStats selectedHabit={selectedHabit} />
-					{state.habits.map((habit) => (
-						<div key={habit._id}> {habit.name} </div>
-					))}
 				</Content>
 			)}
 		</Container>
