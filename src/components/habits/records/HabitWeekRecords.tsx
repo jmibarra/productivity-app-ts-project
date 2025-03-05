@@ -73,6 +73,7 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 				};
 			});
 			setHabitRecords(updatedHabitRecords);
+			console.log(updatedHabitRecords);
 		} catch (error) {
 			console.error("Error fetching habits", error);
 		} finally {
@@ -128,7 +129,14 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 			{loading && <CircularProgress size={20} />}
 			{!loading &&
 				habitRecords.map((HabitRecord) => {
-					const day = new Date(HabitRecord.date).getDate();
+					const dateParts = HabitRecord.date.split("-"); // Divide "YYYY-MM-DD"
+					const day = new Date(
+						Date.UTC(
+							parseInt(dateParts[0]), // Año
+							parseInt(dateParts[1]) - 1, // Mes (0-indexado)
+							parseInt(dateParts[2]) // Día
+						)
+					).getUTCDate();
 					return (
 						<div
 							key={HabitRecord._id + HabitRecord.date}
