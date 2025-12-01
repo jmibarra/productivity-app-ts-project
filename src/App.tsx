@@ -5,7 +5,7 @@ import DrawerComponent from "./components/common/Drawer/DrawerComponent";
 import Habits from "./components/habits/Habits";
 import Notes from "./components/notes/Notes";
 import Login from "./components/login/Login";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Register from "./components/register/Register";
 import ProtectedRoute from "./components/login/ProtectedRoute";
 import ConfigurationPageComponent from "./components/configuration/ConfigurationPageComponent";

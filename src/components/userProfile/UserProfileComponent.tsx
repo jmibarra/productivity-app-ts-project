@@ -25,7 +25,7 @@ const UserProfileComponent = () => {
 	};
 	return (
 		<Container>
-			<Header fullWidth>
+			<Header>
 				<h1>Profile</h1>
 			</Header>
 			<Content>

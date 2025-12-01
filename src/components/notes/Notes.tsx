@@ -28,6 +28,8 @@ const Notes = () => {
 	const [totalPages, setTotalPages] = useState(0);
 	const [loading, setLoading] = useState(false);
 
+	const [createNoteOpen, setCreateNoteOpen] = useState(false);
+
 	const handlePageChange = (
 		event: React.ChangeEvent<unknown>,
 		value: number
@@ -93,7 +95,11 @@ const Notes = () => {
 					<NotesIcon /> Notes
 				</h1>
 			</Header>
-			<CreateNoteModalComponent addNote={addNote} />
+			<CreateNoteModalComponent 
+				addNote={addNote} 
+				open={createNoteOpen} 
+				onClose={() => setCreateNoteOpen(false)} 
+			/>
 			{loading ? (
 				<ItemLoading>
 					<CircularProgress />
@@ -105,6 +111,7 @@ const Notes = () => {
 						deleteNote={deleteNote}
 						updateLabels={updateLabels}
 						updateFavorite={updateFavorite}
+						onAddNote={() => setCreateNoteOpen(true)}
 					/>
 				</Content>
 			)}

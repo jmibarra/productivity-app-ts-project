@@ -112,8 +112,8 @@ export default function TaskDetailViewModal({
 			</DialogTitle>
 			<DialogContent dividers>
 				{selectedTaskProp && (
-					<Grid container spacing={4}>
-						<Grid item xs={12} md={8}>
+					<Grid spacing={4}>
+						<Grid size={{ xs: 12, md: 8 }}>
 							<Typography
 								variant="h6"
 								style={{ fontWeight: "bold" }}
@@ -121,7 +121,7 @@ export default function TaskDetailViewModal({
 								{selectedTaskProp.title}
 							</Typography>
 						</Grid>
-						<Grid item xs={12} md={8}>
+						<Grid size={{ xs: 12, md: 8 }}>
 							<ItemLarge>
 								<Typography
 									variant="body1"
@@ -132,7 +132,7 @@ export default function TaskDetailViewModal({
 								</Typography>
 							</ItemLarge>
 						</Grid>
-						<Grid item xs={12} md={4}>
+						<Grid size={{ xs: 12, md: 4 }}>
 							<Item>
 								<StatusChipComponent
 									completed={selectedTaskProp.completed}

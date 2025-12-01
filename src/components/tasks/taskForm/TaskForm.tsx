@@ -93,9 +93,9 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 			</DialogTitle>
 			<form onSubmit={formik.handleSubmit}>
 				<DialogContent>
-					<Grid container spacing={2}>
+				<Grid spacing={2}>
 						{/* Sección Principal */}
-						<Grid item xs={12}>
+						<Grid size={{ xs: 12 }}>
 							<Box mb={2}>
 								<TextField
 									fullWidth
@@ -112,7 +112,7 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 									}
 									helperText={
 										formik.touched.title &&
-										formik.errors.title
+										(formik.errors.title as string)
 									}
 								/>
 							</Box>
@@ -132,13 +132,13 @@ const TaskForm = ({ addTask, taskModalOpen, handleCloseModal }: Props) => {
 								}
 								helperText={
 									formik.touched.description &&
-									formik.errors.description
+									(formik.errors.description as string)
 								}
 							/>
 						</Grid>
 
 						{/* Sección Izquierda */}
-						<Grid item xs={6}>
+						<Grid size={{ xs: 6 }}>
 							<Box mb={2}>
 								<LocalizationProvider
 									dateAdapter={AdapterDayjs}

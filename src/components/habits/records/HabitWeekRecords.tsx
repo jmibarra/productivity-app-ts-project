@@ -16,26 +16,26 @@ const HabitWeekRecords = ({ habitId }: Props) => {
 	const [habitRecords, setHabitRecords] = useState<HabitRecord[]>([]);
 	const [loading, setLoading] = useState(false);
 
-	/** Obtener los últimos 7 días con valores predeterminados */
-	const getLast7Days = () => {
-		return Array.from({ length: 7 }).map((_, index) => {
-			//timezone en UTC
-			const date = new Date();
-			date.setDate(date.getDate() - (6 - index)); // Hace 6 días hasta hoy
-			const formattedDate = date.toISOString().split("T")[0]; // YYYY-MM-DD
-			return {
-				_id: "",
-				habit_id: habitId,
-				date: formattedDate,
-				progress: { completed: false, amount: 0 },
-			};
-		});
-	};
-
 	/** Obtener registros de hábitos */
 	const fetchHabitRecordsForWeek = useCallback(async () => {
 		setLoading(true);
 		try {
+			/** Obtener los últimos 7 días con valores predeterminados */
+			const getLast7Days = () => {
+				return Array.from({ length: 7 }).map((_, index) => {
+					//timezone en UTC
+					const date = new Date();
+					date.setDate(date.getDate() - (6 - index)); // Hace 6 días hasta hoy
+					const formattedDate = date.toISOString().split("T")[0]; // YYYY-MM-DD
+					return {
+						_id: "",
+						habit_id: habitId,
+						date: formattedDate,
+						progress: { completed: false, amount: 0 },
+					};
+				});
+			};
+
 			const today = new Date();
 			const startDate = new Date();
 			startDate.setDate(today.getDate() - 6); // Hace 6 días hasta hoy

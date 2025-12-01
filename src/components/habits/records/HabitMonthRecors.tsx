@@ -2,9 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import { CircularProgress } from "@mui/material";
 import {
-	createHabitRecord,
 	getHabitRecordsByPeriod,
-	updateHabitRecord,
 } from "../../../services/habitsServices";
 import { HabitRecord } from "../../../interfaces";
 import {
@@ -30,29 +28,27 @@ const HabitMonthRecords = ({ habitId }: Props) => {
 		return new Date(year, month, 1).getDay();
 	};
 
-	const getCurrentMonthDays = () => {
-		const today = new Date();
-		const year = today.getFullYear();
-		const month = today.getMonth();
-		const daysInMonth = getDaysInMonth(year, month);
-		const firstDay = getFirstDayOfMonth(year, month);
-		const offset = firstDay === 0 ? 6 : firstDay - 1; // Ajustar para que lunes sea el primer día
-
-		return Array.from({ length: daysInMonth }).map((_, index) => {
-			const date = new Date(year, month, index + 1);
-			const formattedDate = date.toISOString().split("T")[0];
-			return {
-				_id: "",
-				habit_id: habitId,
-				date: formattedDate,
-				progress: { completed: false, amount: 0 },
-			};
-		});
-	};
-
 	const fetchHabitRecordsForMonth = useCallback(async () => {
 		setLoading(true);
 		try {
+			const getCurrentMonthDays = () => {
+				const today = new Date();
+				const year = today.getFullYear();
+				const month = today.getMonth();
+				const daysInMonth = getDaysInMonth(year, month);
+				
+				return Array.from({ length: daysInMonth }).map((_, index) => {
+					const date = new Date(year, month, index + 1);
+					const formattedDate = date.toISOString().split("T")[0];
+					return {
+						_id: "",
+						habit_id: habitId,
+						date: formattedDate,
+						progress: { completed: false, amount: 0 },
+					};
+				});
+			};
+
 			const today = new Date();
 			const year = today.getFullYear();
 			const month = today.getMonth();
@@ -121,6 +117,7 @@ const HabitMonthRecords = ({ habitId }: Props) => {
 							return (
 								<Day
 									key={HabitRecord._id + HabitRecord.date}
+									completed={HabitRecord.progress.completed}
 									className={
 										HabitRecord.progress.completed
 											? "day checked"

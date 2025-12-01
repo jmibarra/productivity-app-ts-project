@@ -1,6 +1,6 @@
 import * as React from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 import {
 	AppBar,
 	Button,
@@ -24,6 +24,8 @@ import ColorPickerComponent from "../../common/ColorPicker/ColorPickerComponent"
 
 import { TransitionProps } from "@mui/material/transitions";
 
+import shortid from "shortid";
+
 const Transition = React.forwardRef(function Transition(
 	props: TransitionProps & {
 		children: React.ReactElement<any, any>;
@@ -35,10 +37,11 @@ const Transition = React.forwardRef(function Transition(
 
 interface Props {
 	addNote: (note: Note) => void;
+	open: boolean;
+	onClose: () => void;
 }
 
-export default function CreateNoteModalComponent({ addNote }: Props) {
-	const [open, setOpen] = React.useState(false);
+export default function CreateNoteModalComponent({ addNote, open, onClose }: Props) {
 	const [selectedColor, setSelectedColor] = React.useState("#ffee93");
 	const [labels, setLabels] = React.useState<string[]>([]);
 	const [content, setContent] = React.useState("");
@@ -48,12 +51,8 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 		formik.setFieldValue("content", value);
 	};
 
-	const handleClickOpen = () => {
-		setOpen(true);
-	};
-
 	const handleClose = () => {
-		setOpen(false);
+		onClose();
 		formik.resetForm();
 		setSelectedColor("#ffee93");
 		setLabels([]);
@@ -71,6 +70,7 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 	const createNote = (object: any) => {
 		let note: Note = {
 			...object,
+			_id: shortid.generate(),
 			createdAt: new Date(),
 			favorite: false,
 			color: selectedColor,
@@ -87,9 +87,6 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 
 	return (
 		<div>
-			<Button variant="contained" onClick={handleClickOpen}>
-				Nueva nota
-			</Button>
 			<Dialog
 				open={open}
 				onClose={handleClose}
@@ -151,7 +148,7 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 									}
 									helperText={
 										formik.touched.title &&
-										formik.errors.title
+										(formik.errors.title as string)
 									}
 								/>
 							</ListItem>
@@ -181,7 +178,7 @@ export default function CreateNoteModalComponent({ addNote }: Props) {
 											color="error"
 											sx={{ mt: 1 }}
 										>
-											{formik.errors.content}
+											{formik.errors.content as string}
 										</Typography>
 									)}
 							</ListItem>

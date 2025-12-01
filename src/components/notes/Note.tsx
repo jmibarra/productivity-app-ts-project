@@ -10,7 +10,6 @@ import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
 import CardActions from "@mui/material/CardActions";
 import Collapse from "@mui/material/Collapse";
-import Avatar from "@mui/material/Avatar";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
@@ -63,21 +62,23 @@ export default function NoteComponent({
 		updateFavorite(note._id, note.favorite);
 	};
 
-	const cardStyle = {
-		backgroundColor: note.color || "inherit", // Establece el color de fondo de la nota
-	};
-
 	return (
-		<Card sx={{ maxWidth: 345 }} style={cardStyle}>
+		<Card
+			sx={{
+				maxWidth: 345,
+				borderRadius: "16px",
+				transition: "all 0.3s ease-in-out",
+				"&:hover": {
+					transform: "translateY(-4px)",
+					boxShadow: 6,
+				},
+			}}
+			style={{ backgroundColor: note.color || "inherit" }}
+		>
 			<CardHeader
-				avatar={
-					<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-						JI
-					</Avatar>
-				}
 				action={
-					<IconButton aria-label="settings">
-						<MoreVertIcon />
+					<IconButton aria-label="settings" size="small">
+						<MoreVertIcon fontSize="small" />
 					</IconButton>
 				}
 				title={
@@ -85,8 +86,7 @@ export default function NoteComponent({
 						variant="h6"
 						sx={{
 							fontWeight: "bold",
-							padding: "4px 8px", // Espaciado interno
-							borderRadius: "4px", // Bordes redondeados
+							fontSize: "1.1rem",
 						}}
 					>
 						{note.title}
@@ -94,9 +94,10 @@ export default function NoteComponent({
 				}
 				subheader={
 					note.createdAt && isValid(new Date(note.createdAt))
-						? format(new Date(note.createdAt), "dd/MM/yyyy HH:mm")
+						? format(new Date(note.createdAt), "dd/MM/yyyy")
 						: ""
 				}
+				sx={{ pb: 0 }}
 			/>
 
 			<CardContent>
@@ -134,8 +135,7 @@ export default function NoteComponent({
 				/>
 			</CardContent>
 			<Collapse in={expanded} timeout="auto" unmountOnExit>
-				<CardContent>
-					<Typography paragraph>Detalle:</Typography>
+				<CardContent sx={{ pt: 0 }}>
 					<div
 						dangerouslySetInnerHTML={{
 							__html: note.content,
@@ -144,22 +144,23 @@ export default function NoteComponent({
 					/>
 				</CardContent>
 			</Collapse>
-			<CardActions disableSpacing>
+			<CardActions disableSpacing sx={{ justifyContent: "flex-end", pt: 0 }}>
 				<IconButton
 					aria-label="add to favorites"
 					onClick={handleFavorite}
+					size="small"
 				>
 					{note.favorite ? (
-						<FavoriteIcon sx={{ color: red[500] }} />
+						<FavoriteIcon sx={{ color: red[500] }} fontSize="small" />
 					) : (
-						<FavoriteIcon />
+						<FavoriteIcon fontSize="small" />
 					)}
 				</IconButton>
-				<IconButton aria-label="share" onClick={handleDelete}>
-					<Delete />
+				<IconButton aria-label="share" onClick={handleDelete} size="small">
+					<Delete fontSize="small" />
 				</IconButton>
-				<IconButton aria-label="share">
-					<ColorLens />
+				<IconButton aria-label="share" size="small">
+					<ColorLens fontSize="small" />
 				</IconButton>
 				{note.content && note.content.length > 200 && (
 					<ExpandMore
@@ -167,8 +168,9 @@ export default function NoteComponent({
 						onClick={handleExpandClick}
 						aria-expanded={expanded}
 						aria-label="show more"
+						size="small"
 					>
-						<ExpandMoreIcon />
+						<ExpandMoreIcon fontSize="small" />
 					</ExpandMore>
 				)}
 			</CardActions>

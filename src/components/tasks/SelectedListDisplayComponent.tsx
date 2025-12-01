@@ -35,7 +35,7 @@ const SelectedListDisplayComponent = ({
 		setSelectedList(
 			state.taskLists.find((list) => list._id === selectedListId)
 		);
-	}, [fetchAllLists]);
+	}, [fetchAllLists, selectedListId, state.taskLists]);
 
 	useEffect(() => {
 		setSelectedList(

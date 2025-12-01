@@ -36,9 +36,9 @@ const TaskListItem = ({
 					</IconButton>
 				) : null
 			}
-			selected={list._id === selectdListId}
 		>
 			<ListItemButton
+				selected={list._id === selectdListId}
 				key={list._id}
 				onClick={() => handleRouteClick("/todos?listId=" + list._id)}
 			>

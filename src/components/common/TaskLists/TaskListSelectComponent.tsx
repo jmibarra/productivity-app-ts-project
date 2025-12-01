@@ -24,7 +24,7 @@ export default function TaskListSelectComponent({ task }: Props) {
 	);
 
 	const [state, dispatch] = React.useReducer(taskListsReducer, initialState);
-	const [taskState, taskDispatch] = React.useReducer(
+	const [, taskDispatch] = React.useReducer(
 		tasksReducer,
 		initialTaskState
 	);

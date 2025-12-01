@@ -62,9 +62,9 @@ const NewListPopup: React.FC<NewListPopupProps> = ({
 					/>
 					<Box>
 						<h4>Seleccionar Ícono</h4>
-						<Grid container spacing={2}>
+						<Grid spacing={2}>
 							{Object.keys(listIconsMap).map((key) => (
-								<Grid item key={key}>
+								<Grid key={key}>
 									<IconButton
 										onClick={() => setSelectedIcon(key)}
 										sx={{
