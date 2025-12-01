@@ -3,6 +3,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import { CircularProgress } from "@mui/material";
 import {
 	getHabitRecordsByPeriod,
+	createHabitRecord,
+	updateHabitRecord,
 } from "../../../services/habitsServices";
 import { HabitRecord } from "../../../interfaces";
 import {
@@ -90,6 +92,37 @@ const HabitMonthRecords = ({ habitId }: Props) => {
 		fetchHabitRecordsForMonth();
 	}, [fetchHabitRecordsForMonth]);
 
+	const toggleHabitCompletion = async (record: HabitRecord) => {
+		const newCompleted = !record.progress.completed;
+		const updatedRecord = {
+			...record,
+			progress: { ...record.progress, completed: newCompleted, amount: newCompleted ? 1 : 0 },
+		};
+
+		// Optimistic update
+		setHabitRecords((prevRecords) =>
+			prevRecords.map((r) => (r.date === record.date ? updatedRecord : r))
+		);
+
+		try {
+			if (record._id) {
+				await updateHabitRecord(updatedRecord);
+			} else {
+				const createdRecord = await createHabitRecord(updatedRecord);
+				// Update with the real ID from server
+				setHabitRecords((prevRecords) =>
+					prevRecords.map((r) => (r.date === record.date ? { ...updatedRecord, _id: createdRecord._id } : r))
+				);
+			}
+		} catch (error) {
+			console.error("Error updating habit record", error);
+			// Revert on error
+			setHabitRecords((prevRecords) =>
+				prevRecords.map((r) => (r.date === record.date ? record : r))
+			);
+		}
+	};
+
 	const weekDays = ["L", "M", "Mi", "J", "V", "S", "D"];
 
 	return (
@@ -114,6 +147,9 @@ const HabitMonthRecords = ({ habitId }: Props) => {
 									parseInt(dateParts[2]) // Día
 								)
 							).getUTCDate();
+							
+							const isFuture = new Date(HabitRecord.date) > new Date();
+
 							return (
 								<Day
 									key={HabitRecord._id + HabitRecord.date}
@@ -123,7 +159,7 @@ const HabitMonthRecords = ({ habitId }: Props) => {
 											? "day checked"
 											: "day unchecked"
 									}
-									onClick={() => {}}
+									onClick={() => !isFuture && toggleHabitCompletion(HabitRecord)}
 									style={{
 										gridColumnStart:
 											index === 0
@@ -132,6 +168,8 @@ const HabitMonthRecords = ({ habitId }: Props) => {
 														new Date().getMonth()
 												  )
 												: undefined,
+										cursor: isFuture ? "default" : "pointer",
+										opacity: isFuture ? 0.5 : 1,
 									}}
 								>
 									{HabitRecord.progress.completed ? (
