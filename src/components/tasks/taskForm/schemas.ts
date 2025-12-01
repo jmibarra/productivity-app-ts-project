@@ -4,7 +4,8 @@ export const initialValues = {
     title: "",
     description: "",
     dueDate: new Date(),
-    list: ""
+    list: "",
+    priority: 4
 };
 
 export const validationSchema = {
