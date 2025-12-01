@@ -5,14 +5,12 @@ import { ReducerActionType } from "../../actions/notes";
 import NoteList from "./NoteList";
 import CreateNoteModalComponent from "./modal/CreateNoteModal";
 import {
-	Container,
-	Header,
+	Content,
 	Footer,
 	ItemLoading,
-	Content,
 } from "./styles/NotesStyles";
 import { ListFooterBox } from "../tasks/styles/TasksStyles";
-import { CircularProgress, Pagination } from "@mui/material";
+import { Box, CircularProgress, Container, Pagination, Typography } from "@mui/material";
 import NotesIcon from "@mui/icons-material/Notes";
 import {
 	createNote,
@@ -89,12 +87,17 @@ const Notes = () => {
 	}, [fetchAllNotes, page]);
 
 	return (
-		<Container>
-			<Header>
-				<h1>
-					<NotesIcon /> Notes
-				</h1>
-			</Header>
+		<Container maxWidth="md" sx={{ py: 4, mt: 10 }}>
+			<Box
+				display="flex"
+				justifyContent="space-between"
+				alignItems="center"
+				mb={4}
+			>
+				<Typography variant="h4" fontWeight="bold" display="flex" alignItems="center" gap={1}>
+					<NotesIcon fontSize="large" color="primary" /> Notes
+				</Typography>
+			</Box>
 			<CreateNoteModalComponent 
 				addNote={addNote} 
 				open={createNoteOpen} 
