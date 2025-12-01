@@ -36,6 +36,7 @@ const Tasks = () => {
 	const [showCompleted, setShowCompleted] = useState(false);
 	const [sortOption, setSortOption] = useState("createdAt");
 	const [sortDirection, setSortDirection] = useState("desc");
+	const [filterPriority, setFilterPriority] = useState<number | null>(null);
 
 	const [searchParams] = useSearchParams(); // Hook para manejar query strings
 	const listIdFromUrl = searchParams.get("listId"); // Obtén el valor de 'listId'
@@ -162,6 +163,12 @@ const Tasks = () => {
 			);
 		}
 
+		if (filterPriority !== null) {
+			filteredTasks = filteredTasks.filter(
+				(task: Task) => task.priority === filterPriority
+			);
+		}
+
 		return filteredTasks;
 	};
 
@@ -197,6 +204,8 @@ const Tasks = () => {
 						setSortOption={setSortOption}
 						sortDirection={sortDirection}
 						setSortDirection={setSortDirection}
+						filterPriority={filterPriority}
+						setFilterPriority={setFilterPriority}
 					/>
 				</Box>
 			</Box>
