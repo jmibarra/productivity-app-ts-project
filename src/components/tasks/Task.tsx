@@ -1,14 +1,10 @@
 import { Task } from "../../interfaces";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CompletedText, DescriptionText } from "./styles/TasksStyles";
 import Priority from "../common/Priority/Priority";
-import { Box } from "@mui/material";
+import { Box, Card, Typography } from "@mui/material";
 import DueDateComponent from "../common/DueDate/DueDateComponent";
 import HorizontalDivider from "../common/HorizontalDivider";
 import EmptyDateComponent from "../common/DueDate/EmptyDateComponent";
@@ -47,9 +43,61 @@ const TaskComponent = ({
 	}, [task.dueDate]);
 
 	return (
-		<ListItem
-			secondaryAction={
-				<Box display="flex" alignItems="center" gap={1}>
+		<Card
+			sx={{
+				width: "100%",
+				borderRadius: "12px",
+				boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+				transition: "all 0.2s ease-in-out",
+				"&:hover": {
+					transform: "translateY(-2px)",
+					boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+				},
+			}}
+		>
+			<Box display="flex" alignItems="center" p={2}>
+				<Checkbox
+					edge="start"
+					checked={task.completed}
+					tabIndex={-1}
+					disableRipple
+					inputProps={{ "aria-labelledby": labelId }}
+					onClick={handleToggle(task._id, task.completed)}
+					sx={{ mr: 2 }}
+				/>
+				<Box
+					flexGrow={1}
+					onClick={() => handleSelectTask(task)}
+					sx={{ cursor: "pointer" }}
+				>
+					<Typography
+						variant="subtitle1"
+						sx={{
+							fontWeight: "bold",
+							textDecoration: task.completed ? "line-through" : "none",
+							color: task.completed ? "text.disabled" : "text.primary",
+						}}
+					>
+						{task.title}
+					</Typography>
+					{task.description && (
+						<Typography
+							variant="body2"
+							color="text.secondary"
+							sx={{
+								textDecoration: task.completed ? "line-through" : "none",
+								display: "-webkit-box",
+								WebkitLineClamp: 2,
+								WebkitBoxOrient: "vertical",
+								overflow: "hidden",
+							}}
+						>
+							{task.description}
+						</Typography>
+					)}
+				</Box>
+
+				<Box display="flex" alignItems="center" gap={1} ml={2}>
 					{currentDueDate ? (
 						<DueDateComponent
 							dueDate={currentDueDate}
@@ -74,48 +122,13 @@ const TaskComponent = ({
 						edge="end"
 						aria-label="delete-action"
 						onClick={() => deleteTask(task._id)}
+						size="small"
 					>
-						<DeleteIcon />
+						<DeleteIcon fontSize="small" />
 					</IconButton>
 				</Box>
-			}
-			disablePadding
-			alignItems="flex-start"
-		>
-			<ListItemButton role={undefined} dense>
-				<ListItemIcon>
-					<Checkbox
-						edge="start"
-						checked={task.completed}
-						tabIndex={-1}
-						disableRipple
-						inputProps={{ "aria-labelledby": labelId }}
-						onClick={handleToggle(task._id, task.completed)}
-					/>
-				</ListItemIcon>
-				<ListItemText
-					id={labelId}
-					primary={task.title}
-					secondary={task.description}
-					onClick={() => handleSelectTask(task)}
-					primaryTypographyProps={
-						task.completed
-							? { component: CompletedText }
-							: {
-									style: {
-										fontWeight: "bold",
-										color: "#333",
-									},
-							  }
-					}
-					secondaryTypographyProps={
-						task.completed
-							? { component: CompletedText }
-							: { component: DescriptionText }
-					}
-				/>
-			</ListItemButton>
-		</ListItem>
+			</Box>
+		</Card>
 	);
 };
 

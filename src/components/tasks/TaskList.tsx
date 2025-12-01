@@ -3,8 +3,7 @@ import { Task } from "../../interfaces";
 import TaskComponent from "./Task";
 import TaskDetailViewModal from "./modal/TaskDetailViewModal";
 
-import List from "@mui/material/List";
-import { Divider } from "@mui/material";
+import Stack from "@mui/material/Stack";
 
 interface Props {
 	tasks: Task[];
@@ -37,25 +36,22 @@ const TaskList = ({
 
 	return (
 		<>
-			<List sx={{ width: "100%", bgcolor: "background.paper" }} dense>
+			<Stack spacing={2} sx={{ width: "100%" }}>
 				{tasks.map((task: Task, index) => {
 					return (
-						<>
-							<TaskComponent
-								task={task}
-								index={index}
-								deleteTask={deleteTask}
-								toogleTask={toogleTask}
-								handleSelectTask={handleSelectTask}
-								key={task._id}
-								updatePriority={updatePriority}
-								updateDueDate={updateDueDate}
-							/>
-							<Divider variant="inset" />
-						</>
+						<TaskComponent
+							task={task}
+							index={index}
+							deleteTask={deleteTask}
+							toogleTask={toogleTask}
+							handleSelectTask={handleSelectTask}
+							key={task._id}
+							updatePriority={updatePriority}
+							updateDueDate={updateDueDate}
+						/>
 					);
 				})}
-			</List>
+			</Stack>
 			{selectedTask && (
 				<TaskDetailViewModal
 					handleClose={handleCloseModal}

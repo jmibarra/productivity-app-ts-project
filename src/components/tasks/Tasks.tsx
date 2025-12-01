@@ -8,16 +8,14 @@ import Pagination from "@mui/material/Pagination";
 import TaskAltIcon from "@mui/icons-material/TaskAlt";
 
 import {
-	Container,
 	Content,
 	FabContainer,
 	Footer,
-	Header,
 } from "./styles/TasksStyles";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import TaskQuickInputComponent from "./TaskQuickInput";
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Container, Typography } from "@mui/material";
 import { ItemLoading } from "../notes/styles/NotesStyles";
 import FilterAndSortComponent from "./FilterAndSortComponent";
 import {
@@ -179,19 +177,17 @@ const Tasks = () => {
 	}, [fetchAllTasks, page, sortOption, sortDirection, listId]);
 
 	return (
-		<Container>
-			<Header>
-				<h1>
-					<TaskAltIcon /> Tareas
-				</h1>
-			</Header>
-			<Content>
-				<Box
-					display="flex"
-					justifyContent="flex-end"
-					alignItems="center"
-					gap={1}
-				>
+		<Container maxWidth="md" sx={{ py: 4, mt: 10 }}>
+			<Box
+				display="flex"
+				justifyContent="space-between"
+				alignItems="center"
+				mb={4}
+			>
+				<Typography variant="h4" fontWeight="bold" display="flex" alignItems="center" gap={1}>
+					<TaskAltIcon fontSize="large" color="primary" /> Tareas
+				</Typography>
+				<Box display="flex" alignItems="center" gap={1}>
 					{listId && (
 						<SelectedListDisplayComponent selectedListId={listId} />
 					)}
@@ -203,6 +199,8 @@ const Tasks = () => {
 						setSortDirection={setSortDirection}
 					/>
 				</Box>
+			</Box>
+			<Content>
 				<TaskQuickInputComponent addTask={addTask} listId={listId} />
 				{loading ? (
 					<ItemLoading>
