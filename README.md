@@ -7,9 +7,9 @@ Este proyecto busca ayudar a las personas a organizarse mejor, mantener el foco 
 
 ## Características
 
-- **Gestión de tareas**: Crea, edita y elimina tareas fácilmente.  
-- **Notas**: Toma tus notas en tu misma aplicación.  
-- **Seguimiento de progreso y hábitos**: Monitorea el avance de tus metas.    
+- **Gestión de tareas**: Crea, edita y elimina tareas fácilmente.
+- **Notas**: Toma tus notas en tu misma aplicación.
+- **Seguimiento de progreso y hábitos**: Monitorea el avance de tus metas.
 
 ---
 
@@ -17,16 +17,20 @@ Este proyecto busca ayudar a las personas a organizarse mejor, mantener el foco 
 
 1. Clona el repositorio:  
    `git clone https://github.com/tu-usuario/aplicacion-tareas-productividad.git`
-   
 2. Instala las dependencias:  
    `npm install`
-   
 3. Ejecuta el proyecto en modo desarrollo:  
    `npm run dev`
 
 ### API
+
 Este proyecto utiliza una API que hace de interfaz con una base de datos MongoDB
 Podes acceder al proyecto de la API [aquí](https://github.com/jmibarra/productivity-app-ts-api-project).
+
+### FRONTEND MOBILE
+
+Este proyecto cuenta tambien con una version para dispositivos moviles
+Podes acceder al proyecto [aquí](https://github.com/jmibarra/productivity--app-mobile-project).
 
 ---
 
@@ -83,5 +87,3 @@ Juntos podemos construir una herramienta increíble para la productividad. 🙌
 Tu colaboración también nos ayuda a seguir trabajando en construir nuestra aplicación
 
 [![Invitame un café en cafecito.app](https://cdn.cafecito.app/imgs/buttons/button_1.svg)](https://cafecito.app/jmibarradev)
-
-
